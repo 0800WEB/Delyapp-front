@@ -3,9 +3,9 @@ type welcomeSwipperDataType = {
     image1: any;
     image2: any;
     image3: any;
-    top: string;
-    right: string;
-    bottom: string;
+    top: any;
+    right: any;
+    bottom: any;
   };
 
   type Avatar = {

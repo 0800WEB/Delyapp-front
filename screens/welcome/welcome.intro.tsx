@@ -35,30 +35,39 @@ export default function WelcomeIntroScreen() {
     return (
       <LinearGradient colors={["#000", "#000"]} style={{ flex: 1 }}>
         <View style={styles.imageContainer}>
-          <Image source={item.image1} style={styles.imageContainer} />
-          <Image
-            source={item.image2}
-            style={[
-              {
-                transform: [{ scale: 0.35 }],
-                display: "flex",
-                position: "absolute",
-                top: item.top,
-                right: item.right,
-              },
-            ]}
-          />
-          <Image
-            source={item.image3}
-            style={[
-              {
-                transform: [{ scale: 0.35 }],
-                display: "flex",
-                position: "absolute",
-                bottom: item.bottom,
-              },
-            ]}
-          />
+          <Image source={item.image1} style={[styles.imageContainer, { overlayColor: 'rgba(0, 0, 0, 0.9)' }]} />
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              position: "absolute",
+              width: "90%",
+              height: "80%",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Image
+              source={item.image2}
+              style={[
+                {
+                  transform: [{ scale: 0.35 }],
+                  top: item.top,
+                  right: item.right,
+                },
+              ]}
+            />
+            <Image
+              source={item.image3}
+              style={[
+                {
+                  transform: [{ scale: 0.35 }],
+                  position: "absolute",
+                  bottom: item.bottom,
+                },
+              ]}
+            />
+          </View>
         </View>
       </LinearGradient>
     );
