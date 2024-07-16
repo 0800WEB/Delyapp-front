@@ -1,10 +1,11 @@
-type onboardingSwiperDataType = {
+type welcomeSwipperDataType = {
     id: number;
-    title: string;
-    description: string;
-    sortDescrition: string;
-    sortDescrition2?: string;
-    image: any;
+    image1: any;
+    image2: any;
+    image3: any;
+    top: string;
+    right: string;
+    bottom: string;
   };
 
   type Avatar = {
