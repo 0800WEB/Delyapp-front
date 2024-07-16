@@ -43,6 +43,10 @@ return (
             <Stack.Screen name='index'/>
             <Stack.Screen name='(routes)/adult-disclaimer/index'/>
             <Stack.Screen name='(routes)/welcome-intro/index'/>
+            <Stack.Screen name='(routes)/select-sign/index'/>
+            <Stack.Screen name='(routes)/sign-in/index'/>
+            <Stack.Screen name='(routes)/sign-up/index'/>
+            <Stack.Screen name='(routes)/verify-account/index'/>
         </Stack>
     </ToastProvider>    
     )

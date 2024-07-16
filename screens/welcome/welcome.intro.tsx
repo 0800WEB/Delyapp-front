@@ -68,8 +68,8 @@ export default function WelcomeIntroScreen() {
     <AppIntroSlider
       renderItem={renderItem}
       data={welcomeIntroSwipperData}
-      onDone={() => router.push("/(routes)/index")}
-      onSkip={() => router.push("/(routes)/index")}
+      onDone={() => router.push("/(routes)/select-sign")}
+      onSkip={() => router.push("/(routes)/select-sign")}
       showNextButton={false}
       renderDoneButton={() => (
         <View style={styles.welcomeButtonStyle}>
