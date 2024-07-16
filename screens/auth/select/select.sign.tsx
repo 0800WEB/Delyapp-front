@@ -37,43 +37,43 @@ export default function SelectSignScreen() {
           source={require("@/assets/images/img-05.jpg")}
           style={[styles.fullscreenImage, { opacity: 0.6 }]}
         />
-        <View style={[styles.imageContainer, { top: -70 }]}>
-          <Image
-            source={require("@/assets/images/ICONOS-38.png")}
-            style={{ transform: [{ scale: 0.48 }] }}
-          />
-          <Image
-            source={require("@/assets/images/ICONOS-01.png")}
-            style={{ transform: [{ scale: 0.45 }], top: -35 }}
-          />
-          <View style={[styles.container, { top: -50 }]}>
-            <TouchableOpacity
-              style={[styles.buttonWrapper]}
-              onPress={() => router.push("/(routes)/sign-up")}
+      </View>
+      <View style={[styles.container]}>
+        <Image
+          source={require("@/assets/images/ICONOS-38.png")}
+          style={{ transform: [{ scale: 0.48 }] }}
+        />
+        <Image
+          source={require("@/assets/images/ICONOS-01.png")}
+          style={{ transform: [{ scale: 0.45 }], top: 0 }}
+        />
+        <View style={[styles.innerContainer, { top: 0 }]}>
+          <TouchableOpacity
+            style={[styles.buttonWrapper]}
+            onPress={() => router.push("/(routes)/sign-up")}
+          >
+            <Text
+              style={[
+                styles.buttonText,
+                { fontFamily: "Cherione Bold", fontSize: 19 },
+              ]}
             >
-              <Text
-                style={[
-                  styles.buttonText,
-                  { fontFamily: "Cherione Bold", fontSize: 19 },
-                ]}
-              >
-                REGÍSTRATE
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.buttonWrapper]}
-              onPress={() => router.push("/(routes)/sign-in")}
+              REGÍSTRATE
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.buttonWrapper]}
+            onPress={() => router.push("/(routes)/sign-in")}
+          >
+            <Text
+              style={[
+                styles.buttonText,
+                { fontFamily: "Cherione Bold", fontSize: 19 },
+              ]}
             >
-              <Text
-                style={[
-                  styles.buttonText,
-                  { fontFamily: "Cherione Bold", fontSize: 19 },
-                ]}
-              >
-                INGRESA
-              </Text>
-            </TouchableOpacity>
-          </View>
+              INGRESA
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </LinearGradient>
@@ -90,48 +90,23 @@ export const styles = StyleSheet.create({
   },
   container: {
     display: "flex",
-    gap: 150,
+    margin: "auto",
+    gap: 5,
     alignItems: "center",
-    justifyContent: "center",
+    width: "80%",
+    height: "90%",
+  },
+  innerContainer: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "center",
     width: "100%",
+    height: "30%",
   },
   buttonText: {
     color: "black",
     textAlign: "center",
-  },
-  welcomeButtonStyle: {
-    flex: 1,
-    backgroundColor: "transparent",
-    width: "25%",
-    alignSelf: "flex-end",
-    borderRadius: 5,
-    bottom: 28,
-  },
-  dotStyle: {
-    display: "flex",
-    justifyContent: "flex-end",
-    alignContent: "flex-end",
-    alignItems: "flex-end",
-    backgroundColor: "transparent",
-    left: responsiveWidth(-35),
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    borderColor: "white",
-    borderWidth: 1,
-    bottom: -5,
-  },
-  activeDotStyle: {
-    display: "flex",
-    justifyContent: "flex-end",
-    alignContent: "flex-end",
-    alignItems: "flex-end",
-    backgroundColor: "white",
-    left: responsiveWidth(-35),
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    bottom: -5,
   },
   fullscreenImage: {
     width: "100%",
@@ -140,7 +115,7 @@ export const styles = StyleSheet.create({
   },
   buttonWrapper: {
     backgroundColor: "white",
-    width: "40%",
+    width: "45%",
     height: 45,
     display: "flex",
     justifyContent: "center",
