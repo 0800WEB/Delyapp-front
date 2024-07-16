@@ -27,7 +27,7 @@ export default function StartScreen() {
           useNativeDriver: false,
         })
       ]),
-      Animated.delay(6000),
+      Animated.delay(4000),
     ]).start(() => {
       router.push('/(routes)/adult-disclaimer');
     });
@@ -42,7 +42,7 @@ export default function StartScreen() {
         <Image source={require("@/assets/images/pngs/CHARRO_NEGRO-07.png")} />
       </Animated.View>
       <Animated.View style={[styles.fullscreenContainer, { opacity: opacityAnim }]}>
-        <Image style={styles.fullscreenImage} source={require("@/assets/images/img_01.jpg")} />
+        <Image style={styles.fullscreenImage} source={require("@/assets/images/img-01.jpg")} />
       </Animated.View>
       <Animated.View style={[styles.imageContainer, {transform: [{scale: 0.5}]},{ opacity: opacityAnim }]}>
         <Image source={require("@/assets/images/ICONOS-76.png")} />
