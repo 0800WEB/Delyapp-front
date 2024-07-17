@@ -150,7 +150,7 @@ export default function VerifyAccountScreen() {
 const styles = StyleSheet.create({
   button: {
     height: 45,
-    width: "50%",
+    width: "70%",
     marginHorizontal: 16,
     borderRadius: 15,
     borderColor: "#A1A1A1",

@@ -159,7 +159,7 @@ export default function SignInScreen() {
           </View>
          
         </View>
-        <TouchableOpacity style={[styles.button, {paddingLeft: -35, marginHorizontal: 32, marginTop: 15}]}>
+        <TouchableOpacity style={[styles.button, {paddingLeft: -35, marginHorizontal: 32, marginTop: 20}]}>
           <Text
             style={[
               {
