@@ -97,51 +97,53 @@ export default function VerifyAccountScreen() {
       style={{ flex: 1, paddingTop: 30 }}
     >
       <Text style={styles.topText}>REGISTRO</Text>
-      <View style={styles.container}>
-        <Text style={styles.headerText}>CÓDIGO DE VERIFICACIÓN</Text>
-        <Text style={styles.subText}>
-          Te hemos mandando un código de verificación a tu correo electrónico
-        </Text>
-        <View style={styles.inputContainer}>
-          {code.map((_, index) => (
-            <TextInput
-              key={index}
-              style={styles.inputBox}
-              keyboardType="number-pad"
-              maxLength={1}
-              onChangeText={(text) => handleInput(text, index)}
-              value={code[index]}
-              ref={inputs.current[index]}
-              autoFocus={index === 0}
-            />
-          ))}
-        </View>
-        <TouchableOpacity style={[styles.button, {paddingLeft: -35, marginHorizontal: 32, marginTop: 15}]}>
-          <Text
-            style={[
-              {
-                color: "white",
-                marginTop: 11,
-                fontSize: 16,
-                fontFamily: "Cherione Regular",
-                textAlign: "center",
-              },
-            ]}
-            onPress={() => router.push("/(routes)/sign-in")}
-          >
-            VERIFICAR
+      <View style={[styles.container]}>
+        
+          <Text style={styles.headerText}>CÓDIGO DE VERIFICACIÓN</Text>
+          <Text style={styles.subText}>
+            Te hemos mandando un código de verificación a tu correo electrónico
           </Text>
-        </TouchableOpacity>
-        {/* <View style={styles.loginLink}>
-          <Text style={[styles.backText, { fontFamily: "Nunito_700Bold" }]}>
-            Back To?
-          </Text>
-          <TouchableOpacity onPress={() => router.back()}>
-            <Text style={[styles.loginText, { fontFamily: "Nunito_700Bold" }]}>
-              Sign In
+          <View style={[styles.inputContainer, {marginLeft: 10}]}>
+            {code.map((_, index) => (
+              <TextInput
+                key={index}
+                style={styles.inputBox}
+                keyboardType="number-pad"
+                maxLength={1}
+                onChangeText={(text) => handleInput(text, index)}
+                value={code[index]}
+                ref={inputs.current[index]}
+                autoFocus={index === 0}
+              />
+            ))}
+          </View>
+          <TouchableOpacity style={[styles.button, {}]}>
+            <Text
+              style={[
+                {
+                  color: "white",
+                  marginTop: 11,
+                  fontSize: 16,
+                  fontFamily: "Cherione Regular",
+                  textAlign: "center",
+                },
+              ]}
+              onPress={() => router.push("/(routes)/sign-in")}
+            >
+              VERIFICAR
             </Text>
           </TouchableOpacity>
-        </View> */}
+          <View style={styles.loginLink}>
+          <Text style={[styles.subText, { fontFamily: "Geomanist Regular" }]}>
+          No me llega el código.
+          </Text>
+          <TouchableOpacity onPress={() => router.back()}>
+          <Text style={[styles.loginText, { fontFamily: "Geomanist Regular" }]}>
+          Reenviar
+          </Text>
+          </TouchableOpacity>
+        </View>
+        
       </View>
     </LinearGradient>
   );
@@ -150,13 +152,13 @@ export default function VerifyAccountScreen() {
 const styles = StyleSheet.create({
   button: {
     height: 45,
-    width: "70%",
-    marginHorizontal: 16,
     borderRadius: 15,
     borderColor: "#A1A1A1",
     borderWidth: 0.8,
-    paddingLeft: 35,
     backgroundColor: "#A1A1A1",
+    marginHorizontal: 32,
+    marginTop: 15,
+    width: "70%",
   },
   topText: {
     display: "flex",
@@ -190,7 +192,9 @@ const styles = StyleSheet.create({
     fontFamily: "Geomanist Regular",
   },
   inputContainer: {
+    display: "flex",
     flexDirection: "row",
+    alignSelf: "center",
     marginBottom: 20,
   },
   inputBox: {
