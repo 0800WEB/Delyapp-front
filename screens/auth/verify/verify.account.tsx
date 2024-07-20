@@ -128,7 +128,7 @@ export default function VerifyAccountScreen() {
                   textAlign: "center",
                 },
               ]}
-              onPress={() => router.push("/(routes)/sign-in")}
+              onPress={() => router.push("/(routes)/home")}
             >
               VERIFICAR
             </Text>
@@ -142,8 +142,7 @@ export default function VerifyAccountScreen() {
           Reenviar
           </Text>
           </TouchableOpacity>
-        </View>
-        
+        </View>        
       </View>
     </LinearGradient>
   );

@@ -47,6 +47,8 @@ return (
             <Stack.Screen name='(routes)/sign-in/index'/>
             <Stack.Screen name='(routes)/sign-up/index'/>
             <Stack.Screen name='(routes)/verify-account/index'/>
+            <Stack.Screen name='(routes)/home/index'/>
+            <Stack.Screen name='(routes)/search/index'/>
         </Stack>
     </ToastProvider>    
     )
