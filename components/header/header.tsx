@@ -24,6 +24,8 @@ import React, { useEffect, useRef, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSelector } from "react-redux";
 import { _retrieveData } from "@/utils/util";
+import { UserInfo } from '../../store/user/userReducer';
+import { RootState } from "@/store/store";
 
 export default function Header() {
   let [userData, setUserData] = useState<UserData | string | null | undefined>(
@@ -51,32 +53,21 @@ export default function Header() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
-
-  const state = useSelector((state) => state);
-
+  const userInfo = useSelector((state: RootState) => state.userInfo);
+  
   useEffect(() => {
-    console.log("Store: ", state);
-  }, [state]);
-
-  const fetchData = async () => {
-    const user = await _retrieveData({ key: "userInfo" });
-    const token = await _retrieveData({ key: "userToken" });
-    // console.log("TOKEN: ", token);
-    // console.log("USERDATA: ", userData);
-    if (user) {
-      setUserData(user);
+    if (userInfo) {
+      setUserData(userInfo);
     }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
+  }, [userInfo]); 
+ 
+  
   
 
   const clearToken = async () => {
     await AsyncStorage.removeItem("userToken");
     await AsyncStorage.removeItem("userInfo");
     // const toKEN = await AsyncStorage.getItem("userToken");
-    fetchData();
   };
 
   return (

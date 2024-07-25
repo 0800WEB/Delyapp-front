@@ -13,6 +13,7 @@ const persistedReducer = persistReducer(persistConfig, user);
 
 export const store = configureStore({
     reducer: persistedReducer,
+    
   });
 
   export type RootState = ReturnType<typeof store.getState>;

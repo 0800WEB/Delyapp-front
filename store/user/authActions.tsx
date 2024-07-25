@@ -37,8 +37,7 @@ export const sign_in = createAsyncThunk(
       });   
       await _storeData({ key: "userToken", value: response.data.token });
       await _storeData({ key: "userInfo", value: response.data.user });    
-      console.log("userInfo: ", response.data) 
-      return response.data;
+      return { token: response.data.token, userInfo: response.data.user };
     } catch (error) {
       return rejectWithValue(parseError({ error }));
     }
