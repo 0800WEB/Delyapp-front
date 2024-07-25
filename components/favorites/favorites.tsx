@@ -72,7 +72,7 @@ import {
     const renderItem = ({ item }: { item: fakeDataType }) => {
       return (
         <TouchableOpacity
-          style={{ marginHorizontal: 5, width: 150 }}
+          style={{ marginHorizontal: 2, width: 150 }}
         >
           <Image
             source={{ uri: item.image }}

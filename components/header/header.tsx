@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Button,
   Platform,
+  DrawerLayoutAndroid,
 } from "react-native";
 import {
   AntDesign,
@@ -18,20 +19,21 @@ import {
   SimpleLineIcons,
 } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import { transform } from "@babel/core";
-import React, { useState } from "react";
-import { welcomeIntroSwipperData } from "@/constants/constants";
-import AppIntroSlider from "react-native-app-intro-slider";
-import {
-  responsiveHeight,
-  responsiveWidth,
-} from "react-native-responsive-dimensions";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { CheckBox } from "react-native-elements";
+import React, { useEffect, useRef, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSelector } from "react-redux";
+import { _retrieveData } from "@/utils/util";
 
 export default function Header() {
+  let [userData, setUserData] = useState<UserData | string | null | undefined>(
+    null
+  );
+  const drawer = useRef<DrawerLayoutAndroid>(null);
+  const [drawerPosition, setDrawerPosition] = useState<"left" | "right">(
+    "left"
+  );
+  // let [userData, setUserData] = useState(null);
   let [fontsLoaded, fontError] = useFonts({
     "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
     "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
@@ -49,13 +51,48 @@ export default function Header() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+
+  const state = useSelector((state) => state);
+
+  useEffect(() => {
+    console.log("Store: ", state);
+  }, [state]);
+
+  const fetchData = async () => {
+    const user = await _retrieveData({ key: "userInfo" });
+    const token = await _retrieveData({ key: "userToken" });
+    // console.log("TOKEN: ", token);
+    // console.log("USERDATA: ", userData);
+    if (user) {
+      setUserData(user);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  
+
+  const clearToken = async () => {
+    await AsyncStorage.removeItem("userToken");
+    await AsyncStorage.removeItem("userInfo");
+    // const toKEN = await AsyncStorage.getItem("userToken");
+    fetchData();
+  };
+
   return (
     <View>
       <View style={styles.headerStyle}>
-        <TouchableOpacity>
-          <SimpleLineIcons name="menu" size={24} color="#A1A1A1" style={{alignSelf: "center"}} />
+        <TouchableOpacity onPress={clearToken}>
+          <SimpleLineIcons
+            name="menu"
+            size={24}
+            color="#A1A1A1"
+            style={{ alignSelf: "center" }}
+          />
         </TouchableOpacity>
-        <Text style={styles.userText}>Nombre de Usuario</Text>
+        {typeof userData === "object" && (
+          <Text style={styles.userText}>{userData?.name}</Text>
+        )}
         <Image
           source={require("@/assets/images/ICONOS-01.png")}
           style={styles.profilePhoto}
@@ -85,5 +122,19 @@ const styles = StyleSheet.create({
     backgroundColor: "#A1A1A1",
     borderRadius: 30,
     alignSelf: "center",
+  },
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 16,
+  },
+  navigationContainer: {
+    backgroundColor: "#ecf0f1",
+  },
+  paragraph: {
+    padding: 16,
+    fontSize: 15,
+    textAlign: "center",
   },
 });

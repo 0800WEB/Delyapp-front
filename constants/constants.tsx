@@ -70,8 +70,27 @@ export const categorySliderData: categorySliderDataType[] = [
         title: "Entretenimiento"
     },
     {
-        id: 8,
+        id: 9,
         image: require("@/assets/images/ICONOS-78.png"),
         title: "Coctelería"
+    },
+];
+
+
+export const promoSliderData: promoSliderDataType[] = [
+    {
+        id: 1,
+        image: require("@/assets/images/img-09.jpg"),
+        title: "Alitas"
+    },
+    {
+        id: 2,
+        image: require("@/assets/images/img-10.jpg"),
+        title: "Carnitas"
+    },
+    {
+        id: 3,
+        image: require("@/assets/images/img-11.jpg"),
+        title: "Tragos"
     },
 ];

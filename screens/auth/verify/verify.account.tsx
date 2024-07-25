@@ -32,6 +32,12 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { CheckBox } from "react-native-elements";
 
 import { Toast } from "react-native-toast-notifications";
+import { SERVER_URI } from "@/utils/uri";
+import axios from "axios";
+
+import{ useDispatch, useSelector } from "react-redux";
+import { sign_up, verify_code } from "@/store/user/authActions";
+import { AppDispatch } from '../../../store/store';
 
 export default function VerifyAccountScreen() {
   let [fontsLoaded, fontError] = useFonts({
@@ -68,28 +74,12 @@ export default function VerifyAccountScreen() {
       inputs.current[index - 1].current.focus();
     }
   };
+  const dispatch = useDispatch<AppDispatch>();
+  const authState = useSelector((state: {user: AuthState}) => state.user);
 
   const handleSumbit = async () => {
-    const otp = code.join("");
-    // const activation_token = await AsyncStorage.getItem("activation_token");
-
-    // await axios
-    //   .post(`${SERVER_URI}/activate-user`, {
-    //     activation_token,
-    //     activation_code: otp,
-    //   })
-    //   .then((res: any) => {
-    //     Toast.show("Your account activated successfully!", {
-    //       type: "success",
-    //     });
-    //     setCode(new Array(4).fill(""));
-    //     router.push("/(routes)/login");
-    //   })
-    //   .catch((error) => {
-    //     Toast.show("Your OTP is not valid or expired!", {
-    //       type: "danger",
-    //     });
-    //   });
+    const otp = code.join("");    
+    dispatch(verify_code({ code: otp }));    
   };
   return (
     <LinearGradient
@@ -128,7 +118,7 @@ export default function VerifyAccountScreen() {
                   textAlign: "center",
                 },
               ]}
-              onPress={() => router.push("/(routes)/home")}
+              onPress={handleSumbit}
             >
               VERIFICAR
             </Text>

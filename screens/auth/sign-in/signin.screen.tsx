@@ -1,37 +1,31 @@
 import {
-  ScrollView,
   View,
   Text,
   Image,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Button,
-  Platform,
+  ActivityIndicator,
 } from "react-native";
 import {
   AntDesign,
-  Entypo,
   FontAwesome,
-  Fontisto,
   Ionicons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import { transform } from "@babel/core";
 import React, { useState } from "react";
-import { welcomeIntroSwipperData } from "@/constants/constants";
-import AppIntroSlider from "react-native-app-intro-slider";
-import {
-  responsiveHeight,
-  responsiveWidth,
-} from "react-native-responsive-dimensions";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { CheckBox } from "react-native-elements";
+import { responsiveWidth } from "react-native-responsive-dimensions";
 
 import { Toast } from "react-native-toast-notifications";
+import axios from "axios";
+import { SERVER_URI } from "@/utils/uri";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch, useSelector } from "react-redux";
+import { sign_in } from "@/store/user/authActions";
+import { AppDispatch } from "@/store/store";
 
 export default function SignInScreen() {
   let [fontsLoaded, fontError] = useFonts({
@@ -51,13 +45,17 @@ export default function SignInScreen() {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [buttonSpinner, setButtonSpinner] = useState(false);
   const [userInfo, setUserInfo] = useState({
-    name: "",
+    email: "",
     password: "",
   });
   const [required, setRequired] = useState("");
   const [error, setError] = useState({
     password: "",
   });
+
+  const dispatch = useDispatch<AppDispatch>();
+  const authState = useSelector((state: { user: AuthState }) => state.user);
+
   if (!fontsLoaded && !fontError) {
     return null;
   }
@@ -95,6 +93,50 @@ export default function SignInScreen() {
     }
   };
 
+  const handleSignIn = async () => {
+    // console.log(userInfo);
+    // console.log(date.toISOString().split('T')[0])
+    // console.log(`${SERVER_URI}/users/signin`);
+    setButtonSpinner(true);
+    const action = await dispatch(
+      sign_in({ email: userInfo.email, password: userInfo.password })
+    );
+    if (sign_in.fulfilled.match(action)) {
+      setButtonSpinner(false);
+      Toast.show(`Bienvenido`, { type: "success" });
+      router.push("/(routes)/home");
+    } else if (sign_in.rejected.match(action)) {
+      Toast.show("Ha ocurrido un error, vuelve a intentar", {
+        type: "danger",
+      });
+      setButtonSpinner(false);
+    }
+
+    // await axios
+    //   .post(`${SERVER_URI}/users/signin`, {
+    //     email: userInfo.email,
+    //     password: userInfo.password,
+    //   })
+    //   .then(async (res) => {
+    //     console.log("Response: ", res.data.token);
+    //     const token = res.data.token;
+    //     await AsyncStorage.setItem('userToken', token);
+    //     Toast.show(`Bienvenido ${res.data.user.name}`, {
+    //       type: "success",
+    //     });
+    //     setButtonSpinner(false);
+    //     router.push("/(routes)/home");
+    //   })
+    //   .catch((error) => {
+    //     setButtonSpinner(false);
+    //     console.log("Error data:", error);
+    //     console.log("Error status:", error.request);
+    //     Toast.show("Ha ocurrido un error intenta de nuevo", {
+    //       type: "danger",
+    //     });
+    //   });
+  };
+
   return (
     <LinearGradient
       colors={["#F9F6F7", "#F9F6F7"]}
@@ -102,7 +144,12 @@ export default function SignInScreen() {
     >
       <Text style={styles.topText}>LOGEO</Text>
       <View
-        style={{ backgroundColor: "#F9F6F7", flex: 1, alignContent: "center", justifyContent: "center" }}
+        style={{
+          backgroundColor: "#F9F6F7",
+          flex: 1,
+          alignContent: "center",
+          justifyContent: "center",
+        }}
       >
         <Image
           source={require("@/assets/images/CHARRO_NEGRO-03.png")}
@@ -116,10 +163,10 @@ export default function SignInScreen() {
             <TextInput
               style={[styles.input, {}]}
               keyboardType="default"
-              value={userInfo.name}
+              value={userInfo.email}
               placeholder="Nombre de Usuario"
               onChangeText={(value) =>
-                setUserInfo({ ...userInfo, name: value })
+                setUserInfo({ ...userInfo, email: value })
               }
             />
             <AntDesign
@@ -128,7 +175,7 @@ export default function SignInScreen() {
               size={20}
               color="#A1A1A1"
             />
-          </View>  
+          </View>
           <View>
             <TextInput
               style={[styles.input, { paddingTop: 0, paddingLeft: 35 }]}
@@ -157,29 +204,40 @@ export default function SignInScreen() {
               color="#A1A1A1"
             />
           </View>
-         
         </View>
-        <TouchableOpacity style={[styles.button, {paddingLeft: -35, marginHorizontal: 32, marginTop: 20}]}>
-          <Text
-            style={[
-              {
-                color: "white",
-                marginTop: 11,
-                fontSize: 16,
-                fontFamily: "Cherione Regular",
-                textAlign: "center",
-              },
-            ]}
-            onPress={() => router.push("/(routes)/verify-account")}
-          >
-            INGRESAR
-          </Text>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            { paddingLeft: -35, marginHorizontal: 32, marginTop: 20 },
+          ]}
+        >
+          {buttonSpinner ? (
+            <ActivityIndicator
+              size="small"
+              color="white"
+              style={{ marginVertical: "auto" }}
+            />
+          ) : (
+            <Text
+              style={[
+                {
+                  color: "white",
+                  marginTop: 11,
+                  fontSize: 16,
+                  fontFamily: "Cherione Regular",
+                  textAlign: "center",
+                },
+              ]}
+              onPress={handleSignIn}
+            >
+              INGRESAR
+            </Text>
+          )}
         </TouchableOpacity>
       </View>
     </LinearGradient>
-  )
+  );
 }
-
 
 export const styles = StyleSheet.create({
   checkboxContainer: {

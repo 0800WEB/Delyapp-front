@@ -6,8 +6,8 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Button,
   Platform,
+  ActivityIndicator
 } from "react-native";
 import {
   AntDesign,
@@ -20,18 +20,15 @@ import {
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import { transform } from "@babel/core";
-import React, { useState } from "react";
-import { welcomeIntroSwipperData } from "@/constants/constants";
-import AppIntroSlider from "react-native-app-intro-slider";
-import {
-  responsiveHeight,
-  responsiveWidth,
-} from "react-native-responsive-dimensions";
+import React, { useEffect, useState } from "react";
+import { responsiveWidth } from "react-native-responsive-dimensions";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { CheckBox } from "react-native-elements";
 
 import { Toast } from "react-native-toast-notifications";
+import{ useDispatch, useSelector } from "react-redux";
+import { sign_up } from "@/store/user/authActions";
+import { AppDispatch } from '../../../store/store';
 
 export default function SignUpScreen() {
   let [fontsLoaded, fontError] = useFonts({
@@ -53,9 +50,9 @@ export default function SignUpScreen() {
   const [userInfo, setUserInfo] = useState({
     name: "",
     email: "",
-    phone: "",
-    birthDate: "",
     password: "",
+    phone: "",
+    ageVerified: false,
   });
   const [required, setRequired] = useState("");
   const [error, setError] = useState({
@@ -64,14 +61,26 @@ export default function SignUpScreen() {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
+  const [dateChanged, setDateChanged] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const authState = useSelector((state: {user: AuthState}) => state.user);
+
+  function isOver18(birthDate: Date) {
+    const currentDate = new Date();
+    currentDate.setFullYear(currentDate.getFullYear() - 18);
+    return birthDate < currentDate;
+  }
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === "ios");
+    setDateChanged(true);
+    const over18: boolean = isOver18(currentDate);
     setUserInfo({
       ...userInfo,
-      birthDate: currentDate.toISOString(),
+      ageVerified: over18,
     });
     setDate(currentDate);
   };
@@ -83,6 +92,9 @@ export default function SignUpScreen() {
   const showDatepicker = () => {
     showMode("date");
   };
+
+  let formattedDate = date.toISOString().split("T")[0];
+
   if (!fontsLoaded && !fontError) {
     return null;
   }
@@ -96,19 +108,19 @@ export default function SignUpScreen() {
     if (!passwordSpecialCharacter.test(password)) {
       setError({
         ...error,
-        password: "Write at least one special character",
+        password: "Usa al menos un caracter especial",
       });
       setUserInfo({ ...userInfo, password: "" });
     } else if (!passwordOneNumber.test(password)) {
       setError({
         ...error,
-        password: "Write at least one number",
+        password: "Usa al menos un número",
       });
       setUserInfo({ ...userInfo, password: "" });
     } else if (!passwordSixValue.test(password)) {
       setError({
         ...error,
-        password: "Write at least 6 characters",
+        password: "La contraseña debe contener 6 caracteres como mínimo",
       });
       setUserInfo({ ...userInfo, password: "" });
     } else {
@@ -119,38 +131,28 @@ export default function SignUpScreen() {
       setUserInfo({ ...userInfo, password: value });
     }
   };
-
+ 
   const handleSignIn = async () => {
+    if (!userInfo.password || error.password !== "") {
+      Toast.show("Hay un problema con la contraseña", {
+        type: "danger",
+      });
+      return;
+    }
+  
     setButtonSpinner(true);
-    // await axios
-    //   .post(`${SERVER_URI}/registration`, {
-    //     name: userInfo.name,
-    //     email: userInfo.email,
-    //     password: userInfo.password,
-    //   })
-    //   .then(async (res) => {
-    //     await AsyncStorage.setItem(
-    //       "activation_token",
-    //       res.data.activationToken
-    //     );
-    //     Toast.show(res.data.message, {
-    //       type: "success",
-    //     });
-    //     setUserInfo({
-    //       name: "",
-    //       email: "",
-    //       password: "",
-    //     });
-    //     setButtonSpinner(false);
-    //     router.push("/(routes)/verifyAccount");
-    //   })
-    //   .catch((error) => {
-    //     setButtonSpinner(false);
-    //     Toast.show("Email already exist!", {
-    //       type: "danger",
-    //     });
-    //   });
+    dispatch(sign_up({
+      name: userInfo.name,
+      email: userInfo.email,
+      password: userInfo.password,
+      phone: userInfo.phone,
+      ageVerified: userInfo.ageVerified,
+    })); 
+    setTimeout(() => {
+      setButtonSpinner(false);
+    }, 2000);
   };
+
 
   return (
     <LinearGradient
@@ -222,7 +224,11 @@ export default function SignUpScreen() {
           </View>
           <View>
             <TouchableOpacity style={styles.button} onPress={showDatepicker}>
-              <Text style={styles.buttonText}>Fecha de Nacimiento</Text>
+              {dateChanged !== false ? (
+                <Text style={styles.buttonText}>{formattedDate}</Text>
+              ) : (
+                <Text style={styles.buttonText}>Fecha de Nacimiento</Text>
+              )}
             </TouchableOpacity>
             {show && (
               <DateTimePicker
@@ -245,12 +251,10 @@ export default function SignUpScreen() {
             <TextInput
               style={[styles.input, { paddingTop: 0, paddingLeft: 35 }]}
               keyboardType="default"
-              value={userInfo.password}
               secureTextEntry={!isPasswordVisible}
+              defaultValue=""
               placeholder="••••••••••"
-              onChangeText={(value) =>
-                setUserInfo({ ...userInfo, password: value })
-              }
+              onChangeText={handlePasswordValidation}
             />
             <TouchableOpacity
               style={styles.visibleIcon}
@@ -268,6 +272,14 @@ export default function SignUpScreen() {
               size={20}
               color="#A1A1A1"
             />
+            {error.password && (
+              <View style={[styles.errorContainer, { top: 10 }]}>
+                <Entypo name="cross" size={18} color={"red"} />
+                <Text style={{ color: "red", fontSize: 11, marginTop: -1 }}>
+                  {error.password}
+                </Text>
+              </View>
+            )}
           </View>
           <CheckBox
             title="Acepto los términos y condiciones para el uso de la aplicación"
@@ -288,21 +300,30 @@ export default function SignUpScreen() {
             uncheckedColor="#A1A1A1"
           />
         </View>
-        <TouchableOpacity style={[styles.button, {paddingLeft: -35, marginHorizontal: 32, marginTop: 15}]}>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            { paddingLeft: -35, marginHorizontal: 32, marginTop: 15 },
+          ]}
+        >
+          {buttonSpinner ? (
+            <ActivityIndicator size="small" color="white" style={{marginVertical: "auto"}} />
+          ) : (
           <Text
-            style={[
-              {
-                color: "white",
-                marginTop: 11,
-                fontSize: 16,
-                fontFamily: "Cherione Regular",
-                textAlign: "center",
-              },
-            ]}
-            onPress={() => router.push("/(routes)/verify-account")}
+          style={[
+            {
+              color: "white",
+              marginTop: 11,
+              fontSize: 16,
+              fontFamily: "Cherione Regular",
+              textAlign: "center",
+            },
+          ]}
+          onPress={handleSignIn}
           >
             REGISTRARSE
           </Text>
+            )}
         </TouchableOpacity>
       </ScrollView>
     </LinearGradient>
@@ -418,5 +439,11 @@ export const styles = StyleSheet.create({
     position: "absolute",
     right: 30,
     top: 11,
+  },
+  errorContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 16,
+    top: 60,
   },
 });

@@ -4,6 +4,7 @@ import Header from "@/components/header/header";
 import Categories from "@/components/categories/categories";
 import SearchInput from "@/components/search/searchInput";
 import Highlights from "@/components/highlights/highlights";
+import Promos from "@/components/promos/promos";
 
 export default function HomeScreen() {
   return (
@@ -16,6 +17,7 @@ export default function HomeScreen() {
         <SearchInput homeScreen={true} />
         <Categories />
         <Highlights />
+        <Promos />
       </ScrollView>
     </LinearGradient>
   );

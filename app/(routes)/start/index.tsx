@@ -1,5 +1,7 @@
 import StartScreen from "@/screens/start/start.screen";
 
-export default function Start() {
+const Start = () => {
   return <StartScreen />;
-}
+};
+
+export default Start;
