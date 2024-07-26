@@ -86,3 +86,26 @@ type UserData = {
   updatedAt: string;
   verify_code: string;
 };
+
+type Category = {
+  __v: number;
+  _id: string;
+  createdAt: string;
+  description: string;
+  image: string;
+  name: string;
+  updatedAt: string;
+}
+
+type Product = {
+  __v: number;
+  _id: string;
+  category: string;
+  createdAt: string;
+  description: string;
+  images: string[]; // Asume que images es un array de strings. Cambia esto si no es correcto.
+  name: string;
+  price: number;
+  stock: number;
+  updatedAt: string;
+}

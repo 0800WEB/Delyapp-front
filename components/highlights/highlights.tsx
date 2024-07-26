@@ -1,13 +1,10 @@
 import {
   SafeAreaView,
-  ScrollView,
   View,
   Text,
   Image,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
-  Button,
   VirtualizedList,
 } from "react-native";
 import {

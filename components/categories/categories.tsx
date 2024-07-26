@@ -1,40 +1,25 @@
 import {
   SafeAreaView,
-  ScrollView,
-  View,
   Text,
   Image,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
-  Button,
   VirtualizedList,
 } from "react-native";
 import {
-  AntDesign,
-  Entypo,
   FontAwesome,
-  Fontisto,
-  Ionicons,
-  SimpleLineIcons,
 } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import { transform } from "@babel/core";
 import React, { useState, useEffect } from "react";
-import { welcomeIntroSwipperData } from "@/constants/constants";
-import AppIntroSlider from "react-native-app-intro-slider";
-import {
-  responsiveHeight,
-  responsiveWidth,
-} from "react-native-responsive-dimensions";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { CheckBox } from "react-native-elements";
 import { categorySliderData } from "@/constants/constants";
 import axios from "axios";
 
-export default function Categories() {
+interface CategoriesProps {
+  onItemSelected: (title: string) => void;
+}
+
+export default function Categories({ onItemSelected }: CategoriesProps) {
   let [fontsLoaded, fontError] = useFonts({
     "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
     "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
@@ -62,7 +47,7 @@ export default function Categories() {
 
   const renderItem = ({ item }: { item: categorySliderDataType }) => {
     return (
-      <TouchableOpacity onPress={() => router.navigate(`/Category/${item.id}`)}>
+      <TouchableOpacity onPress={() => onItemSelected(item.title)}>
         <Image source={item.image} style={styles.imageStyle} />
       </TouchableOpacity>
     );

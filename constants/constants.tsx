@@ -62,7 +62,7 @@ export const categorySliderData: categorySliderDataType[] = [
     {
         id: 7,
         image: require("@/assets/images/ICONOS-62.png"),
-        title: "Pa la Cruda"
+        title: "Pa' la Cruda"
     },
     {
         id: 8,
@@ -72,7 +72,7 @@ export const categorySliderData: categorySliderDataType[] = [
     {
         id: 9,
         image: require("@/assets/images/ICONOS-78.png"),
-        title: "Coctelería"
+        title: "Cocteleria"
     },
 ];
 

@@ -3,11 +3,10 @@ import {
   ScrollView,
   DrawerLayoutAndroid,
   StyleSheet,
-  Button,
   Text,
   TouchableOpacity,
 } from "react-native";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "@/components/header/header";
 import Categories from "@/components/categories/categories";
@@ -19,11 +18,25 @@ import { RootState } from "@/store/store";
 import { openDrawer, closeDrawer } from "@/store/drawer/drawerActions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
+import { get_allItems } from "@/store/products/productsActions";
+import { get_allCategories } from "@/store/categories/categoriesActions";
+import CategoryProducts from "@/components/categoryProducts/categoryProducts";
+import AllCategoryProducts from "@/components/alProducts/allProductsCategories";
 
 const HomeScreen: React.FC = () => {
   const drawer = useRef<DrawerLayoutAndroid>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const dispatch = useDispatch();
   const isDrawerOpen = useSelector((state: RootState) => state.drawer.isOpen);
+  useEffect(() => {
+    dispatch(get_allItems() as any);
+    dispatch(get_allCategories() as any);
+  }, []);
+  const products = useSelector((state: RootState) => state.products);
+  // console.log("Products: ", products);
+  const categories = useSelector((state: RootState) => state.categories);
+  // console.log("Categories: ", categories);
 
   const logout = async () => {
     await AsyncStorage.removeItem("userToken");
@@ -31,6 +44,30 @@ const HomeScreen: React.FC = () => {
     dispatch(closeDrawer());
     router.push("select-sign");
   };
+
+  useEffect(() => {
+    console.log("Categoría seleccionada: ", selectedCategory);
+    // console.log("Products: ", products.products);
+    // console.log("Categories: ", categories.categories);
+    if (selectedCategory) {
+      const selectedCategoryObj = categories.categories.find(
+        (category: Category) => category.name === selectedCategory
+      );
+      // console.log(selectedCategoryObj);
+      let selectedProducts: Product[] = [];
+      if (selectedCategoryObj) {
+        selectedProducts = products.products.filter(
+          (product: Product) => product.category === selectedCategoryObj._id
+        );
+        setFilteredProducts(selectedProducts);
+        console.log("Productos seleccionados: ", selectedProducts);
+      } else {
+        console.log(
+          "Categoría seleccionada no encontrada en las categorías disponibles"
+        );
+      }
+    }
+  }, [selectedCategory]);
 
   useEffect(() => {
     if (isDrawerOpen) {
@@ -42,11 +79,11 @@ const HomeScreen: React.FC = () => {
 
   const navigationView = () => (
     <View style={[styles.container, styles.navigationContainer]}>
+      <TouchableOpacity onPress={() => router.push("/(routes)/home")}>
+        <Text style={styles.paragraph}>INICIO</Text>
+      </TouchableOpacity>
       <TouchableOpacity onPress={() => router.push("/(routes)/user")}>
         <Text style={styles.paragraph}>PERFIL</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => router.push("/screen2")}>
-        <Text style={styles.paragraph}>Go to Screen 2</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => router.push("/screen3")}>
         <Text style={styles.paragraph}>Go to Screen 3</Text>
@@ -70,11 +107,39 @@ const HomeScreen: React.FC = () => {
         style={{ flex: 1, paddingTop: 30 }}
       >
         <Header openDrawer={() => dispatch(openDrawer())} />
-        <ScrollView style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1, marginBottom: 25 }}>
           <SearchInput homeScreen={true} />
-          <Categories />
-          <Highlights />
-          <Promos />
+          <Categories
+            onItemSelected={(title: string) => {
+              setSelectedCategory(title);
+            }}
+          />
+          {selectedCategory ? (
+            <>
+              <Promos />
+              <CategoryProducts
+                categoryName={selectedCategory}
+                products={filteredProducts}
+              />
+            </>
+          ) : (
+            <>
+              <Highlights />
+              <Promos />
+              {categories.categories.map((category: Category) => {
+                const productsForCategory = products.products.filter(
+                  (product: Product) => product.category === category._id
+                );
+                return (
+                  <AllCategoryProducts
+                    key={category._id}
+                    category={category}
+                    products={productsForCategory}
+                  />
+                );
+              })}
+            </>
+          )}
         </ScrollView>
       </LinearGradient>
     </DrawerLayoutAndroid>
