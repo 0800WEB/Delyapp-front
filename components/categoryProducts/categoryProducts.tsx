@@ -45,7 +45,6 @@ const CategoryProducts: React.FC<{ categoryName: string; products: any[] }> = ({
             marginHorizontal: "auto",
             width: "95%",
             flexDirection: "row",
-            justifyContent: "space-between",
             alignContent: "center",
           }}
         >
@@ -64,8 +63,7 @@ const CategoryProducts: React.FC<{ categoryName: string; products: any[] }> = ({
                   styles.titleText,
                   {
                     fontFamily: "Cherione Regular",
-                    fontSize: 10.5,
-                    alignSelf: "center",
+                    fontSize: 12,
                   },
                 ]}
               >
@@ -118,27 +116,21 @@ export const styles = StyleSheet.create({
     fontFamily: "Geomanist Medium",
     fontSize: 18,
     color: "#A1A1A1",
+    textAlign: "left",
   },
   containerTitle: {
+    display: "flex",
+    marginLeft: 5,
     marginVertical: 10,
     justifyContent: "space-between",
+    alignItems: "flex-start",
     width: "80%",
     height: 90,
-  },
-  categoryText: {
-    fontFamily: "Geomanist Medium",
-    fontSize: 14,
-    color: "#A1A1A1",
-  },
-  starStyle: {
-    width: 14,
-    aspectRatio: 1,
-    alignSelf: "center",
-    marginRight: 5,
-  },
+  }, 
   titleText: {
     fontFamily: "Geomanist Medium",
-    fontSize: 14,
+    fontSize: 15,
     color: "#A1A1A1",
+    textAlign: "left",
   },
 });
