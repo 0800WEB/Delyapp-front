@@ -27,6 +27,15 @@ interface VerifyCodeArgs {
   code: string;
 }
 
+interface UpdateUserArgs {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  ageVerified: boolean;
+  address: string;
+}
+
 export const sign_in = createAsyncThunk(
   "users/signin",
   async ({ email, password }: SignInArgs, { rejectWithValue }) => {
@@ -34,9 +43,9 @@ export const sign_in = createAsyncThunk(
       const response = await axios.post(`${SERVER_URI}/users/signin`, {
         email,
         password,
-      });   
+      });
       await _storeData({ key: "userToken", value: response.data.token });
-      await _storeData({ key: "userInfo", value: response.data.user });    
+      await _storeData({ key: "userInfo", value: response.data.user });
       return { token: response.data.token, userInfo: response.data.user };
     } catch (error) {
       return rejectWithValue(parseError({ error }));
@@ -94,5 +103,35 @@ export const verify_code = createAsyncThunk(
   }
 );
 
-const actions = { sign_in, sign_up, verify_code };
+export const update_user = createAsyncThunk(
+  "users/update",
+  async (
+    { id, name, email, phone, ageVerified, address }: UpdateUserArgs,
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await axios.patch(`${SERVER_URI}/users/${id}`, {
+        name,
+        email,
+        phone,
+        ageVerified,
+        address,
+      });
+      if (response.data.success) {
+        Toast.show("Usuario actualizado exitosamente", { type: "success" });
+        await _storeData({ key: "userToken", value: response.data.token });
+        await _storeData({ key: "userInfo", value: response.data.user });
+      } else {
+        Toast.show("Ha ocurrido un error, vuelve a intentar", {
+          type: "danger",
+        });
+      }
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(parseError({ error }));
+    }
+  }
+);
+
+const actions = { sign_in, sign_up, verify_code, update_user };
 export default actions;

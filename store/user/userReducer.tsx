@@ -1,7 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 import authActions from "./authActions";
-const { sign_in, sign_up, verify_code } = authActions;
+const { sign_in, sign_up, verify_code, update_user } = authActions;
 
 export interface UserInfo {
   id: string;
@@ -9,6 +9,7 @@ export interface UserInfo {
   email: string;
   phone: string;
   ageVerified: boolean;
+  address: string;
 }
 
 interface AuthState {
@@ -66,6 +67,19 @@ const authReducer = createReducer(initialState, (builder) => {
       state.error = null;
     })
     .addCase(verify_code.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    })
+    .addCase(update_user.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(update_user.fulfilled, (state, action) => {
+      state.loading = false;
+      state.userInfo = action.payload.userInfo;
+      state.error = null;
+    })
+    .addCase(update_user.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
     });

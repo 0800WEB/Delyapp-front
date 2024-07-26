@@ -55,6 +55,7 @@ type fakeDataType = {
 
 
 type UserInfo = {
+  address: UserInfo;
   name: string;
   email: string;
   password: string;
@@ -81,6 +82,7 @@ type UserData = {
   password: string;
   phone: string;
   role: number;
+  address: string;
   updatedAt: string;
   verify_code: string;
 };
