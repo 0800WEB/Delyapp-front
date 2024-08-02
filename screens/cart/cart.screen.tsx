@@ -7,44 +7,21 @@ import {
   Image,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  SafeAreaView,
   FlatList,
 } from "react-native";
 import { FontAwesome, Entypo, Ionicons, AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { useRouting } from "expo-next-react-navigation";
 import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { AppDispatch, RootState } from "@/store/store";
 import AllCategoryProducts from "@/components/alProducts/allProductsCategories";
 import { router } from "expo-router";
 import { useFonts } from "expo-font";
 import { useDispatch } from "react-redux";
 import { getCart } from "@/store/cart/cartActions";
 import { _retrieveData } from "@/utils/util";
-
-interface Product {
-  __v: number;
-  _id: string;
-  category: string;
-  createdAt: string;
-  description: string;
-  images: string[];
-  name: string;
-  price: number;
-  stock: number;
-  updatedAt: string;
-}
-
-interface CartProduct {
-  productId: number;
-  quantity: number;
-  totalPrice: number;
-}
-
-interface CartItem {
-  _id: string;
-  product: Product;
-  quantity: number;
-}
+import { addToCart, removeFromCart } from "@/store/cart/cartActions";
 
 const CartScreen: React.FC = () => {
   let [fontsLoaded, fontError] = useFonts({
@@ -61,7 +38,7 @@ const CartScreen: React.FC = () => {
     "Geomanist Ultra": require("../../assets/fonts/Geomanist-Ultra.otf"),
     ...FontAwesome.font,
   });
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   if (!fontsLoaded && !fontError) {
     return null;
   }
@@ -73,6 +50,16 @@ const CartScreen: React.FC = () => {
   const cart = useSelector((state: RootState) => state.cart.cart);
   const { products, totalPrice } = cart;
   const cartProducts = JSON.parse(JSON.stringify(products));
+
+  const handleDiscount = async (productId: string) => {
+    await dispatch(removeFromCart({ productId, quantity: 1 }));
+    await dispatch(getCart());
+  };
+  const handleAdd = async (productId: string) => {
+    // console.log(productId);
+    await dispatch(addToCart({ productId, quantity: 1 }));
+    await dispatch(getCart());
+  };
 
   if (!cartProducts || cartProducts.length === 0) {
     return (
@@ -88,21 +75,24 @@ const CartScreen: React.FC = () => {
             textAlign: "center",
           }}
         >
-          No existen elementos en el carrito, por favor agregalos
+          El carrito está vacío
         </Text>
       </View>
     );
   }
 
   if (cart) {
-    const renderProductItem = ({ item }: { item: CartItem }) => (
+    const renderProductItem = ({ item }: { item: CartProduct }) => (
       <View
         style={{
           flexDirection: "row",
           marginHorizontal: "auto",
           marginVertical: 15,
           justifyContent: "space-between",
+          paddingVertical: 10,
           width: "90%",
+          borderBottomColor: "#A1A1A1",
+          borderBottomWidth: 0.5,
         }}
       >
         <View style={{ flexDirection: "row", width: "60%" }}>
@@ -115,23 +105,37 @@ const CartScreen: React.FC = () => {
               borderRadius: 15,
             }}
           />
-          <Text
-            style={{
-              textAlign: "left",
-              marginHorizontal: 15,
-              marginVertical: "auto",
-              fontFamily: "Geomanist Medium",
-              fontSize: 15,
-              color: "#A1A1A1",
-            }}
-          >
-            {item.product.name}
-          </Text>
+          <View>
+            <Text
+              style={{
+                textAlign: "left",
+                marginHorizontal: 15,
+                marginVertical: "auto",
+                fontFamily: "Geomanist Medium",
+                fontSize: 16,
+                color: "#A1A1A1",
+              }}
+            >
+              {item.product.name}
+            </Text>
+            <Text
+              style={{
+                textAlign: "left",
+                marginHorizontal: 15,
+                marginVertical: "auto",
+                fontFamily: "Geomanist Light",
+                fontSize: 13,
+                color: "#A1A1A1",
+              }}
+            >
+              {item.product.description}
+            </Text>
+          </View>
         </View>
         <View
           style={{
             justifyContent: "center",
-            alignItems: "flex-start",
+            alignItems: "center",
             width: "20%",
           }}
         >
@@ -139,22 +143,42 @@ const CartScreen: React.FC = () => {
             style={{
               textAlign: "left",
               fontFamily: "Geomanist Regular",
-              fontSize: 15,
+              fontSize: 17,
               color: "#A1A1A1",
             }}
           >
             ${item.product?.price?.toString()}
           </Text>
-          <Text
+          <View
             style={{
-              textAlign: "left",
-              fontFamily: "Geomanist Regular",
-              fontSize: 15,
-              color: "#A1A1A1",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              paddingVertical: 10,
             }}
           >
-            {item.quantity?.toString()}
-          </Text>
+            <TouchableOpacity onPress={() => handleDiscount(item.product._id)}>
+              <AntDesign
+                name={item.quantity == 1 ? "delete" : "minus"}
+                color="#A1A1A1"
+                size={22}
+              />
+            </TouchableOpacity>
+            <Text
+              style={{
+                textAlign: "left",
+                fontFamily: "Geomanist Regular",
+                fontSize: 17,
+                color: "#A1A1A1",
+              }}
+            >
+              {item.quantity?.toString()}
+            </Text>
+            <TouchableOpacity onPress={() => handleAdd(item.product._id)}>
+              <AntDesign name="plus" color="#A1A1A1" size={22} />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -173,14 +197,60 @@ const CartScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
         <ScrollView>
-          <FlatList
-            data={cartProducts}
-            renderItem={renderProductItem}
-            keyExtractor={(item) => item._id}
+          <Image
+            source={require("@/assets/images/img-06.jpg")}
+            style={{
+              height: 150,
+              width: "100%",
+              objectFit: "cover",
+              overflow: "hidden",
+            }}
           />
-          {totalPrice && (
-            <Text style={styles.cartTotal}>${totalPrice.toFixed(2)}</Text>
-          )}
+          <SafeAreaView
+            style={{ borderTopRightRadius: 50, borderTopLeftRadius: 50 }}
+          >
+            <FlatList
+              data={cartProducts}
+              renderItem={renderProductItem}
+              keyExtractor={(item) => item._id}
+            />
+          </SafeAreaView>
+          <View
+            style={{
+              flexDirection: "row",
+              marginHorizontal: 20,
+              marginBottom: 10,
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Text style={styles.cartTotal}>TOTAL: </Text>
+            {totalPrice && (
+              <Text style={styles.cartTotal}>${totalPrice.toFixed(2)}</Text>
+            )}
+          </View>
+          <TouchableOpacity
+            style={{
+              flexDirection: "row",
+              marginHorizontal: 20,
+              marginBottom: 15,
+              justifyContent: "center",
+              alignItems: "center",
+              backgroundColor: "#A1A1A1",
+              paddingVertical: 15,
+              borderRadius: 10,
+            }}
+          >
+            <Text
+              style={{
+                color: "white",
+                fontFamily: "Cherione Normal",
+                fontSize: 16,
+              }}
+            >
+              REALIZAR PEDIDO
+            </Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
     );
@@ -290,5 +360,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginVertical: 10,
+    color: "#A1A1A1",
   },
 });

@@ -7,20 +7,20 @@ import {
   Image,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Animated
+  Animated,
 } from "react-native";
 import { FontAwesome, Entypo, Ionicons, AntDesign } from "@expo/vector-icons";
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import AllCategoryProducts from "@/components/alProducts/allProductsCategories";
-import {
-  selectProduct,
-  clearSelectedProduct,
-} from "@/store/products/productsActions";
-import { router } from "expo-router";
 import { useFonts } from "expo-font";
 import { addToCart, removeFromCart, getCart } from "@/store/cart/cartActions";
+import {
+  toggleFavorite,
+  removeFromFavorites,
+  getFavorites
+} from "@/store/favorites/favoritesActions";
 
 interface ProductDetailsScreenProps {
   productId: string;
@@ -37,23 +37,24 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
     "Geomanist Medium": require("../../assets/fonts/Geomanist-Medium.otf"),
     ...FontAwesome.font,
   });
-  
 
   const dispatch = useDispatch<AppDispatch>();
   if (!fontsLoaded && !fontError) {
     return null;
   }
 
-  //   useEffect(() => {
-  //     dispatch(getCart() as any);
-  //   }, [productId]);
-  const [favoriteSelect, setFavoriteSelect] = useState(false);
+    useEffect(() => {
+      dispatch(getFavorites());
+    }, [productId]);
 
   const cartProducts = useSelector(
     (state: RootState) => state.cart.cart.products
   );
   const products = useSelector((state: RootState) => state.products);
   const categories = useSelector((state: RootState) => state.categories);
+  const favoriteProducts = useSelector(
+    (state: RootState) => state.favorite.favorites.products
+  );
 
   const product = (products.products as Product[]).find(
     (product: Product) => product._id === productId
@@ -67,8 +68,6 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
     (product: Product) => product.category === selectedCategory?._id
   );
 
-  console.log(productId);
-
   const name = product?.name;
   const words = name?.split(" ") ?? [];
   const chunks = [];
@@ -77,6 +76,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
     chunks.push(words?.slice(i, i + 3).join(" "));
   }
 
+  //Quantity management
   let initialQuantity = 0;
   if (cartProducts) {
     const cartProduct = (cartProducts as CartProduct[]).find(
@@ -98,18 +98,40 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
     setQuantity(newQuantity);
   }, [cartProducts, productId]);
 
+  //Favorite management
+  let initialFavorite = false;
+  if (favoriteProducts) {
+    const favoriteProduct = (favoriteProducts as Product[]).find(
+      (product: Product) => product._id === productId
+    );
+    initialFavorite = favoriteProduct ? true : false;
+  }
+
+  const [favoriteSelect, setFavoriteSelect] = useState(initialFavorite);
+
+  useEffect(() => {
+    let newFavorite = false;
+    if (favoriteProducts) {
+      const favoriteProduct = (favoriteProducts as Product[]).find(
+        (product: Product) => product._id === productId
+      );
+      newFavorite = favoriteProduct ? true : false;
+    }
+    setFavoriteSelect(newFavorite);
+  }, [favoriteProducts, productId]);  
+  
   const handleDiscount = async () => {
     if (quantity > 0) {
       setQuantity(quantity - 1);
       await dispatch(removeFromCart({ productId, quantity: 1 }));
-      await dispatch(getCart() as any);
+      await dispatch(getCart());
     }
   };
 
   const handleAdd = async () => {
     setQuantity(quantity + 1);
     await dispatch(addToCart({ productId, quantity: 1 }));
-    await dispatch(getCart() as any);
+    await dispatch(getCart());
   };
 
   const handleProductSelected = (newProductId: string) => {
@@ -124,9 +146,18 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
     setProductId("");
   };
 
-  const handleFavorite = () => {
+  const handleFavorite = async () => {
+    if (favoriteSelect) {
+      await dispatch(removeFromFavorites({ productId }));
+      await dispatch(getFavorites());
+    } else {
+      await dispatch(toggleFavorite({ productId }));
+      await dispatch(getFavorites());
+    }
     setFavoriteSelect(!favoriteSelect);
   };
+  // console.log(productId); 
+  // console.log(favoriteSelect);
 
   if (!product) {
     return (

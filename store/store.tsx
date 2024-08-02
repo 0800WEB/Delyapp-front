@@ -6,6 +6,7 @@ import drawerReducer from "./drawer/drawerReducer";
 import productsReducer from "./products/productsReducer";
 import categoriesReducer from "./categories/categoriesReducer";
 import cartReducer from "./cart/cartReducer";
+import favoriteReducer from "./favorites/favoritesReducer";
 
 // Configuración de persistencia
 const persistConfig = {
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   products: productsReducer,
   categories: categoriesReducer,
   cart: cartReducer,
+  favorite: favoriteReducer,
 });
 
 // Reducer persistido
