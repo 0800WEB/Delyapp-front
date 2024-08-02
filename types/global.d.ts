@@ -11,6 +11,7 @@ type welcomeSwipperDataType = {
 type categorySliderDataType = {
   id: any;
   image: any;
+  image2: any;
   title: string;
 };
 
@@ -64,9 +65,10 @@ type UserInfo = {
 }
 
 type AuthState = {
-  user: null | object;
-  token: null | string;
-  error: null | string;
+  email: string;
+  userInfo: any | null;
+  token: string | null;
+  error: any | null;
   loading: boolean;
 }
 
@@ -103,9 +105,24 @@ type Product = {
   category: string;
   createdAt: string;
   description: string;
-  images: string[]; // Asume que images es un array de strings. Cambia esto si no es correcto.
+  images: string[];
   name: string;
   price: number;
   stock: number;
   updatedAt: string;
+}
+
+type Cart = {
+  _id: string;
+  products: {
+    product: Product;
+    quantity: number;
+  }[];
+  totalPrice: number;
+}
+
+type CartProduct ={
+  _id: string;
+  product: Product;
+  quantity: number;
 }

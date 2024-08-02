@@ -12,14 +12,8 @@ export interface UserInfo {
   address: string;
 }
 
-interface AuthState {
-  userInfo: UserInfo | null;
-  token: string | null;
-  error: string | null;
-  loading: boolean;
-}
-
-const initialState = {
+const initialState: AuthState = {
+  email: '',
   userInfo: null,
   token: null,
   error: null as any,
@@ -49,7 +43,6 @@ const authReducer = createReducer(initialState, (builder) => {
     .addCase(sign_up.fulfilled, (state, action) => {
       state.loading = false;
       state.userInfo = action.payload.userInfo;
-      state.token = action.payload.token;
       state.error = null;
     })
     .addCase(sign_up.rejected, (state, action) => {

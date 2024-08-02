@@ -21,7 +21,7 @@ import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { transform } from "@babel/core";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { welcomeIntroSwipperData } from "@/constants/constants";
 import AppIntroSlider from "react-native-app-intro-slider";
 import {
@@ -35,9 +35,9 @@ import { Toast } from "react-native-toast-notifications";
 import { SERVER_URI } from "@/utils/uri";
 import axios from "axios";
 
-import{ useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { sign_up, verify_code } from "@/store/user/authActions";
-import { AppDispatch } from '../../../store/store';
+import { AppDispatch, RootState } from "../../../store/store";
 
 export default function VerifyAccountScreen() {
   let [fontsLoaded, fontError] = useFonts({
@@ -58,7 +58,7 @@ export default function VerifyAccountScreen() {
     return null;
   }
   const [code, setCode] = useState(new Array(4).fill(""));
-
+  const [email, setEmail] = useState('');
   const inputs = useRef<any>([...Array(4)].map(() => React.createRef()));
 
   const handleInput = (text: any, index: any) => {
@@ -75,11 +75,28 @@ export default function VerifyAccountScreen() {
     }
   };
   const dispatch = useDispatch<AppDispatch>();
-  const authState = useSelector((state: {user: AuthState}) => state.user);
+  const userInfo = useSelector((state: RootState) => state.user.userInfo);
+  if (userInfo && typeof userInfo === 'object' && userInfo.hasOwnProperty('email')) {
+    console.log("UserInfo: ", userInfo.email);
+  } else {
+    console.log("userInfo is not an object with an email property");
+  }
+  useEffect(() => {
+    if (userInfo) {
+      if (typeof userInfo === 'string') {
+        const correo = JSON.parse(userInfo);
+        setEmail(correo.email);
+      } else if (userInfo.email) {
+        setEmail(userInfo.email);
+      }
+    }
+  }, [userInfo]);
+
+  console.log("Email: ", email);
 
   const handleSumbit = async () => {
-    const otp = code.join("");    
-    dispatch(verify_code({ code: otp }));    
+    const otp = code.join("");
+    dispatch(verify_code({ email, code: otp }));
   };
   return (
     <LinearGradient
@@ -88,51 +105,52 @@ export default function VerifyAccountScreen() {
     >
       <Text style={styles.topText}>REGISTRO</Text>
       <View style={[styles.container]}>
-        
-          <Text style={styles.headerText}>CÓDIGO DE VERIFICACIÓN</Text>
-          <Text style={styles.subText}>
-            Te hemos mandando un código de verificación a tu correo electrónico
+        <Text style={styles.headerText}>CÓDIGO DE VERIFICACIÓN</Text>
+        <Text style={styles.subText}>
+          Te hemos mandando un código de verificación a tu correo electrónico
+        </Text>
+        <View style={[styles.inputContainer, { marginLeft: 10 }]}>
+          {code.map((_, index) => (
+            <TextInput
+              key={index}
+              style={styles.inputBox}
+              keyboardType="number-pad"
+              maxLength={1}
+              onChangeText={(text) => handleInput(text, index)}
+              value={code[index]}
+              ref={inputs.current[index]}
+              autoFocus={index === 0}
+            />
+          ))}
+        </View>
+        <TouchableOpacity style={[styles.button, {}]}>
+          <Text
+            style={[
+              {
+                color: "white",
+                marginTop: 11,
+                fontSize: 16,
+                fontFamily: "Cherione Regular",
+                textAlign: "center",
+              },
+            ]}
+            onPress={handleSumbit}
+          >
+            VERIFICAR
           </Text>
-          <View style={[styles.inputContainer, {marginLeft: 10}]}>
-            {code.map((_, index) => (
-              <TextInput
-                key={index}
-                style={styles.inputBox}
-                keyboardType="number-pad"
-                maxLength={1}
-                onChangeText={(text) => handleInput(text, index)}
-                value={code[index]}
-                ref={inputs.current[index]}
-                autoFocus={index === 0}
-              />
-            ))}
-          </View>
-          <TouchableOpacity style={[styles.button, {}]}>
-            <Text
-              style={[
-                {
-                  color: "white",
-                  marginTop: 11,
-                  fontSize: 16,
-                  fontFamily: "Cherione Regular",
-                  textAlign: "center",
-                },
-              ]}
-              onPress={handleSumbit}
-            >
-              VERIFICAR
-            </Text>
-          </TouchableOpacity>
-          <View style={styles.loginLink}>
+        </TouchableOpacity>
+        <View style={styles.loginLink}>
           <Text style={[styles.subText, { fontFamily: "Geomanist Regular" }]}>
-          No me llega el código.
+            No me llega el código.
           </Text>
           <TouchableOpacity onPress={() => router.back()}>
-          <Text style={[styles.loginText, { fontFamily: "Geomanist Regular" }]}>
-          Reenviar
-          </Text>
+            <Text
+              style={[styles.loginText, { fontFamily: "Geomanist Regular" }]}
+            >
+              Reenviar
+            </Text>
           </TouchableOpacity>
-        </View>        
+        </View>
       </View>
     </LinearGradient>
   );

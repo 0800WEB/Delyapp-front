@@ -2005,6 +2005,11 @@
   resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.17.1.tgz#bf93997beb81863fde042ebd05013a2618471362"
   integrity sha512-mCOMec4BKd6BRGBZeSnGiIgwsbLGp3yhVqAD8H+PxiRNEHgDpZb8J1TnrSDlg97t0ySKMQJTHCWBCmBpSmkF6Q==
 
+"@remix-run/router@1.18.0":
+  version "1.18.0"
+  resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.18.0.tgz#20b033d1f542a100c1d57cfd18ecf442d1784732"
+  integrity sha512-L3jkqmqoSVBVKHfpGZmLrex0lxR5SucGA0sUfFzGctehw+S/ggL9L/0NnC5mw6P8HUWpFZ3nQw3cRApjjWx9Sw==
+
 "@remix-run/server-runtime@2.10.2":
   version "2.10.2"
   resolved "https://registry.yarnpkg.com/@remix-run/server-runtime/-/server-runtime-2.10.2.tgz#ba6da3c211f4a68ef54c2abd17d3109a9308d50c"
@@ -3946,6 +3951,21 @@ expo-modules-core@1.12.19:
   dependencies:
     invariant "^2.2.4"
 
+expo-navigation-core@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/expo-navigation-core/-/expo-navigation-core-2.0.0.tgz#47cdc70388c526a97e85632c125c72676123b7dd"
+  integrity sha512-Vt3yn/pWZcKMMiQpjny3lNjSofzZG+MSgJlo7Er41IJYKD+SvsahP+fe8qU+jnpc60ug2lb0yo6Ptl3N6ainOA==
+  dependencies:
+    lodash.get "^4.4.2"
+
+expo-next-react-navigation@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/expo-next-react-navigation/-/expo-next-react-navigation-2.0.2.tgz#90239d69540ff5a986f5c41287233d5cd1af2f07"
+  integrity sha512-ic/HogBNGPkeebSwzAslGnwzZr7eZP6a76nMNbaiUSKaR2zmuhFbpa5DjKOwXMPFLOm8RmI1FdjmU7/A2EG2gQ==
+  dependencies:
+    expo-navigation-core "^2.0.0"
+    lodash.get "^4.4.2"
+
 expo-router@~3.5.18:
   version "3.5.18"
   resolved "https://registry.yarnpkg.com/expo-router/-/expo-router-3.5.18.tgz#d8843578eed3b0b3c6c0f5a5c975a54436b2551a"
@@ -5739,6 +5759,11 @@ lodash.debounce@^4.0.8:
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==
 
+lodash.get@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
+  integrity sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==
+
 lodash.isequal@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
@@ -7107,6 +7132,21 @@ react-refresh@^0.14.0, react-refresh@^0.14.2:
   version "0.14.2"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.14.2.tgz#3833da01ce32da470f1f936b9d477da5c7028bf9"
   integrity sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==
+
+react-router-dom@^6.25.1:
+  version "6.25.1"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.25.1.tgz#b89f8d63fc8383ea4e89c44bf31c5843e1f7afa0"
+  integrity sha512-0tUDpbFvk35iv+N89dWNrJp+afLgd+y4VtorJZuOCXK0kkCWjEvb3vTJM++SYvMEpbVwXKf3FjeVveVEb6JpDQ==
+  dependencies:
+    "@remix-run/router" "1.18.0"
+    react-router "6.25.1"
+
+react-router@6.25.1:
+  version "6.25.1"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.25.1.tgz#70b4f1af79954cfcfd23f6ddf5c883e8c904203e"
+  integrity sha512-u8ELFr5Z6g02nUtpPAggP73Jigj1mRePSwhS/2nkTrlPU5yEkH1vYzWNyvSnSzeeE2DNqWdH+P8OhIh9wuXhTw==
+  dependencies:
+    "@remix-run/router" "1.18.0"
 
 react-shallow-renderer@^16.15.0:
   version "16.15.0"

@@ -12,10 +12,11 @@ import { useFonts } from "expo-font";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const CategoryProducts: React.FC<{ categoryName: string; products: any[] }> = ({
-  categoryName,
-  products,
-}) => {
+const CategoryProducts: React.FC<{
+  categoryName: string;
+  products: any[];
+  onProductSelected: (productId: string) => void;
+}> = ({ categoryName, products, onProductSelected }) => {
   let [fontsLoaded, fontError] = useFonts({
     "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
     "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
@@ -41,6 +42,7 @@ const CategoryProducts: React.FC<{ categoryName: string; products: any[] }> = ({
     return (
       <View>
         <TouchableOpacity
+          onPress={() => onProductSelected(item._id)}
           style={{
             marginHorizontal: "auto",
             width: "95%",
@@ -57,7 +59,7 @@ const CategoryProducts: React.FC<{ categoryName: string; products: any[] }> = ({
           />
           <View>
             <View style={styles.containerTitle}>
-              <Text style={styles.titleText}>{item.name}</Text>           
+              <Text style={styles.titleText}>{item.name}</Text>
               <Text
                 style={[
                   styles.titleText,
@@ -126,7 +128,7 @@ export const styles = StyleSheet.create({
     alignItems: "flex-start",
     width: "80%",
     height: 90,
-  }, 
+  },
   titleText: {
     fontFamily: "Geomanist Medium",
     fontSize: 15,

@@ -26,7 +26,7 @@ export default function AdultDisclaimerScreen() {
 
   if (!fontsLoaded && !fontError) {
     return null;
-  }
+  }  
 
   return (
     <LinearGradient

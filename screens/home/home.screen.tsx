@@ -18,20 +18,24 @@ import { RootState } from "@/store/store";
 import { openDrawer, closeDrawer } from "@/store/drawer/drawerActions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import { get_allItems } from "@/store/products/productsActions";
+import { get_allItems, selectProduct } from "@/store/products/productsActions";
 import { get_allCategories } from "@/store/categories/categoriesActions";
 import CategoryProducts from "@/components/categoryProducts/categoryProducts";
 import AllCategoryProducts from "@/components/alProducts/allProductsCategories";
+import { getCart } from "@/store/cart/cartActions";
+import ProductDetailsScreen from "../product-details/product.detail";
 
 const HomeScreen: React.FC = () => {
   const drawer = useRef<DrawerLayoutAndroid>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [selectedProductId, setSelectedProductId] = useState<string>("");
   const dispatch = useDispatch();
   const isDrawerOpen = useSelector((state: RootState) => state.drawer.isOpen);
   useEffect(() => {
     dispatch(get_allItems() as any);
     dispatch(get_allCategories() as any);
+    dispatch(getCart() as any);
   }, []);
   const products = useSelector((state: RootState) => state.products);
   // console.log("Products: ", products);
@@ -46,21 +50,21 @@ const HomeScreen: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log("Categoría seleccionada: ", selectedCategory);
+    // console.log("Categoría seleccionada: ", selectedCategory);
     // console.log("Products: ", products.products);
     // console.log("Categories: ", categories.categories);
     if (selectedCategory) {
-      const selectedCategoryObj = categories.categories.find(
+      const selectedCategoryObj = (categories.categories as Category[]).find(
         (category: Category) => category.name === selectedCategory
       );
       // console.log(selectedCategoryObj);
       let selectedProducts: Product[] = [];
       if (selectedCategoryObj) {
-        selectedProducts = products.products.filter(
+        selectedProducts = (products.products as Product[]).filter(
           (product: Product) => product.category === selectedCategoryObj._id
         );
         setFilteredProducts(selectedProducts);
-        console.log("Productos seleccionados: ", selectedProducts);
+        // console.log("Productos seleccionados: ", selectedProducts);
       } else {
         console.log(
           "Categoría seleccionada no encontrada en las categorías disponibles"
@@ -77,6 +81,16 @@ const HomeScreen: React.FC = () => {
     }
   }, [isDrawerOpen]);
 
+  const handleProductSelected = (productId: string) => {
+    setSelectedProductId(productId);
+    // console.log("Producto Id: ", productId);
+    // dispatch(selectProduct(productId));
+    // router.push(`/(routes)/product-details`);
+    // router.push({pathname: `/(routes)/product-details`, params: { productId }});
+  };
+
+  // console.log("Producto Seleccionado: ", selectedProductId);
+
   const navigationView = () => (
     <View style={[styles.container, styles.navigationContainer]}>
       <TouchableOpacity onPress={() => router.push("/(routes)/home")}>
@@ -85,8 +99,8 @@ const HomeScreen: React.FC = () => {
       <TouchableOpacity onPress={() => router.push("/(routes)/user")}>
         <Text style={styles.paragraph}>PERFIL</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => router.push("/screen3")}>
-        <Text style={styles.paragraph}>Go to Screen 3</Text>
+      <TouchableOpacity onPress={() => router.push("/(routes)/cart")}>
+        <Text style={styles.paragraph}>CARRITO</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={logout}>
         <Text style={styles.paragraph}>CERRAR SESIÓN</Text>
@@ -107,40 +121,47 @@ const HomeScreen: React.FC = () => {
         style={{ flex: 1, paddingTop: 30 }}
       >
         <Header openDrawer={() => dispatch(openDrawer())} />
-        <ScrollView style={{ flex: 1, marginBottom: 25 }}>
-          <SearchInput homeScreen={true} />
-          <Categories
-            onItemSelected={(title: string) => {
-              setSelectedCategory(title);
-            }}
-          />
-          {selectedCategory ? (
-            <>
-              <Promos />
-              <CategoryProducts
-                categoryName={selectedCategory}
-                products={filteredProducts}
-              />
-            </>
-          ) : (
-            <>
-              <Highlights />
-              <Promos />
-              {categories.categories.map((category: Category) => {
-                const productsForCategory = products.products.filter(
-                  (product: Product) => product.category === category._id
-                );
-                return (
-                  <AllCategoryProducts
-                    key={category._id}
-                    category={category}
-                    products={productsForCategory}
-                  />
-                );
-              })}
-            </>
-          )}
-        </ScrollView>
+        {selectedProductId !== '' ? (
+          <ProductDetailsScreen productId={selectedProductId} setProductId={setSelectedProductId} />
+        ) : (
+          <ScrollView style={{ flex: 1, marginBottom: 25 }}>
+            <SearchInput homeScreen={true} />
+            <Categories
+              onItemSelected={(title: string) => {
+                setSelectedCategory(title);
+              }}
+            />
+            {selectedCategory ? (
+              <>
+                <Promos />
+                <CategoryProducts
+                  categoryName={selectedCategory}
+                  products={filteredProducts}
+                  onProductSelected={handleProductSelected}
+                />
+              </>
+            ) : (
+              <>
+                <Highlights />
+                <Promos />
+                {categories.categories.map((category: Category) => {
+                  const productsForCategory = products.products.filter(
+                    (product: Product) => product.category === category._id
+                  );
+                  return (
+                    <AllCategoryProducts
+                      key={category._id}
+                      category={category}
+                      products={productsForCategory}
+                      onProductSelected={handleProductSelected}
+                      homeScreen={true}
+                    />
+                  );
+                })}
+              </>
+            )}
+          </ScrollView>
+        )}
       </LinearGradient>
     </DrawerLayoutAndroid>
   );

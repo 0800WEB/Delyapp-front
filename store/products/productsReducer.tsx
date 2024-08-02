@@ -1,7 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 import productsActions from "./productsActions";
-const { get_allItems } = productsActions;
+const { get_allItems, selectProduct, clearSelectedProduct } = productsActions;
 
 interface Product {
   __v: number;
@@ -16,12 +16,6 @@ interface Product {
   updatedAt: string;
 }
 
-interface ProductsState {
-  limit: number;
-  products: Product[];
-  success: boolean;
-  totalProducts: number;
-}
 const initialState = {
   limit: 0,
   products: [],
@@ -29,6 +23,7 @@ const initialState = {
   totalProducts: 0,
   error: null as any,
   loading: false,
+  selectedProductId: null as string | null,
 };
 
 const productsReducer = createReducer(initialState, (builder) => {
@@ -45,6 +40,12 @@ const productsReducer = createReducer(initialState, (builder) => {
     .addCase(get_allItems.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
+    })
+    .addCase(selectProduct, (state, action) => {
+      state.selectedProductId = action.payload ?? null; // manejar la acción selectProduct
+    })
+    .addCase(clearSelectedProduct, (state) => {
+      state.selectedProductId = null; // manejar la acción clearSelectedProduct
     });
 });
 

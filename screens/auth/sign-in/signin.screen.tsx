@@ -20,12 +20,9 @@ import React, { useState } from "react";
 import { responsiveWidth } from "react-native-responsive-dimensions";
 
 import { Toast } from "react-native-toast-notifications";
-import axios from "axios";
-import { SERVER_URI } from "@/utils/uri";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
 import { sign_in } from "@/store/user/authActions";
-import { AppDispatch } from "@/store/store";
+import { AppDispatch, RootState } from "@/store/store";
 
 export default function SignInScreen() {
   let [fontsLoaded, fontError] = useFonts({
@@ -47,56 +44,18 @@ export default function SignInScreen() {
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
-  });
-  const [required, setRequired] = useState("");
-  const [error, setError] = useState({
-    password: "",
-  });
+  });  
 
   const dispatch = useDispatch<AppDispatch>();
-  const authState = useSelector((state: { user: AuthState }) => state.user);
+  // const authState = useSelector((state: RootState) => state);
+  // console.log(authState)
 
   if (!fontsLoaded && !fontError) {
     return null;
   }
 
-  const handlePasswordValidation = (value: string) => {
-    const password = value;
-    const passwordSpecialCharacter = /(?=.*[!@#$&*])/;
-    const passwordOneNumber = /(?=.*[0-9])/;
-    const passwordSixValue = /(?=.{6,})/;
-
-    if (!passwordSpecialCharacter.test(password)) {
-      setError({
-        ...error,
-        password: "Write at least one special character",
-      });
-      setUserInfo({ ...userInfo, password: "" });
-    } else if (!passwordOneNumber.test(password)) {
-      setError({
-        ...error,
-        password: "Write at least one number",
-      });
-      setUserInfo({ ...userInfo, password: "" });
-    } else if (!passwordSixValue.test(password)) {
-      setError({
-        ...error,
-        password: "Write at least 6 characters",
-      });
-      setUserInfo({ ...userInfo, password: "" });
-    } else {
-      setError({
-        ...error,
-        password: "",
-      });
-      setUserInfo({ ...userInfo, password: value });
-    }
-  };
 
   const handleSignIn = async () => {
-    // console.log(userInfo);
-    // console.log(date.toISOString().split('T')[0])
-    // console.log(`${SERVER_URI}/users/signin`);
     setButtonSpinner(true);
     const action = await dispatch(
       sign_in({ email: userInfo.email, password: userInfo.password })
@@ -110,31 +69,7 @@ export default function SignInScreen() {
         type: "danger",
       });
       setButtonSpinner(false);
-    }
-
-    // await axios
-    //   .post(`${SERVER_URI}/users/signin`, {
-    //     email: userInfo.email,
-    //     password: userInfo.password,
-    //   })
-    //   .then(async (res) => {
-    //     console.log("Response: ", res.data.token);
-    //     const token = res.data.token;
-    //     await AsyncStorage.setItem('userToken', token);
-    //     Toast.show(`Bienvenido ${res.data.user.name}`, {
-    //       type: "success",
-    //     });
-    //     setButtonSpinner(false);
-    //     router.push("/(routes)/home");
-    //   })
-    //   .catch((error) => {
-    //     setButtonSpinner(false);
-    //     console.log("Error data:", error);
-    //     console.log("Error status:", error.request);
-    //     Toast.show("Ha ocurrido un error intenta de nuevo", {
-    //       type: "danger",
-    //     });
-    //   });
+    }   
   };
 
   return (

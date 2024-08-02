@@ -10,14 +10,7 @@ import {
   Platform,
   DrawerLayoutAndroid,
 } from "react-native";
-import {
-  AntDesign,
-  Entypo,
-  FontAwesome,
-  Fontisto,
-  Ionicons,
-  SimpleLineIcons,
-} from "@expo/vector-icons";
+import {SimpleLineIcons} from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { router } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";

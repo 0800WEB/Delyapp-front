@@ -20,5 +20,9 @@ export const get_allItems = createAsyncThunk(
   }
 );
 
-const actions = { get_allItems };
+export const selectProduct = createAction<string>('products/selectProduct');
+
+export const clearSelectedProduct = createAction('products/clearSelectedProduct');
+
+const actions = { get_allItems, selectProduct, clearSelectedProduct };
 export default actions;

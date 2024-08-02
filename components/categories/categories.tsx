@@ -38,6 +38,8 @@ export default function Categories({ onItemSelected }: CategoriesProps) {
     return null;
   }
 
+  const [selectedTitle, setSelectedTitle] = useState('');
+
   const getItem = (data: categorySliderDataType[], index: number) =>
     data[index];
 
@@ -47,15 +49,18 @@ export default function Categories({ onItemSelected }: CategoriesProps) {
 
   const renderItem = ({ item }: { item: categorySliderDataType }) => {
     return (
-      <TouchableOpacity onPress={() => onItemSelected(item.title)}>
-        <Image source={item.image} style={styles.imageStyle} />
+      <TouchableOpacity onPress={() =>{
+        onItemSelected(item.title);
+        setSelectedTitle(item.title);
+      }}>
+        <Image source={item.title === selectedTitle ? item.image2 : item.image} style={styles.imageStyle} />
       </TouchableOpacity>
     );
   };
 
   return (
     <SafeAreaView>
-      <Text style={styles.topText}>PRODUCTOS</Text>
+      <Text style={styles.topText}>PRODUCTOS</Text>      
       <VirtualizedList
         data={categorySliderData}
         renderItem={renderItem}

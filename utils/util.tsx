@@ -52,3 +52,13 @@ export const parseError = async ({ error }: { error: any }) => {
   }
   return newError;
 };
+
+export const parseToJson = (data: any) => {
+  try {
+    return JSON.parse(data);
+  } catch (error) {
+    return data;
+  }
+}
+
+
