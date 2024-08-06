@@ -19,7 +19,7 @@ import { addToCart, removeFromCart, getCart } from "@/store/cart/cartActions";
 import {
   toggleFavorite,
   removeFromFavorites,
-  getFavorites
+  getFavorites,
 } from "@/store/favorites/favoritesActions";
 
 interface ProductDetailsScreenProps {
@@ -43,9 +43,9 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
     return null;
   }
 
-    useEffect(() => {
-      dispatch(getFavorites());
-    }, [productId]);
+  useEffect(() => {
+    dispatch(getFavorites());
+  }, [productId]);
 
   const cartProducts = useSelector(
     (state: RootState) => state.cart.cart.products
@@ -118,8 +118,8 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
       newFavorite = favoriteProduct ? true : false;
     }
     setFavoriteSelect(newFavorite);
-  }, [favoriteProducts, productId]);  
-  
+  }, [favoriteProducts, productId]);
+
   const handleDiscount = async () => {
     if (quantity > 0) {
       setQuantity(quantity - 1);
@@ -156,7 +156,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
     }
     setFavoriteSelect(!favoriteSelect);
   };
-  // console.log(productId); 
+  console.log(productId);
   // console.log(favoriteSelect);
 
   if (!product) {
@@ -245,19 +245,33 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
               </Text>
             ))}
           </View>
-          <View>
+          <View
+            style={{
+              shadowColor: "#A1A1A1",
+              shadowRadius: 50,
+              shadowOpacity: 15,
+              shadowOffset: { width: 0, height: 4 },
+              elevation: 1, 
+              // borderColor: "#A1A1A1",
+              // borderWidth: 0.8,
+              // borderRadius: 4
+            }}
+          >
             <Text
               style={[
                 styles.nameText,
                 {
-                  backgroundColor: "#A1A1A1",
+                  backgroundColor: "#3fd009",
                   color: "white",
-                  padding: 2,
+                  // paddingHorizontal: 2,
+                  padding: 4,
                   borderRadius: 4,
+                  fontFamily:"Cherione Regular",
+                  fontSize: 11.5
                 },
               ]}
             >
-              Agregar al Carrito
+              AGREGAR AL CARRITO
             </Text>
             <View
               style={{
@@ -265,12 +279,13 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
                 gap: 10,
                 alignItems: "center",
                 justifyContent: "center",
+                paddingHorizontal: 4
               }}
             >
               <TouchableWithoutFeedback onPress={handleDiscount}>
                 <Entypo
                   name="minus"
-                  size={35}
+                  size={32}
                   color="#A1A1A1"
                   style={{ alignSelf: "center" }}
                 />
@@ -281,7 +296,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
               <TouchableWithoutFeedback onPress={handleAdd}>
                 <Entypo
                   name="plus"
-                  size={35}
+                  size={32}
                   color="#A1A1A1"
                   style={{ alignSelf: "center" }}
                 />
@@ -366,7 +381,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   commonText: {
-    fontFamily: "Geomanist Medium",
+    fontFamily: "Cherione Bold",
     fontSize: 18,
     color: "#A1A1A1",
   },

@@ -14,7 +14,7 @@ import SearchInput from "@/components/search/searchInput";
 import Highlights from "@/components/highlights/highlights";
 import Promos from "@/components/promos/promos";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { AppDispatch, RootState } from "@/store/store";
 import { openDrawer, closeDrawer } from "@/store/drawer/drawerActions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
@@ -30,12 +30,12 @@ const HomeScreen: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [selectedProductId, setSelectedProductId] = useState<string>("");
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const isDrawerOpen = useSelector((state: RootState) => state.drawer.isOpen);
   useEffect(() => {
-    dispatch(get_allItems() as any);
-    dispatch(get_allCategories() as any);
-    dispatch(getCart() as any);
+    dispatch(get_allItems());
+    dispatch(get_allCategories());
+    dispatch(getCart());
   }, []);
   const products = useSelector((state: RootState) => state.products);
   // console.log("Products: ", products);
