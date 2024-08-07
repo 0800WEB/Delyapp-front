@@ -126,3 +126,9 @@ type CartProduct ={
   product: Product;
   quantity: number;
 }
+
+type RootParamList = {
+  Home: undefined;
+  Details: { itemId: number };
+  // Agrega aquí otras rutas según sea necesario
+};

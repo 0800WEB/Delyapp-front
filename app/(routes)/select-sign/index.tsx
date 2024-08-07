@@ -2,24 +2,15 @@ import React, { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SelectSignScreen from "@/screens/auth/select/select.sign";
 import HomeScreen from '@/screens/home/home.screen';
+import { RootState } from '@/store/store';
+import { useSelector } from 'react-redux';
+import DrawerLayoutNav from '../drawer';
 
 const SelectSign: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const userToken = useSelector((state: RootState) => state.user.token);
 
-  useEffect(() => {
-    const checkToken = async () => {
-      const token = await AsyncStorage.getItem('userToken');
-      const data = await AsyncStorage.getItem('userInfo');
-      // console.log(token)
-      // console.log(data)
-      if (token) {
-        setIsLoggedIn(true);
-      }
-    };
-
-    checkToken();
-  }, []);
-  return isLoggedIn ? <HomeScreen /> : <SelectSignScreen />;
+  return userToken ? <DrawerLayoutNav /> : <SelectSignScreen />;
+  // return <SelectSignScreen />;
 }
 
 export default SelectSign

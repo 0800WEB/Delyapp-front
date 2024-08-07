@@ -1,7 +1,6 @@
 import {
   View,
   ScrollView,
-  DrawerLayoutAndroid,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -24,14 +23,19 @@ import CategoryProducts from "@/components/categoryProducts/categoryProducts";
 import AllCategoryProducts from "@/components/alProducts/allProductsCategories";
 import { getCart } from "@/store/cart/cartActions";
 import ProductDetailsScreen from "../product-details/product.detail";
+import { useNavigation } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { DrawerActions } from '@react-navigation/native';
+
+type DrawerNavProp = DrawerNavigationProp<RootParamList>;
 
 const HomeScreen: React.FC = () => {
-  const drawer = useRef<DrawerLayoutAndroid>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [selectedProductId, setSelectedProductId] = useState<string>("");
   const dispatch = useDispatch<AppDispatch>();
   const isDrawerOpen = useSelector((state: RootState) => state.drawer.isOpen);
+  const navigation = useNavigation<DrawerNavProp>();
   useEffect(() => {
     dispatch(get_allItems());
     dispatch(get_allCategories());
@@ -73,13 +77,7 @@ const HomeScreen: React.FC = () => {
     }
   }, [selectedCategory]);
 
-  useEffect(() => {
-    if (isDrawerOpen) {
-      drawer.current?.openDrawer();
-    } else {
-      drawer.current?.closeDrawer();
-    }
-  }, [isDrawerOpen]);
+
 
   const handleProductSelected = (productId: string) => {
     setSelectedProductId(productId);
@@ -91,36 +89,14 @@ const HomeScreen: React.FC = () => {
 
   // console.log("Producto Seleccionado: ", selectedProductId);
 
-  const navigationView = () => (
-    <View style={[styles.container, styles.navigationContainer]}>
-      <TouchableOpacity onPress={() => router.push("/(routes)/home")}>
-        <Text style={styles.paragraph}>INICIO</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => router.push("/(routes)/user")}>
-        <Text style={styles.paragraph}>PERFIL</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => router.push("/(routes)/cart")}>
-        <Text style={styles.paragraph}>CARRITO</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={logout}>
-        <Text style={styles.paragraph}>CERRAR SESIÓN</Text>
-      </TouchableOpacity>
-    </View>
-  );
+
 
   return (
-    <DrawerLayoutAndroid
-      ref={drawer}
-      drawerWidth={300}
-      drawerPosition="left"
-      renderNavigationView={navigationView}
-      onDrawerClose={() => dispatch(closeDrawer())}
-    >
       <LinearGradient
         colors={["#F9F6F7", "#F9F6F7"]}
         style={{ flex: 1, paddingTop: 30 }}
       >
-        <Header openDrawer={() => dispatch(openDrawer())} />
+        <Header openDrawer={() => navigation.dispatch(DrawerActions.openDrawer())} />
         {selectedProductId !== '' ? (
           <ProductDetailsScreen productId={selectedProductId} setProductId={setSelectedProductId} />
         ) : (
@@ -163,7 +139,6 @@ const HomeScreen: React.FC = () => {
           </ScrollView>
         )}
       </LinearGradient>
-    </DrawerLayoutAndroid>
   );
 };
 

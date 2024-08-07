@@ -3,7 +3,8 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import "react-native-reanimated";
-import { Stack } from "expo-router";
+// import { Stack } from "expo-router";
+// import { Drawer } from "expo-router/drawer";
 import { ToastProvider } from "react-native-toast-notifications";
 import { LogBox } from "react-native";
 
@@ -11,11 +12,27 @@ export { ErrorBoundary } from "expo-router";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import { Provider } from "react-redux";
-import store  from "@/store/store";
+import store from "@/store/store";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
+
+import Start from "./(routes)/start";
+import AdultDisclaimer from "./(routes)/adult-disclaimer";
+import WelcomeIntro from "./(routes)/welcome-intro";
+import SelectSign from "./(routes)/select-sign";
+import SignIn from "./(routes)/sign-in";
+import SignUp from "./(routes)/sign-up";
+import VerifyAccount from "./(routes)/verify-account";
+import Home from "./(routes)/home";
+import DrawerLayoutNav from "./(routes)/drawer";
 
 SplashScreen.preventAutoHideAsync();
 
 let persistor = persistStore(store);
+const Stack = createStackNavigator();
+
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -35,7 +52,6 @@ export default function RootLayout() {
     LogBox.ignoreAllLogs(true);
     // console.log("Store: ",store.getState());
   }, []);
- 
 
   if (!loaded) {
     return null;
@@ -44,26 +60,32 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <RootLayoutNav />
+        <ToastProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+              <RootLayoutNav />
+          </GestureHandlerRootView>
+        </ToastProvider>
       </PersistGate>
     </Provider>
   );
 }
 
+
+
 function RootLayoutNav() {
   return (
-    <ToastProvider>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="(routes)/adult-disclaimer/index" />
-        <Stack.Screen name="(routes)/welcome-intro/index" />
-        <Stack.Screen name="(routes)/select-sign/index" />
-        <Stack.Screen name="(routes)/sign-in/index" />
-        <Stack.Screen name="(routes)/sign-up/index" />
-        <Stack.Screen name="(routes)/verify-account/index" />
-        <Stack.Screen name="(routes)/home/index" />
-        <Stack.Screen name="(routes)/search/index" />
-      </Stack>
-    </ToastProvider>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="(routes)/start/index" component={Start} />
+      <Stack.Screen name="(routes)/adult-disclaimer/index" component={AdultDisclaimer} />
+      <Stack.Screen name="(routes)/welcome-intro/index" component={WelcomeIntro} />
+      <Stack.Screen name="(routes)/select-sign/index" component={SelectSign} />
+      <Stack.Screen name="(routes)/sign-in/index" component={SignIn} />
+      <Stack.Screen name="(routes)/sign-up/index" component={SignUp} />
+      <Stack.Screen name="(routes)/verify-account/index" component={VerifyAccount} />
+      {/* <Stack.Screen name="(routes)/home/index" component={Home} /> */}
+      <Stack.Screen name="(routes)/drawer/index" component={DrawerLayoutNav}  />
+
+    </Stack.Navigator>
   );
 }
+
