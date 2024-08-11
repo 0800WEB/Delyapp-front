@@ -27,6 +27,7 @@ import SignUp from "./(routes)/sign-up";
 import VerifyAccount from "./(routes)/verify-account";
 import Home from "./(routes)/home";
 import DrawerLayoutNav from "./(routes)/drawer";
+import UpdateAccount from "./(routes)/update-account";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -84,7 +85,7 @@ function RootLayoutNav() {
       <Stack.Screen name="(routes)/verify-account/index" component={VerifyAccount} />
       {/* <Stack.Screen name="(routes)/home/index" component={Home} /> */}
       <Stack.Screen name="(routes)/drawer/index" component={DrawerLayoutNav}  />
-
+      <Stack.Screen name="(routes)/update-account/index" component={UpdateAccount}  />
     </Stack.Navigator>
   );
 }

@@ -17,9 +17,10 @@ import axios from "axios";
 
 interface CategoriesProps {
   onItemSelected: (title: string) => void;
+  resetSelectedTitle: boolean;
 }
 
-export default function Categories({ onItemSelected }: CategoriesProps) {
+export default function Categories({ onItemSelected, resetSelectedTitle }: CategoriesProps) {
   let [fontsLoaded, fontError] = useFonts({
     "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
     "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
@@ -39,6 +40,12 @@ export default function Categories({ onItemSelected }: CategoriesProps) {
   }
 
   const [selectedTitle, setSelectedTitle] = useState('');
+
+  useEffect(()=> {
+    if(resetSelectedTitle) {
+      setSelectedTitle('');
+    }
+  }, [resetSelectedTitle])
 
   const getItem = (data: categorySliderDataType[], index: number) =>
     data[index];

@@ -1,6 +1,7 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Home from "../home";
 import Cart from "../cart";
+import User from "../user";
 const Drawer = createDrawerNavigator();
 
 export default function DrawerLayoutNav() {
@@ -11,7 +12,8 @@ export default function DrawerLayoutNav() {
         component={Home}
         options={{ drawerLabel: "INICIO" }}
       />
-      <Drawer.Screen name="Cart" component={Cart} options={{ drawerLabel: "CARRITO" }}/>
+      <Drawer.Screen name="PERFIL" component={User} options={{ drawerLabel: "PERFIL" }}/>
+      <Drawer.Screen name="CARRITO" component={Cart} options={{ drawerLabel: "CARRITO" }}/>
     </Drawer.Navigator>
   );
 }

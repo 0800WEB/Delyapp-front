@@ -10,7 +10,6 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
 interface AllCategoryProductsProps {
   category: Category;

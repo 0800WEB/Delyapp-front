@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   SafeAreaView,
   FlatList,
+  TextInput,
 } from "react-native";
 import { FontAwesome, Entypo, Ionicons, AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
@@ -66,16 +67,34 @@ const CartScreen: React.FC = () => {
       <View
         style={{
           flex: 1,
-          justifyContent: "center",
-          alignContent: "center",
+          marginTop: StatusBar.currentHeight,
         }}
       >
+        <View style={styles.top}>
+          <Text style={styles.topText}>CARRITO DE COMPRA</Text>
+          <TouchableOpacity onPress={() => router.back()}>
+            <AntDesign
+              name="close"
+              size={28}
+              color="#A1A1A1"
+              style={styles.closeIcon}
+            />
+          </TouchableOpacity>
+        </View>
         <Text
           style={{
+            marginVertical: "auto",
+            marginHorizontal: 25,
+            justifyContent: "center",
+            alignContent: "center",
+            alignSelf: "center",
             textAlign: "center",
+            fontFamily: "Cherione Regular",
+            fontSize: 20,
+            color: "#A1A1A1",
           }}
         >
-          El carrito está vacío
+          EL CARRITO ESTÁ VACÍO, POR FAVOR AGREGA PRODUCTOS
         </Text>
       </View>
     );
@@ -218,16 +237,96 @@ const CartScreen: React.FC = () => {
           <View
             style={{
               flexDirection: "row",
-              marginHorizontal: 20,
-              marginBottom: 10,
-              justifyContent: "space-between",
-              alignItems: "center",
+              marginHorizontal: 16,
             }}
           >
-            <Text style={styles.cartTotal}>TOTAL: </Text>
-            {totalPrice && (
-              <Text style={styles.cartTotal}>${totalPrice.toFixed(2)}</Text>
-            )}
+            <TextInput
+              style={[styles.input, { color: "#A1A1A1" }]}
+              keyboardType="default"
+              value={""}
+              placeholder="CUPÓN DE DESCUENTO"
+              onChangeText={() => {}}
+            />
+            <AntDesign
+              style={{ position: "absolute", left:10, top: 12 }}
+              name="tago"
+              size={20}
+              color="#A1A1A1"
+            />
+            <TouchableOpacity
+              style={{
+                width: "30%",
+                height: 45,
+                justifyContent: "center",
+                backgroundColor: "#A1A1A1",
+                borderTopRightRadius: 15,
+                borderBottomRightRadius: 15,
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: "center",
+                  alignContent: "center",
+                  color: "white",
+                  fontFamily: "Cherione Regular",
+                  fontSize: 16,
+                }}
+              >
+                APLICAR
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{margin: 10, elevation: 0.8}}>
+            <View
+              style={{
+                flexDirection: "row",
+                marginHorizontal: 20,
+                marginVertical: 10,
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <View>
+                <Text style={[styles.cartResume, { textAlign: "left" }]}>
+                  Sutotal:{" "}
+                </Text>
+                <Text style={[styles.cartResume, { textAlign: "left" }]}>
+                  IVA:{" "}
+                </Text>
+                <Text style={[styles.cartResume, { textAlign: "left" }]}>
+                  DESCUENTO:{" "}
+                </Text>
+                <Text style={[styles.cartResume, { textAlign: "left" }]}>
+                  PUNTOS:{" "}
+                </Text>
+                <Text style={[styles.cartResume, { textAlign: "left" }]}>
+                  COSTO DE ENVÍO:{" "}
+                </Text>
+              </View>
+              <View>
+                <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
+                <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
+                <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
+                <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
+                <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                marginHorizontal: 20,
+                marginBottom: 10,
+                justifyContent: "space-between",
+                alignItems: "center",
+                borderTopColor: "#A1A1A1",
+                borderTopWidth: 0.5,
+              }}
+            >
+              <Text style={styles.cartTotal}>TOTAL: </Text>
+              {totalPrice && (
+                <Text style={styles.cartTotal}>${totalPrice.toFixed(2)}</Text>
+              )}
+            </View>
           </View>
           <TouchableOpacity
             style={{
@@ -360,6 +459,28 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginVertical: 10,
+    color: "#A1A1A1",
+  },
+  cartResume: {
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "regular",
+    marginVertical: 5,
+    color: "#A1A1A1",
+  },
+  input: {
+    width: "70%",
+    height: 45,
+    // marginLeft: 16,
+    borderRadius: 15,
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+    borderColor: "#A1A1A1",
+    borderWidth: 0.8,
+    paddingLeft: 35,
+    fontSize: 16,
+    fontFamily: "Geomanist Regular",
+    backgroundColor: "white",
     color: "#A1A1A1",
   },
 });

@@ -6,6 +6,7 @@ import { RootState } from "@/store/store";
 import { openDrawer, closeDrawer } from "@/store/drawer/drawerActions";
 import { useFonts } from "expo-font";
 import { FontAwesome, AntDesign } from "@expo/vector-icons";
+import { useNavigation } from '@react-navigation/native';
 
 export default function UserScreen() {
   let [fontsLoaded, fontError] = useFonts({
@@ -25,6 +26,7 @@ export default function UserScreen() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+  const navigation = useNavigation();
   const [userData, setUserData] = useState<UserInfo | null>(null);
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
 
@@ -67,7 +69,7 @@ export default function UserScreen() {
                 <Text style={styles.itemText}>No hay dirección registrada</Text>
               )}
             </View>
-            <TouchableOpacity style={styles.item} onPress={()=> router.push('/(routes)/update-account')}>
+            <TouchableOpacity style={styles.item} onPress={()=> navigation.navigate('(routes)/update-account/index')}>
               <FontAwesome name="pencil" size={25} color="#A1A1A1" />
               <Text style={styles.itemText}>EDITAR</Text>
             </TouchableOpacity>

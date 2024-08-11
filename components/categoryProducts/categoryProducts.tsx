@@ -7,16 +7,15 @@ import {
   TouchableOpacity,
   VirtualizedList,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
 
 const CategoryProducts: React.FC<{
   categoryName: string;
   products: any[];
   onProductSelected: (productId: string) => void;
-}> = ({ categoryName, products, onProductSelected }) => {
+  onHomeReset: () => void;
+}> = ({ categoryName, products, onProductSelected, onHomeReset }) => {
   let [fontsLoaded, fontError] = useFonts({
     "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
     "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
@@ -83,7 +82,27 @@ const CategoryProducts: React.FC<{
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Text style={styles.topText}>{categoryName}</Text>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          borderTopWidth: 0.5,
+          borderTopRightRadius: 15,
+          borderTopLeftRadius: 15,
+          borderColor: "#A1A1A1",
+        }}
+      >
+        <Text style={styles.topText}>{categoryName}</Text>
+        <TouchableOpacity onPress={()=> onHomeReset()}>
+          <AntDesign
+            name="close"
+            size={23}
+            color="#A1A1A1"
+            style={{ paddingRight: 15 }}
+          />
+        </TouchableOpacity>
+      </View>
       <VirtualizedList
         data={products}
         renderItem={renderItem}

@@ -18,7 +18,7 @@ export default function StartScreen() {
         }),
         Animated.timing(opacityAnim, {
           toValue: 1,
-          duration: 3000,
+          duration: 2000,
           useNativeDriver: true,
         }),
         Animated.timing(newScale, {
@@ -27,7 +27,7 @@ export default function StartScreen() {
           useNativeDriver: false,
         })
       ]),
-      Animated.delay(4000),
+      Animated.delay(3500),
     ]).start(() => {
       router.push('/(routes)/adult-disclaimer');
     });
