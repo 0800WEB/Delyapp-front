@@ -1,7 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 import authActions from "./authActions";
-const { sign_in, sign_up, verify_code, update_user } = authActions;
+const { sign_in, sign_up, verify_code, update_user, sign_out } = authActions;
 
 export interface UserInfo {
   id: string;
@@ -13,7 +13,7 @@ export interface UserInfo {
 }
 
 const initialState: AuthState = {
-  email: '',
+  email: "",
   userInfo: null,
   token: null,
   error: null as any,
@@ -75,7 +75,16 @@ const authReducer = createReducer(initialState, (builder) => {
     .addCase(update_user.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
-    });
+    })
+    .addCase(sign_out.fulfilled, (state) => {
+      state.userInfo = null;
+      state.token = null;
+      state.error = null;
+    })
+    .addCase(sign_out.rejected, (state, action) => {
+      state.error = action.payload;
+    })
+    .addDefaultCase((state) => state);
 });
 
 export default authReducer;

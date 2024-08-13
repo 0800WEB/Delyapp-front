@@ -24,6 +24,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { sign_in } from "@/store/user/authActions";
 import { AppDispatch, RootState } from "@/store/store";
 
+import { useNavigation } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+
+type DrawerNavProp = DrawerNavigationProp<RootParamList>;
+
 export default function SignInScreen() {
   let [fontsLoaded, fontError] = useFonts({
     "Cherione Bold": require("../../../assets/fonts/Cherione Bold.ttf"),
@@ -47,6 +52,7 @@ export default function SignInScreen() {
   });  
 
   const dispatch = useDispatch<AppDispatch>();
+  const navigation = useNavigation<DrawerNavProp>();
   // const authState = useSelector((state: RootState) => state);
   // console.log(authState)
 
@@ -63,7 +69,7 @@ export default function SignInScreen() {
     if (sign_in.fulfilled.match(action)) {
       setButtonSpinner(false);
       Toast.show(`Bienvenido`, { type: "success" });
-      router.push("/(routes)/home");
+      navigation.navigate("HOME");
     } else if (sign_in.rejected.match(action)) {
       Toast.show("Ha ocurrido un error, vuelve a intentar", {
         type: "danger",

@@ -140,5 +140,23 @@ export const update_user = createAsyncThunk(
   }
 );
 
-const actions = { sign_in, sign_up, verify_code, update_user };
+export const sign_out = createAsyncThunk(
+  "users/signout",
+  async (_, { rejectWithValue }) => {
+    try {
+      const userToken = await _retrieveData({ key: "userToken" });
+      const response = await axios.post(`${SERVER_URI}/users/signout`, {}, {
+        headers: { Authorization: `Bearer ${userToken}` }
+      });
+      await _removeData({ key: "userToken" });
+      await _removeData({ key: "userInfo" });
+      // console.log("Borrando: ",response);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(parseError({ error }));
+    }
+  }
+);
+
+const actions = { sign_in, sign_up, verify_code, update_user, sign_out };
 export default actions;

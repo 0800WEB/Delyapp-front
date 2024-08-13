@@ -130,5 +130,20 @@ type CartProduct ={
 type RootParamList = {
   Home: undefined;
   Details: { itemId: number };
+  CARRITO: undefined;
+  '(routes)/map/index': undefined;
   // Agrega aquí otras rutas según sea necesario
+};
+
+type RootStackParamList = {
+  '(routes)/start/index': undefined;
+  '(routes)/adult-disclaimer/index': undefined;
+  '(routes)/welcome-intro/index': undefined;
+  '(routes)/select-sign/index': undefined;
+  '(routes)/sign-in/index': undefined;
+  '(routes)/sign-up/index': undefined;
+  '(routes)/verify-account/index': undefined;
+  '(routes)/drawer/index': undefined;
+  '(routes)/update-account/index': undefined;
+  '(routes)/map/index': undefined;
 };

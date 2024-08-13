@@ -7,8 +7,12 @@ import { openDrawer, closeDrawer } from "@/store/drawer/drawerActions";
 import { useFonts } from "expo-font";
 import { FontAwesome, AntDesign } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AppDispatch } from "@/store/store";
+import { sign_out } from "@/store/user/authActions";
 
 export default function UserScreen() {
+  const dispatch = useDispatch<AppDispatch>();
   let [fontsLoaded, fontError] = useFonts({
     "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
     "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
@@ -35,6 +39,24 @@ export default function UserScreen() {
       setUserData(userInfo);
     }
   }, [userInfo]);
+
+  //TODO-logout
+
+  const logout = async () => {
+    dispatch(sign_out());
+    router.push("select-sign");
+  };
+
+  // const getToken = async () => {
+  //   const token = await AsyncStorage.getItem("userToken");
+  //   console.log("Token: ", token);
+  // }
+
+  // useEffect(() => {
+  //   getToken();
+  // }
+  // , [])
+
   return (
     <View style={[styles.container]}>
       <TouchableOpacity style={styles.closeButton} onPress={() => router.back()}>
@@ -72,6 +94,10 @@ export default function UserScreen() {
             <TouchableOpacity style={styles.item} onPress={()=> navigation.navigate('(routes)/update-account/index')}>
               <FontAwesome name="pencil" size={25} color="#A1A1A1" />
               <Text style={styles.itemText}>EDITAR</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.item} onPress={logout}>
+              <FontAwesome name="close" size={25} color="#A1A1A1" />
+              <Text style={styles.itemText}>CERRAR SESIÓN</Text>
             </TouchableOpacity>
           </View>
         </>

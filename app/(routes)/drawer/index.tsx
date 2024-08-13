@@ -8,7 +8,7 @@ export default function DrawerLayoutNav() {
   return (
     <Drawer.Navigator screenOptions={{ headerShown: false }}>
       <Drawer.Screen
-        name="(routes)/home/index"
+        name="HOME"
         component={Home}
         options={{ drawerLabel: "INICIO" }}
       />

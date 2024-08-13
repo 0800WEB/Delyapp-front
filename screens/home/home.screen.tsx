@@ -15,7 +15,6 @@ import Highlights from "@/components/highlights/highlights";
 import Promos from "@/components/promos/promos";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { openDrawer, closeDrawer } from "@/store/drawer/drawerActions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { get_allItems, selectProduct } from "@/store/products/productsActions";
@@ -48,15 +47,14 @@ const HomeScreen: React.FC = () => {
     dispatch(getFavorites());
   }, []);
   const products = useSelector((state: RootState) => state.products);
-  // console.log("Products: ", products);
   const categories = useSelector((state: RootState) => state.categories);
-  // console.log("Categories: ", categories);
   const cartItems = useSelector((state: RootState) => state.cart.cart.products);
-  // console.log("Cart: ", cartItems);
+  // const userInfo = useSelector((state: RootState) => state.user.userInfo);
+  // console.log("userInfo", userInfo);
 
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
-  const buttonRadius = 30; // El radio de tu botón
+  const buttonRadius = 30; 
 
   const pan = new Animated.ValueXY();
   const panResponder = PanResponder.create({
@@ -82,10 +80,10 @@ const HomeScreen: React.FC = () => {
     },
   });
 
+
   const logout = async () => {
     await AsyncStorage.removeItem("userToken");
     await AsyncStorage.removeItem("userInfo");
-    dispatch(closeDrawer());
     router.push("select-sign");
   };
 

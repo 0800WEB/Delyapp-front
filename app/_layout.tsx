@@ -28,11 +28,12 @@ import VerifyAccount from "./(routes)/verify-account";
 import Home from "./(routes)/home";
 import DrawerLayoutNav from "./(routes)/drawer";
 import UpdateAccount from "./(routes)/update-account";
+import MapScreen from "@/screens/map-address/map.screen";
 
 SplashScreen.preventAutoHideAsync();
 
 let persistor = persistStore(store);
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 
 export default function RootLayout() {
@@ -86,6 +87,7 @@ function RootLayoutNav() {
       {/* <Stack.Screen name="(routes)/home/index" component={Home} /> */}
       <Stack.Screen name="(routes)/drawer/index" component={DrawerLayoutNav}  />
       <Stack.Screen name="(routes)/update-account/index" component={UpdateAccount}  />
+      <Stack.Screen name="(routes)/map/index" component={MapScreen}  />
     </Stack.Navigator>
   );
 }

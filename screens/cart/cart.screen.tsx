@@ -23,6 +23,10 @@ import { useDispatch } from "react-redux";
 import { getCart } from "@/store/cart/cartActions";
 import { _retrieveData } from "@/utils/util";
 import { addToCart, removeFromCart } from "@/store/cart/cartActions";
+import { useNavigation } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+
+type DrawerNavProp = DrawerNavigationProp<RootParamList>;
 
 const CartScreen: React.FC = () => {
   let [fontsLoaded, fontError] = useFonts({
@@ -43,6 +47,7 @@ const CartScreen: React.FC = () => {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+  const navigation = useNavigation<DrawerNavProp>();
 
   useEffect(() => {
     dispatch(getCart() as any);
@@ -61,6 +66,10 @@ const CartScreen: React.FC = () => {
     await dispatch(addToCart({ productId, quantity: 1 }));
     await dispatch(getCart());
   };
+
+  const goToMapScreen = async () => {
+    await navigation.navigate('(routes)/map/index');
+  }
 
   if (!cartProducts || cartProducts.length === 0) {
     return (
@@ -248,7 +257,7 @@ const CartScreen: React.FC = () => {
               onChangeText={() => {}}
             />
             <AntDesign
-              style={{ position: "absolute", left:10, top: 12 }}
+              style={{ position: "absolute", left: 10, top: 12 }}
               name="tago"
               size={20}
               color="#A1A1A1"
@@ -276,7 +285,7 @@ const CartScreen: React.FC = () => {
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={{margin: 10, elevation: 0.8}}>
+          <View style={{ margin: 10, elevation: 0.8, borderColor: "#A1A1A1" }}>
             <View
               style={{
                 flexDirection: "row",
@@ -339,6 +348,7 @@ const CartScreen: React.FC = () => {
               paddingVertical: 15,
               borderRadius: 10,
             }}
+            onPress={goToMapScreen}
           >
             <Text
               style={{
