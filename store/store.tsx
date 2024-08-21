@@ -7,6 +7,8 @@ import productsReducer from "./products/productsReducer";
 import categoriesReducer from "./categories/categoriesReducer";
 import cartReducer from "./cart/cartReducer";
 import favoriteReducer from "./favorites/favoritesReducer";
+import couponReducer from "./coupon/couponReducer";
+import orderReducer from "./order/orderReducer";
 
 // Configuración de persistencia
 const persistConfig = {
@@ -23,6 +25,8 @@ const rootReducer = combineReducers({
   categories: categoriesReducer,
   cart: cartReducer,
   favorite: favoriteReducer,
+  coupon: couponReducer,
+  order: orderReducer,
 });
 
 // Reducer persistido

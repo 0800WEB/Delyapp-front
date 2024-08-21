@@ -49,8 +49,8 @@ const HomeScreen: React.FC = () => {
   const products = useSelector((state: RootState) => state.products);
   const categories = useSelector((state: RootState) => state.categories);
   const cartItems = useSelector((state: RootState) => state.cart.cart.products);
-  // const userInfo = useSelector((state: RootState) => state.user.userInfo);
-  // console.log("userInfo", userInfo);
+  // const userInfo = useSelector((state: RootState) => state.user);
+  // console.log("Products", userInfo);
 
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
@@ -92,11 +92,13 @@ const HomeScreen: React.FC = () => {
       const selectedCategoryObj = (categories.categories as Category[]).find(
         (category: Category) => category.name === selectedCategory
       );
+      console.log("Cat:" ,selectedCategoryObj)
       let selectedProducts: Product[] = [];
       if (selectedCategoryObj) {
         selectedProducts = (products.products as Product[]).filter(
           (product: Product) => product.category === selectedCategoryObj._id
         );
+        console.log(selectedProducts)
         setFilteredProducts(selectedProducts);
       } else {
         console.log(

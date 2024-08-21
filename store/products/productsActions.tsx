@@ -10,9 +10,17 @@ import axios from "axios";
 
 export const get_allItems = createAsyncThunk(
   "products/getAllItems",
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${SERVER_URI}/products`);
+      const token = await _retrieveData({ key: "userToken" });
+      if (!token) {
+        return rejectWithValue("No token found");
+      }
+      const response = await axios.get(`${SERVER_URI}/products`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data.products;
     } catch (error) {
         console.log(error);

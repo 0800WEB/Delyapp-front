@@ -242,50 +242,8 @@ const CartScreen: React.FC = () => {
               renderItem={renderProductItem}
               keyExtractor={(item) => item._id}
             />
-          </SafeAreaView>
-          <View
-            style={{
-              flexDirection: "row",
-              marginHorizontal: 16,
-            }}
-          >
-            <TextInput
-              style={[styles.input, { color: "#A1A1A1" }]}
-              keyboardType="default"
-              value={""}
-              placeholder="CUPÓN DE DESCUENTO"
-              onChangeText={() => {}}
-            />
-            <AntDesign
-              style={{ position: "absolute", left: 10, top: 12 }}
-              name="tago"
-              size={20}
-              color="#A1A1A1"
-            />
-            <TouchableOpacity
-              style={{
-                width: "30%",
-                height: 45,
-                justifyContent: "center",
-                backgroundColor: "#A1A1A1",
-                borderTopRightRadius: 15,
-                borderBottomRightRadius: 15,
-              }}
-            >
-              <Text
-                style={{
-                  textAlign: "center",
-                  alignContent: "center",
-                  color: "white",
-                  fontFamily: "Cherione Regular",
-                  fontSize: 16,
-                }}
-              >
-                APLICAR
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ margin: 10, elevation: 0.8, borderColor: "#A1A1A1" }}>
+          </SafeAreaView>          
+          <View style={{ margin: 10, elevation: 0.8, borderColor: "#A1A1A1" }}>            
             <View
               style={{
                 flexDirection: "row",
@@ -293,42 +251,6 @@ const CartScreen: React.FC = () => {
                 marginVertical: 10,
                 justifyContent: "space-between",
                 alignItems: "center",
-              }}
-            >
-              <View>
-                <Text style={[styles.cartResume, { textAlign: "left" }]}>
-                  Sutotal:{" "}
-                </Text>
-                <Text style={[styles.cartResume, { textAlign: "left" }]}>
-                  IVA:{" "}
-                </Text>
-                <Text style={[styles.cartResume, { textAlign: "left" }]}>
-                  DESCUENTO:{" "}
-                </Text>
-                <Text style={[styles.cartResume, { textAlign: "left" }]}>
-                  PUNTOS:{" "}
-                </Text>
-                <Text style={[styles.cartResume, { textAlign: "left" }]}>
-                  COSTO DE ENVÍO:{" "}
-                </Text>
-              </View>
-              <View>
-                <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
-                <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
-                <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
-                <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
-                <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                marginHorizontal: 20,
-                marginBottom: 10,
-                justifyContent: "space-between",
-                alignItems: "center",
-                borderTopColor: "#A1A1A1",
-                borderTopWidth: 0.5,
               }}
             >
               <Text style={styles.cartTotal}>TOTAL: </Text>
@@ -357,7 +279,7 @@ const CartScreen: React.FC = () => {
                 fontSize: 16,
               }}
             >
-              REALIZAR PEDIDO
+              COMPLETAR PEDIDO
             </Text>
           </TouchableOpacity>
         </ScrollView>

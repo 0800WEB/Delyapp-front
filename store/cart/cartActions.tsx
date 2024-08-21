@@ -12,7 +12,7 @@ export const getCart = createAsyncThunk(
       const token = await _retrieveData({ key: "userToken" });
       const userInfo = await _retrieveData({ key: "userInfo" });
       const userJson = await parseToJson(userInfo);
-      // console.log(token)
+      // console.log(`${SERVER_URI}/carts/${userJson?._id}`)
       if (!token) {
         return rejectWithValue("No token found");
       }
@@ -21,7 +21,7 @@ export const getCart = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      // console.log(response.data.cart)
+      // console.log(response)
       return response.data.cart;
     } catch (error) {
       console.error(error);
