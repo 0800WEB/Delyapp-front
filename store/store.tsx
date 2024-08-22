@@ -2,13 +2,13 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer } from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import user from "./user/userReducer";
-import drawerReducer from "./drawer/drawerReducer";
 import productsReducer from "./products/productsReducer";
 import categoriesReducer from "./categories/categoriesReducer";
 import cartReducer from "./cart/cartReducer";
 import favoriteReducer from "./favorites/favoritesReducer";
 import couponReducer from "./coupon/couponReducer";
 import orderReducer from "./order/orderReducer";
+import paymentReducer from "./paymentMethods/paymentMethodsReducer";
 
 // Configuración de persistencia
 const persistConfig = {
@@ -20,13 +20,13 @@ const persistConfig = {
 // Combina todos los reducers
 const rootReducer = combineReducers({
   user: user,
-  drawer: drawerReducer,
   products: productsReducer,
   categories: categoriesReducer,
   cart: cartReducer,
   favorite: favoriteReducer,
   coupon: couponReducer,
   order: orderReducer,
+  payment: paymentReducer,
 });
 
 // Reducer persistido
