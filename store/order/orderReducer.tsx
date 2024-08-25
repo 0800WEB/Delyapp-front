@@ -2,7 +2,12 @@ import { createReducer } from "@reduxjs/toolkit";
 import { createOrder } from "./orderActions"; // Asegúrate de reemplazar esto con la ruta a tu acción createOrder
 
 const initialState = {
-  order: null,
+  order: {
+    deliveryAddress: "",
+    paymentMethod: "",
+    totalPrice: 0,
+    status: "",
+  },
   error: null,
   loading: false,
 };

@@ -161,7 +161,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
 
   if (!product) {
     return (
-      <View style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
+      <View style={{ flex: 1, marginTop: 25 }}>
         <View style={styles.top}>
           <Text style={styles.topText}>{selectedCategory?.name}</Text>
           <TouchableOpacity onPress={handleClose}>
@@ -267,7 +267,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
                   padding: 4,
                   borderRadius: 4,
                   fontFamily:"Cherione Regular",
-                  fontSize: 11.5
+                  fontSize: 14
                 },
               ]}
             >
@@ -285,18 +285,18 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
               <TouchableWithoutFeedback onPress={handleDiscount}>
                 <Entypo
                   name="minus"
-                  size={32}
+                  size={38}
                   color="#A1A1A1"
                   style={{ alignSelf: "center" }}
                 />
               </TouchableWithoutFeedback>
-              <Text style={[styles.commonText, { fontSize: 20 }]}>
+              <Text style={[styles.commonText, { fontSize: 26 }]}>
                 {quantity}
               </Text>
               <TouchableWithoutFeedback onPress={handleAdd}>
                 <Entypo
                   name="plus"
-                  size={32}
+                  size={38}
                   color="#A1A1A1"
                   style={{ alignSelf: "center" }}
                 />

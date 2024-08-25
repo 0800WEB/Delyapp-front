@@ -75,12 +75,12 @@ export const toggleFavorite = createAsyncThunk(
         if (!token) {
           return rejectWithValue("No token found");
         }
-        const response = await axios.get(`${SERVER_URI}/favorites/${userJson?._id}`, {
+        const response = await axios.get(`${SERVER_URI}/favorites/`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-  
+        // console.log(response.data.favorite)
         return response.data.favorite;
       } catch (error) {
         console.error(error);

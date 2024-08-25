@@ -8,7 +8,7 @@ export const createOrder = createAsyncThunk(
   async ({ cartId, deliveryAddress, paymentMethod, couponId }: { cartId: string, deliveryAddress: string, paymentMethod: string, couponId?: string }, { rejectWithValue }) => {
     try {
       const token = await _retrieveData({ key: "userToken" });
-      console.log(cartId, deliveryAddress, paymentMethod, couponId, token)
+      // console.log(cartId, deliveryAddress, paymentMethod, couponId, token)
       if (!token) {
         return rejectWithValue("No token found");
       }

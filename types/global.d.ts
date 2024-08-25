@@ -132,6 +132,7 @@ type RootParamList = {
   Details: { itemId: number };
   CARRITO: undefined;
   '(routes)/map/index': undefined;
+  '(routes)/order/index': undefined;
   // Agrega aquí otras rutas según sea necesario
 };
 
@@ -146,4 +147,5 @@ type RootStackParamList = {
   '(routes)/drawer/index': undefined;
   '(routes)/update-account/index': undefined;
   '(routes)/map/index': undefined;
+  '(routes)/order/index': undefined;
 };

@@ -29,6 +29,7 @@ import Home from "./(routes)/home";
 import DrawerLayoutNav from "./(routes)/drawer";
 import UpdateAccount from "./(routes)/update-account";
 import MapScreen from "@/screens/map-address/map.screen";
+import Order from "./(routes)/order";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -88,6 +89,7 @@ function RootLayoutNav() {
       <Stack.Screen name="(routes)/drawer/index" component={DrawerLayoutNav}  />
       <Stack.Screen name="(routes)/update-account/index" component={UpdateAccount}  />
       <Stack.Screen name="(routes)/map/index" component={MapScreen}  />
+      <Stack.Screen name="(routes)/order/index" component={Order}  />
     </Stack.Navigator>
   );
 }

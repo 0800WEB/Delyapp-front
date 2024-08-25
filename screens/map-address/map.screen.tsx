@@ -15,13 +15,18 @@ import { AppDispatch, RootState } from "@/store/store";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import * as Location from "expo-location";
-import { GOOGLE_MAPS_APIKEY } from "@env";
+// import { GOOGLE_MAPS_APIKEY } from "@env";
+import { GOOGLE_MAPS_APIKEY } from "@/utils/uri";
 
 import { router } from "expo-router";
 import { useFonts } from "expo-font";
 import { FontAwesome, Entypo, Ionicons, AntDesign } from "@expo/vector-icons";
 import { useCoupon } from "@/store/coupon/couponActions";
 import { createOrder } from "@/store/order/orderActions";
+import { useNavigation } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+
+type DrawerNavProp = DrawerNavigationProp<RootParamList>;
 
 type LocationType = { latitude: number; longitude: number } | undefined;
 
@@ -73,6 +78,8 @@ const MapScreen: React.FC = () => {
     setDestination(current);
   };
 
+  const navigation = useNavigation<DrawerNavProp>();
+
   useEffect(() => {
     getLocationPermission();
   }, []);
@@ -85,16 +92,17 @@ const MapScreen: React.FC = () => {
     return data.results[0].geometry.location;
   };
 
-  // useEffect(() => {
-  //   if (originAddress !== "") {
-  //     getGeocode(originAddress).then((location) => {
-  //       setOrigin({
-  //         latitude: location.lat,
-  //         longitude: location.lng,
-  //       });
-  //     });
-  //   }
-  // }, [originAddress]);
+  useEffect(() => {
+    if (destinationAddress !== "") {
+      getGeocode(destinationAddress).then((location) => {
+        const newLocation = {
+          latitude: location.lat,
+          longitude: location.lng,
+        };
+        setCurrentLocation(newLocation);
+      });
+    }
+  }, [destinationAddress]);
 
   useEffect(() => {
     if (destination) {
@@ -135,7 +143,7 @@ const MapScreen: React.FC = () => {
     dispatch(useCoupon(couponCode));
     //  console.log(couponCode)
   };
-  
+
   let newPrice: number = 0;
   let discount: number = 0;
   let discountPercentage: number = 0;
@@ -146,23 +154,32 @@ const MapScreen: React.FC = () => {
     } else if (coupon.discountPercentage !== 0) {
       discount = coupon.discountPercentage;
       newPrice = totalPrice - (totalPrice * discount) / 100;
-      discountPercentage = discount*totalPrice/100;
+      discountPercentage = (discount * totalPrice) / 100;
     }
   }
-  
+
   // console.log("CartId: ", cart._id);
   // console.log("deliveryAddress: ", destinationAddress);
   // console.log("Cupon: ", coupon);
   // console.log("CuponId: ", coupon._id);
+  // console.log("TotalPrice: ", totalPrice);
 
-  const newOrder = async() => {
-    dispatch(createOrder({cartId: cart._id, deliveryAddress: destinationAddress, paymentMethod: "stripe", couponId: coupon?._id}));
-  }
+  const newOrder = async () => {
+    dispatch(
+      createOrder({
+        cartId: cart._id,
+        deliveryAddress: destinationAddress,
+        paymentMethod: "stripe",
+        couponId: coupon?._id,
+      })
+    );
+    await navigation.navigate("(routes)/order/index");
+  };
 
   return (
     <LinearGradient
       colors={["#F9F6F7", "#F9F6F7"]}
-      style={{ flex: 1, marginTop: StatusBar.currentHeight }}
+      style={{ flex: 1, marginTop: 25 }}
     >
       <ScrollView>
         <View style={styles.top}>
@@ -317,8 +334,12 @@ const MapScreen: React.FC = () => {
                 <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
                 <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
                 {discountPercentage ? (
-                <Text style={styles.cartResume}>${discountPercentage?.toFixed(2)}</Text>
-                ): ( <Text style={styles.cartResume}>${discount?.toFixed(2)}</Text>) }
+                  <Text style={styles.cartResume}>
+                    ${discountPercentage?.toFixed(2)}
+                  </Text>
+                ) : (
+                  <Text style={styles.cartResume}>${discount?.toFixed(2)}</Text>
+                )}
                 <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
                 <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
               </View>
@@ -335,8 +356,10 @@ const MapScreen: React.FC = () => {
               }}
             >
               <Text style={styles.cartTotal}>TOTAL: </Text>
-              {totalPrice && newPrice !== 0 && (
+              {totalPrice && newPrice !== 0 ? (
                 <Text style={styles.cartTotal}>${newPrice.toFixed(2)}</Text>
+              ):(
+                <Text style={styles.cartTotal}>${totalPrice.toFixed(2)}</Text>
               )}
             </View>
           </View>

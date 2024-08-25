@@ -76,7 +76,7 @@ const CartScreen: React.FC = () => {
       <View
         style={{
           flex: 1,
-          marginTop: StatusBar.currentHeight,
+          marginTop: 25,
         }}
       >
         <View style={styles.top}>
@@ -190,7 +190,7 @@ const CartScreen: React.FC = () => {
               <AntDesign
                 name={item.quantity == 1 ? "delete" : "minus"}
                 color="#A1A1A1"
-                size={22}
+                size={25}
               />
             </TouchableOpacity>
             <Text
@@ -204,7 +204,7 @@ const CartScreen: React.FC = () => {
               {item.quantity?.toString()}
             </Text>
             <TouchableOpacity onPress={() => handleAdd(item.product._id)}>
-              <AntDesign name="plus" color="#A1A1A1" size={22} />
+              <AntDesign name="plus" color="#A1A1A1" size={25} />
             </TouchableOpacity>
           </View>
         </View>
@@ -212,7 +212,7 @@ const CartScreen: React.FC = () => {
     );
 
     return (
-      <View style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
+      <View style={{ flex: 1, marginTop: 25 }}>
         <View style={styles.top}>
           <Text style={styles.topText}>CARRITO DE COMPRA</Text>
           <TouchableOpacity onPress={() => router.back()}>
