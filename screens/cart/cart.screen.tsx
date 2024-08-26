@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   FlatList,
   TextInput,
+  Platform,
 } from "react-native";
 import { FontAwesome, Entypo, Ionicons, AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
@@ -76,7 +77,7 @@ const CartScreen: React.FC = () => {
       <View
         style={{
           flex: 1,
-          marginTop: StatusBar.currentHeight,
+          marginTop: Platform.OS === "ios" ? 50 : StatusBar.currentHeight,
         }}
       >
         <View style={styles.top}>
@@ -212,7 +213,7 @@ const CartScreen: React.FC = () => {
     );
 
     return (
-      <View style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
+      <View style={{ flex: 1, marginTop: Platform.OS === "ios" ? 50 : StatusBar.currentHeight }}>
         <View style={styles.top}>
           <Text style={styles.topText}>CARRITO DE COMPRA</Text>
           <TouchableOpacity onPress={() => router.back()}>

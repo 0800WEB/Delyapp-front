@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   StatusBar,
+  Platform
 } from "react-native";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -15,7 +16,7 @@ import { AppDispatch, RootState } from "@/store/store";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import * as Location from "expo-location";
-import { GOOGLE_MAPS_APIKEY } from "@env";
+import { GOOGLE_MAPS_APIKEY } from "@/utils/uri";
 
 import { router } from "expo-router";
 import { useFonts } from "expo-font";
@@ -52,9 +53,10 @@ const MapScreen: React.FC = () => {
   const [couponCode, setCouponCode] = useState("");
 
   const [origin, setOrigin] = useState({
-    latitude: -12.074533,
-    longitude: -77.083644,
+    latitude: -34.58999722009313,
+    longitude: -58.57186179207329,
   });
+
   const [destination, setDestination] = useState<LocationType>();
   const [currentLocation, setCurrentLocation] = useState<LocationType>();
   const [destinationAddress, setDestinationAddress] = useState("");
@@ -162,7 +164,7 @@ const MapScreen: React.FC = () => {
   return (
     <LinearGradient
       colors={["#F9F6F7", "#F9F6F7"]}
-      style={{ flex: 1, marginTop: StatusBar.currentHeight }}
+      style={{ flex: 1, marginTop: Platform.OS === "ios" ? 50 : StatusBar.currentHeight }}
     >
       <ScrollView>
         <View style={styles.top}>

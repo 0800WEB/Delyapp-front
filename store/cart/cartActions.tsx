@@ -10,13 +10,13 @@ export const getCart = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const token = await _retrieveData({ key: "userToken" });
-      const userInfo = await _retrieveData({ key: "userInfo" });
-      const userJson = await parseToJson(userInfo);
+      //const userInfo = await _retrieveData({ key: "userInfo" });
+      //const userJson = await parseToJson(userInfo);
       // console.log(`${SERVER_URI}/carts/${userJson?._id}`)
       if (!token) {
         return rejectWithValue("No token found");
       }
-      const response = await axios.get(`${SERVER_URI}/carts/${userJson?._id}`, {
+      const response = await axios.get(`${SERVER_URI}/carts`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

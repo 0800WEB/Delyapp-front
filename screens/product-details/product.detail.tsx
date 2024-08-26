@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Animated,
+  Platform
 } from "react-native";
 import { FontAwesome, Entypo, Ionicons, AntDesign } from "@expo/vector-icons";
 import React, { useState, useEffect } from "react";
@@ -161,7 +162,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
 
   if (!product) {
     return (
-      <View style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
+      <View style={{ flex: 1, marginTop: Platform.OS === "ios" ? 50 : StatusBar.currentHeight }}>
         <View style={styles.top}>
           <Text style={styles.topText}>{selectedCategory?.name}</Text>
           <TouchableOpacity onPress={handleClose}>
@@ -264,10 +265,11 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
                   backgroundColor: "#3fd009",
                   color: "white",
                   // paddingHorizontal: 2,
-                  padding: 4,
+                  padding: 20,
                   borderRadius: 4,
                   fontFamily:"Cherione Regular",
-                  fontSize: 11.5
+                  fontSize: 11.5,
+                  marginBottom:8
                 },
               ]}
             >

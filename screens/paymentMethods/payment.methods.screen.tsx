@@ -152,7 +152,7 @@ const PaymentMethodsScreen: React.FC = () => {
   return (
     <LinearGradient
       colors={["#F9F6F7", "#F9F6F7"]}
-      style={{ flex: 1, marginTop: StatusBar.currentHeight }}
+      style={{ flex: 1, marginTop: Platform.OS === "ios" ? 50 : StatusBar.currentHeight }}
     >
       <View>
         <View style={styles.top}>
