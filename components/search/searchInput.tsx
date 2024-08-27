@@ -30,7 +30,10 @@ import {
 } from "react-native-responsive-dimensions";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { CheckBox } from "react-native-elements";
-
+import { useNavigation } from "expo-router";
+import { get_SearchItem } from "@/store/products/productsActions";
+import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
 
 export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
   const [value, setValue] = useState("");
@@ -53,6 +56,17 @@ export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+  const navigation = useNavigation<DrawerNavProp>();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleSearch = async () => {
+    if (value.trim() === "") {
+      alert("Por favor, introduce un producto para su búsqueda.");
+      return;
+    }
+    router.push("/(routes)/search")
+    dispatch(get_SearchItem(value));
+  }
 
   return (
     <View>
@@ -70,26 +84,13 @@ export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
           />
           <TouchableOpacity
             style={styles.searchIconContainer}
-            onPress={() => router.push("/(routes)/search")}
+            onPress={handleSearch}
           >
             <AntDesign name="search1" size={20} color="#A1A1A1" />
           </TouchableOpacity>
         </View>
       </View>
-      {!homeScreen && (
-        <>
-          <Text
-            style={{
-              textAlign: "center",
-              alignItems: "center",
-              paddingTop: 50,
-              fontSize: 20,
-              color: "#A1A1A1",
-              fontFamily: "Geomanist Medium",
-            }}
-          >No hay productos para mostrar...</Text>
-        </>
-      )}
+      
     </View>
   );
 }

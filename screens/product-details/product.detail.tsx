@@ -16,6 +16,7 @@ import { AppDispatch, RootState } from "@/store/store";
 import AllCategoryProducts from "@/components/alProducts/allProductsCategories";
 import { useFonts } from "expo-font";
 import { addToCart, removeFromCart, getCart } from "@/store/cart/cartActions";
+import { clearSelectedProduct } from "@/store/products/productsActions";
 import {
   toggleFavorite,
   removeFromFavorites,
@@ -51,6 +52,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
     (state: RootState) => state.cart.cart.products
   );
   const products = useSelector((state: RootState) => state.products);
+  const { selectedProductId } = products
   const categories = useSelector((state: RootState) => state.categories);
   const favoriteProducts = useSelector(
     (state: RootState) => state.favorite.favorites.products
@@ -143,6 +145,9 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
 
   const handleClose = () => {
     // router.push("/(routes)/home");
+    if(selectedProductId){
+      dispatch(clearSelectedProduct());
+    }
     setProductId("");
   };
 

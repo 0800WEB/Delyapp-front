@@ -150,6 +150,7 @@ type RootStackParamList = {
   '(routes)/update-account/index': undefined;
   '(routes)/map/index': undefined;
   '(routes)/order/index': undefined;
+  '(routes)/search/index': undefined;
 };
 
 type DrawerNavProp = DrawerNavigationProp<RootParamList>;

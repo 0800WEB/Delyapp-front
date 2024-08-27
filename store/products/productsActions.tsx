@@ -41,7 +41,8 @@ export const get_SearchItem = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data.products;
+      // console.log(response.data.products)
+      return {searchProducts: response.data.products};
     } catch (error) {
         console.log(error);
     }

@@ -19,6 +19,7 @@ interface Product {
 const initialState = {
   limit: 0,
   products: [],
+  searchProducts: [] ,
   success: false,
   totalProducts: 0,
   error: null as any,
@@ -53,7 +54,7 @@ const productsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(get_SearchItem.fulfilled, (state, action) => {
       state.loading = false;
-      state.products = action.payload;
+      state.searchProducts = action.payload?.searchProducts || [];
       state.error = null;
     })
     .addCase(get_SearchItem.rejected, (state, action) => {

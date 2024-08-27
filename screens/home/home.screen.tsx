@@ -56,6 +56,12 @@ const HomeScreen: React.FC = () => {
   const products = useSelector((state: RootState) => state.products);
   const categories = useSelector((state: RootState) => state.categories);
   const cartItems = useSelector((state: RootState) => state.cart.cart.products);
+  const selectedProduct = useSelector((state: RootState) => state.products.selectedProductId);
+  useEffect(() => {
+    if (selectedProduct) {
+      setSelectedProductId(selectedProduct);
+    }
+  }, [selectedProduct]);
   // const userInfo = useSelector((state: RootState) => state.user);
   // console.log("Products", userInfo);
 

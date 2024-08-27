@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
-  Platform,
+  VirtualizedList,
 } from "react-native";
 import {
   AntDesign,
@@ -34,6 +34,11 @@ import { CheckBox } from "react-native-elements";
 import { Toast } from "react-native-toast-notifications";
 
 import SearchInput from "@/components/search/searchInput";
+import { AppDispatch, RootState } from "@/store/store";
+import { useSelector } from "react-redux";
+import { selectProduct } from "@/store/products/productsActions";
+import { useNavigation } from "expo-router";
+import { useDispatch } from "react-redux";
 
 export default function SearchScreen() {
   let [fontsLoaded, fontError] = useFonts({
@@ -53,10 +58,114 @@ export default function SearchScreen() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+  const navigation = useNavigation<DrawerNavProp>();
+  const dispatch = useDispatch<AppDispatch>();
+  const searchProducts = useSelector((state: RootState) => state.products.searchProducts);
+  const selectedProductId = useSelector((state: RootState) => state.products.selectedProductId);
+  // console.log(selectedProductId)
+
+  const handleProductSelected = (productId: string) => {
+    if (dispatch) {
+      dispatch(selectProduct(productId));
+    }
+    router.back();
+  }
+
+  const getItem = (data: any[], index: number) => data[index];
+  const getItemCount = (data: any[]) => (data ? data.length : 0);
+  const keyExtractor = (item: any) => item._id.toString();
+
+  const renderItem = ({ item }: { item: any }) => (
+    <TouchableOpacity style={styles.productCard} onPress={() => handleProductSelected(item._id)}>
+      <Image
+        source={require("@/assets/images/ICONOS-47.png")}
+        style={styles.imageStyle}
+      />
+      <View style={styles.textContainer}>
+        <Text style={styles.titleText}>{item.name}</Text>
+        <Text style={[styles.titleText, styles.descriptionText]}>
+          {item.description}
+        </Text>
+        <Text style={styles.priceText}>${item.price}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
   return (
     <View>
       <SearchInput />
+      <VirtualizedList
+        data={searchProducts}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        getItemCount={getItemCount}
+        getItem={getItem}
+        contentContainerStyle={{ paddingBottom: 20 }}
+      />
     </View>
   );
 }
 
+const styles = StyleSheet.create({
+  productCard: {
+    marginHorizontal: "auto",
+    width: "95%",
+    flexDirection: "row",
+    alignContent: "center",
+    marginVertical: 10,
+    backgroundColor: "#f8f8f8",
+    borderRadius: 10,
+    padding: 10,
+  },
+  imageStyle: {
+    width: 90,
+    aspectRatio: 1,
+    marginHorizontal: 5,
+    marginVertical: 10,
+    borderRadius: 15,
+    borderWidth: 0.15,
+    borderColor: "#A1A1A1",
+    backgroundColor: "#A1A1A1",
+  },
+  textContainer: {
+    marginLeft: 10,
+    justifyContent: "center",
+    flex: 1,
+  },
+  titleText: {
+    fontFamily: "Geomanist Medium",
+    fontSize: 15,
+    color: "#A1A1A1",
+    textAlign: "left",
+  },
+  descriptionText: {
+    fontFamily: "Cherione Regular",
+    fontSize: 12,
+    color: "#666",
+  },
+  priceText: {
+    fontFamily: "Geomanist Medium",
+    fontSize: 15,
+    color: "#A1A1A1",
+    marginTop: 5,
+  },
+  topText: {
+    display: "flex",
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 15,
+    fontFamily: "Geomanist Medium",
+    fontSize: 18,
+    color: "#A1A1A1",
+    textAlign: "left",
+  },
+  containerTitle: {
+    display: "flex",
+    marginLeft: 5,
+    marginVertical: 10,
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    width: "80%",
+    height: 90,
+  },
+});
