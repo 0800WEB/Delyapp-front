@@ -156,7 +156,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
     }
     setFavoriteSelect(!favoriteSelect);
   };
-  console.log(productId);
+  // console.log(productId);
   // console.log(favoriteSelect);
 
   if (!product) {

@@ -28,9 +28,29 @@ export const get_allItems = createAsyncThunk(
   }
 );
 
+export const get_SearchItem = createAsyncThunk(
+  "products/getSearchItem",
+  async (productName, { rejectWithValue }) => {
+    try {
+      const token = await _retrieveData({ key: "userToken" });
+      if (!token) {
+        return rejectWithValue("No token found");
+      }
+      const response = await axios.get(`${SERVER_URI}/products?name=${productName}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data.products;
+    } catch (error) {
+        console.log(error);
+    }
+  }
+);
+
 export const selectProduct = createAction<string>('products/selectProduct');
 
 export const clearSelectedProduct = createAction('products/clearSelectedProduct');
 
-const actions = { get_allItems, selectProduct, clearSelectedProduct };
+const actions = { get_allItems, selectProduct, clearSelectedProduct, get_SearchItem };
 export default actions;

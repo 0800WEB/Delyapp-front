@@ -133,6 +133,41 @@ export default function SignUpScreen() {
   };
  
   const handleSignIn = async () => {
+    if (!userInfo.name) {
+      Toast.show("El nombre es requerido", {
+        type: "danger",
+      });
+      return;
+    }
+  
+    if (!userInfo.email || !/\S+@\S+\.\S+/.test(userInfo.email)) {
+      Toast.show("El email es requerido o no es válido", {
+        type: "danger",
+      });
+      return;
+    }
+  
+    if (!userInfo.phone || userInfo.phone.length < 9) {
+      Toast.show("El teléfono es requerido o no es válido", {
+        type: "danger",
+      });
+      return;
+    }
+  
+    if (!userInfo.ageVerified) {
+      Toast.show("La edad debe ser mayor de 18 años", {
+        type: "danger",
+      });
+      return;
+    }
+  
+    if (!termsAccepted || !privacyAccepted) {
+      Toast.show("Debe aceptar los términos y condiciones y el aviso de privacidad", {
+        type: "danger",
+      });
+      return;
+    }
+  
     if (!userInfo.password || error.password !== "") {
       Toast.show("Hay un problema con la contraseña", {
         type: "danger",
@@ -147,10 +182,18 @@ export default function SignUpScreen() {
       password: userInfo.password,
       phone: userInfo.phone,
       ageVerified: userInfo.ageVerified,
-    })); 
+    })).catch(error => {
+      // Crear un objeto de error personalizado con solo las propiedades serializables
+      const serializableError = {
+        name: error.name,
+        message: error.message,
+      };
+      // Lanzar el error serializable
+      throw serializableError;
+    }); 
     setTimeout(() => {
       setButtonSpinner(false);
-    }, 2000);
+    }, 3000);
   };
 
 

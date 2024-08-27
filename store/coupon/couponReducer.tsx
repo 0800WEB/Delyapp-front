@@ -3,6 +3,7 @@ import { useCoupon } from "./couponActions"; // Asegúrate de reemplazar esto co
 
 const initialState = {
   coupon: {
+    _id: "",
     discountAmount: 0,
     discountPercentage: 0,
     message: "",

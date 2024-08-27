@@ -41,10 +41,17 @@ const HomeScreen: React.FC = () => {
   const navigation = useNavigation<DrawerNavProp>();
 
   useEffect(() => {
-    dispatch(get_allItems());
-    dispatch(get_allCategories());
-    dispatch(getCart());
-    dispatch(getFavorites());
+    const fetchData = () => {
+      dispatch(get_allItems());
+      dispatch(get_allCategories());
+      dispatch(getCart());
+      dispatch(getFavorites());
+    };
+
+    const interval = setInterval(fetchData, 60000);
+    fetchData();
+
+    return () => clearInterval(interval);
   }, []);
   const products = useSelector((state: RootState) => state.products);
   const categories = useSelector((state: RootState) => state.categories);
@@ -54,7 +61,7 @@ const HomeScreen: React.FC = () => {
 
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
-  const buttonRadius = 30; 
+  const buttonRadius = 30;
 
   const pan = new Animated.ValueXY();
   const panResponder = PanResponder.create({
@@ -62,7 +69,7 @@ const HomeScreen: React.FC = () => {
     onPanResponderGrant: () => {
       pan.setOffset({
         x: pan.x._value,
-        y: pan.y._value
+        y: pan.y._value,
       });
     },
     onPanResponderMove: Animated.event(
@@ -80,7 +87,6 @@ const HomeScreen: React.FC = () => {
     },
   });
 
-
   const logout = async () => {
     await AsyncStorage.removeItem("userToken");
     await AsyncStorage.removeItem("userInfo");
@@ -89,16 +95,16 @@ const HomeScreen: React.FC = () => {
 
   useEffect(() => {
     if (selectedCategory) {
-      const selectedCategoryObj = (categories.categories as Category[]).find(
+      const selectedCategoryObj = (categories.categories as Category[])?.find(
         (category: Category) => category.name === selectedCategory
       );
-      console.log("Cat:" ,selectedCategoryObj)
+      console.log("Cat:", selectedCategoryObj);
       let selectedProducts: Product[] = [];
       if (selectedCategoryObj) {
         selectedProducts = (products.products as Product[]).filter(
           (product: Product) => product.category === selectedCategoryObj._id
         );
-        console.log(selectedProducts)
+        console.log(selectedProducts);
         setFilteredProducts(selectedProducts);
       } else {
         console.log(
@@ -129,40 +135,40 @@ const HomeScreen: React.FC = () => {
       />
       {cartItems.length > 0 && (
         <Animated.View
-        {...panResponder.panHandlers}
-        style={[
-          styles.floatingButton,
-          {
-            left: 0,
-            top: 25,
-            transform: [
-              {
-                translateX: pan.x.interpolate({
-                  inputRange: [-1, screenWidth - buttonRadius * 2 + 1],
-                  outputRange: [0, screenWidth - buttonRadius * 2],
-                  extrapolate: 'clamp'
-                })
-              },
-              {
-                translateY: pan.y.interpolate({
-                  inputRange: [-1, screenHeight - buttonRadius * 2 + 1],
-                  outputRange: [0, screenHeight - buttonRadius * 2],
-                  extrapolate: 'clamp'
-                })
-              }
-            ]
-          }
-        ]}
-      >
-        <TouchableOpacity onPress={() => navigation.navigate("CARRITO")}>
-          <AntDesign
-            name="shoppingcart"
-            size={35}
-            color={"white"}
-            style={[styles.floatingButtonText]}
-          />
-        </TouchableOpacity>
-      </Animated.View>
+          {...panResponder.panHandlers}
+          style={[
+            styles.floatingButton,
+            {
+              left: 0,
+              top: 25,
+              transform: [
+                {
+                  translateX: pan.x.interpolate({
+                    inputRange: [-1, screenWidth - buttonRadius * 2 + 1],
+                    outputRange: [0, screenWidth - buttonRadius * 2],
+                    extrapolate: "clamp",
+                  }),
+                },
+                {
+                  translateY: pan.y.interpolate({
+                    inputRange: [-1, screenHeight - buttonRadius * 2 + 1],
+                    outputRange: [0, screenHeight - buttonRadius * 2],
+                    extrapolate: "clamp",
+                  }),
+                },
+              ],
+            },
+          ]}
+        >
+          <TouchableOpacity onPress={() => navigation.navigate("CARRITO")}>
+            <AntDesign
+              name="shoppingcart"
+              size={35}
+              color={"white"}
+              style={[styles.floatingButtonText]}
+            />
+          </TouchableOpacity>
+        </Animated.View>
       )}
       {selectedProductId !== "" ? (
         <ProductDetailsScreen
@@ -191,7 +197,7 @@ const HomeScreen: React.FC = () => {
             <>
               <Highlights />
               <Promos />
-              {categories.categories.map((category: Category) => {
+              {categories?.categories?.map((category: Category) => {
                 const productsForCategory = products.products.filter(
                   (product: Product) => product.category === category._id
                 );

@@ -4,6 +4,7 @@ const { addToCart, getCart, removeFromCart } = cartActions;
 
 const initialState = {
   cart: {
+    _id: "",
     products: [],
     totalPrice: 0,
   },

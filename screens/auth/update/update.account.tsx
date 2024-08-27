@@ -18,10 +18,10 @@ import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { responsiveWidth } from "react-native-responsive-dimensions";
 
-import { Toast } from "react-native-toast-notifications";
 import { useDispatch, useSelector } from "react-redux";
 import { update_user } from "@/store/user/authActions";
 import { AppDispatch, RootState } from "../../../store/store";
+import { useNavigation } from '@react-navigation/native';
 
 export default function UpdateAccountScreen() {
   let [fontsLoaded, fontError] = useFonts({
@@ -38,26 +38,28 @@ export default function UpdateAccountScreen() {
     "Geomanist Ultra": require("../../../assets/fonts/Geomanist-Ultra.otf"),
     ...FontAwesome.font,
   });
+  const navigation = useNavigation<DrawerNavProp>();
   const [buttonSpinner, setButtonSpinner] = useState(false);
-  const [userData, setUserData] = useState<UserInfo | null>(null);
+  const [userData, setUserData] = useState<UserInfo>();
   const userStore = useSelector((state: RootState) => state.user.userInfo);
+  // console.log(userStore)
 
   useEffect(() => {
     if (userStore) {
       setUserData(userStore);
       setUserInfo({
+        id: userData?.id,
         name: userData?.name,
         email: userData?.email,
         phone: userData?.phone,
-        address: '',
       });
     }
   }, [userStore]);
   const [userInfo, setUserInfo] = useState({
+    id: userData?.id,
     name: userData?.name,
     email: userData?.email,
     phone: userData?.phone,
-    address: '',
   }); 
 
   const dispatch = useDispatch<AppDispatch>();
@@ -66,19 +68,17 @@ export default function UpdateAccountScreen() {
     return null;
   }
 
-  const handleSignIn = async () => {
-    console.log("userInfo: ", userInfo);
+  const handleUpdate = async () => {
     if (userData) {
-      console.log("userData: ", userData);
+      dispatch(update_user({
+        id: userData.id,
+        name: userInfo.name,
+        email: userInfo.email,
+        phone: userInfo.phone,
+      }));
     }
     setButtonSpinner(true);
-    //   dispatch(sign_up({
-    //     name: userInfo.name,
-    //     email: userInfo.email,
-    //     password: userInfo.password,
-    //     phone: userInfo.phone,
-    //     ageVerified: userInfo.ageVerified,
-    //   }));
+    router.back();
     setTimeout(() => {
       setButtonSpinner(false);
     }, 2000);
@@ -111,12 +111,11 @@ export default function UpdateAccountScreen() {
               <TextInput
                 style={[styles.input]}
                 keyboardType="default"
-                value={userData.name}
-                placeholder={userData.name}
+                value={userInfo.name}
+                placeholder={userData?.name}
                 onChangeText={(value) =>
                   setUserInfo({ ...userInfo, name: value })
                 }
-                editable={false}
               />
               <AntDesign
                 style={{ position: "absolute", left: 26, top: 12 }}
@@ -129,8 +128,8 @@ export default function UpdateAccountScreen() {
               <TextInput
                 style={[styles.input, {}]}
                 keyboardType="email-address"
-                value={userData.email}
-                placeholder={userData.email}
+                value={userInfo.email}
+                placeholder={userData?.email}
                 onChangeText={(value) =>
                   setUserInfo({ ...userInfo, email: value })
                 }
@@ -147,12 +146,11 @@ export default function UpdateAccountScreen() {
               <TextInput
                 style={[styles.input, {}]}
                 keyboardType="number-pad"
-                value={userData.phone}
+                value={userInfo.phone}
                 placeholder={userData.phone}
                 onChangeText={(value) =>
                   setUserInfo({ ...userInfo, phone: value })
                 }
-                editable={false}
               />
               <AntDesign
                 style={{ position: "absolute", left: 26, top: 12 }}
@@ -161,43 +159,6 @@ export default function UpdateAccountScreen() {
                 color="#A1A1A1"
               />
             </View>
-            {userData.address ? (
-              <View>
-                <TextInput
-                  style={[styles.input, {}]}
-                  keyboardType="default"
-                  value={userData.address}
-                  placeholder={userData.address}
-                  onChangeText={(value) =>
-                    setUserInfo({ ...userInfo, address: value })
-                  }
-                />
-                <FontAwesome
-                  style={{ position: "absolute", left: 26, top: 12 }}
-                  name="map"
-                  size={20}
-                  color="#A1A1A1"
-                />
-              </View>
-            ) : (
-              <View>
-                <TextInput
-                  style={[styles.input, {}]}
-                  keyboardType="default"
-                  value={userData.address}
-                  placeholder="Establece una Dirección"
-                  onChangeText={(value) =>
-                    setUserInfo({ ...userInfo, address: value })
-                  }
-                />
-                <FontAwesome
-                  style={{ position: "absolute", left: 26, top: 12 }}
-                  name="map"
-                  size={20}
-                  color="#A1A1A1"
-                />
-              </View>
-            )}
           </View>
           <TouchableOpacity
             style={[
@@ -222,7 +183,7 @@ export default function UpdateAccountScreen() {
                     textAlign: "center",
                   },
                 ]}
-                onPress={handleSignIn}
+                onPress={handleUpdate}
               >
                 ACTUALIZAR
               </Text>

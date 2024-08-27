@@ -36,7 +36,7 @@ import { SERVER_URI } from "@/utils/uri";
 import axios from "axios";
 
 import { useDispatch, useSelector } from "react-redux";
-import { sign_up, verify_code } from "@/store/user/authActions";
+import { verify_code, re_verify_code } from "@/store/user/authActions";
 import { AppDispatch, RootState } from "../../../store/store";
 
 export default function VerifyAccountScreen() {
@@ -92,12 +92,18 @@ export default function VerifyAccountScreen() {
     }
   }, [userInfo]);
 
-  console.log("Email: ", email);
-
+  
   const handleSumbit = async () => {
     const otp = code.join("");
     dispatch(verify_code({ email, code: otp }));
   };
+  console.log("Email: ", email);
+  
+  const handleResend = async () => {
+    dispatch(re_verify_code({ email }));
+  }
+
+
   return (
     <LinearGradient
       colors={["#F9F6F7", "#F9F6F7"]}
@@ -143,7 +149,7 @@ export default function VerifyAccountScreen() {
           <Text style={[styles.subText, { fontFamily: "Geomanist Regular" }]}>
             No me llega el código.
           </Text>
-          <TouchableOpacity onPress={() => router.back()}>
+          <TouchableOpacity onPress={handleResend}>
             <Text
               style={[styles.loginText, { fontFamily: "Geomanist Regular" }]}
             >

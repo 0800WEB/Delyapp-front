@@ -28,6 +28,10 @@ interface VerifyCodeArgs {
   code: string;
 }
 
+interface ReVerifyCodeArgs {
+  email: string;
+}
+
 interface UpdateUserArgs {
   id: string;
   name: string;
@@ -41,12 +45,16 @@ export const sign_in = createAsyncThunk(
   "users/signin",
   async ({ email, password }: SignInArgs, { rejectWithValue }) => {
     try {
+      // console.log("email: ", email);
+      // console.log("password: ", password);
+      console.log(`${SERVER_URI}/users/signin`);
       const response = await axios.post(`${SERVER_URI}/users/signin`, {
         email,
         password,
       });
       await _storeData({ key: "userToken", value: response.data.token });
       await _storeData({ key: "userInfo", value: response.data.user });
+      // console.log("response: ", response);
       return { token: response.data.token, userInfo: response.data.user };
     } catch (error) {
       return rejectWithValue(parseError({ error }));
@@ -68,7 +76,7 @@ export const sign_up = createAsyncThunk(
         phone,
         ageVerified,
       });
-      console.log(response);
+      // console.log(response);
       if (response.data.success) {
         Toast.show(response.data.message, { type: "success" });
         router.push("/(routes)/verify-account");
@@ -110,30 +118,52 @@ export const verify_code = createAsyncThunk(
   }
 );
 
-export const update_user = createAsyncThunk(
-  "users/update",
-  async (
-    { id, name, email, phone, ageVerified, address }: UpdateUserArgs,
-    { rejectWithValue }
-  ) => {
+export const re_verify_code = createAsyncThunk(
+  "users/re_verify_code",
+  async ({ email }: ReVerifyCodeArgs, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(`${SERVER_URI}/users/${id}`, {
-        name,
+      const response = await axios.post(`${SERVER_URI}/users/verify/resend_code`, {
         email,
-        phone,
-        ageVerified,
-        address,
       });
+      // console.log(response)
       if (response.data.success) {
-        Toast.show("Usuario actualizado exitosamente", { type: "success" });
-        await _storeData({ key: "userToken", value: response.data.token });
-        await _storeData({ key: "userInfo", value: response.data.user });
+        Toast.show("Correo de verificación re-enviado", { type: "success" });        
+        await _removeData({key: "userInfo"});
+        return response.data;
       } else {
         Toast.show("Ha ocurrido un error, vuelve a intentar", {
           type: "danger",
         });
+        return rejectWithValue(response.data.message);
       }
-      return response.data;
+    } catch (error) {
+      return rejectWithValue(parseError({ error }));
+    }
+  }
+);
+
+export const update_user = createAsyncThunk(
+  "users/update",
+  async ({ id, name, email, phone }: UpdateUserArgs, { rejectWithValue }) => {
+    try {
+      const userToken = await _retrieveData({ key: "userToken" });
+      const response = await axios.patch(`${SERVER_URI}/users/update`, {
+        name,
+        email,
+        phone,
+      }, {
+        headers: { Authorization: `Bearer ${userToken}` }
+      });
+      if (response.data.success) {
+        Toast.show("Usuario actualizado exitosamente", { type: "success" });
+        await _storeData({ key: "userInfo", value: response.data.user });
+        return { userInfo: response.data.user };
+      } else {
+        Toast.show("Ha ocurrido un error, vuelve a intentar", {
+          type: "danger",
+        });
+        return rejectWithValue(response.data.message);
+      }
     } catch (error) {
       return rejectWithValue(parseError({ error }));
     }
@@ -158,5 +188,6 @@ export const sign_out = createAsyncThunk(
   }
 );
 
-const actions = { sign_in, sign_up, verify_code, update_user, sign_out };
+
+const actions = { sign_in, sign_up, verify_code, update_user, sign_out, re_verify_code };
 export default actions;

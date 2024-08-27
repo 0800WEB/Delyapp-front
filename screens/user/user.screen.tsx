@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import { router } from "expo-router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { openDrawer, closeDrawer } from "@/store/drawer/drawerActions";
 import { useFonts } from "expo-font";
 import { FontAwesome, AntDesign } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AppDispatch } from "@/store/store";
 import { sign_out } from "@/store/user/authActions";
+
 
 export default function UserScreen() {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,7 +30,7 @@ export default function UserScreen() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
-  const navigation = useNavigation();
+  const navigation = useNavigation<DrawerNavProp>();
   const [userData, setUserData] = useState<UserInfo | null>(null);
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
 
@@ -46,16 +46,6 @@ export default function UserScreen() {
     dispatch(sign_out());
     router.push("select-sign");
   };
-
-  // const getToken = async () => {
-  //   const token = await AsyncStorage.getItem("userToken");
-  //   console.log("Token: ", token);
-  // }
-
-  // useEffect(() => {
-  //   getToken();
-  // }
-  // , [])
 
   return (
     <View style={[styles.container]}>
@@ -82,14 +72,6 @@ export default function UserScreen() {
             <View style={styles.item}>
               <FontAwesome name="phone" size={25} color="#A1A1A1" />
               <Text style={styles.itemText}>{userData.phone}</Text>
-            </View>
-            <View style={styles.item}>
-              <FontAwesome name="map" size={25} color="#A1A1A1" />
-              {userData && userData.address ? (
-                <Text style={styles.itemText}>{userData.address}</Text>
-              ) : (
-                <Text style={styles.itemText}>No hay dirección registrada</Text>
-              )}
             </View>
             <TouchableOpacity style={styles.item} onPress={()=> navigation.navigate('(routes)/update-account/index')}>
               <FontAwesome name="pencil" size={25} color="#A1A1A1" />

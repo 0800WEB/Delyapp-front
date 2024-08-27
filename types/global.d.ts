@@ -56,7 +56,7 @@ type fakeDataType = {
 
 
 type UserInfo = {
-  address: UserInfo;
+  id: string;
   name: string;
   email: string;
   password: string;
@@ -133,6 +133,8 @@ type RootParamList = {
   CARRITO: undefined;
   '(routes)/map/index': undefined;
   '(routes)/order/index': undefined;
+  '(routes)/update-account/index': undefined;
+  '(routes)/home/index': undefined;
   // Agrega aquí otras rutas según sea necesario
 };
 
@@ -149,3 +151,5 @@ type RootStackParamList = {
   '(routes)/map/index': undefined;
   '(routes)/order/index': undefined;
 };
+
+type DrawerNavProp = DrawerNavigationProp<RootParamList>;

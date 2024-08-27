@@ -1,8 +1,9 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { createOrder } from "./orderActions"; // Asegúrate de reemplazar esto con la ruta a tu acción createOrder
+import { createOrder, readOrderStatus } from "./orderActions"; // Asegúrate de reemplazar esto con la ruta a tu acción createOrder
 
 const initialState = {
   order: {
+    _id: "",
     deliveryAddress: "",
     paymentMethod: "",
     totalPrice: 0,
@@ -24,6 +25,19 @@ const orderReducer = createReducer(initialState, (builder) => {
       state.error = null;
     })
     .addCase(createOrder.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as null;
+    })
+    .addCase(readOrderStatus.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(readOrderStatus.fulfilled, (state, action) => {
+      state.loading = false;
+      state.order = action.payload;
+      state.error = null;
+    })
+    .addCase(readOrderStatus.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as null;
     });

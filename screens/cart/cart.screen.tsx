@@ -54,6 +54,7 @@ const CartScreen: React.FC = () => {
   }, []);
 
   const cart = useSelector((state: RootState) => state.cart.cart);
+  // console.log(cart)
   const { products, totalPrice } = cart;
   const cartProducts = JSON.parse(JSON.stringify(products));
 

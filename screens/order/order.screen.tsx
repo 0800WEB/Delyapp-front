@@ -22,6 +22,11 @@ import { router } from "expo-router";
 import { useFonts } from "expo-font";
 import { FontAwesome, AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import * as Notifications from 'expo-notifications';
+import { readOrderStatus } from "@/store/order/orderActions";
+
+type DrawerNavProp = DrawerNavigationProp<RootParamList>;
 
 const OrderScreen: React.FC = () => {
   let [fontsLoaded, fontError] = useFonts({
@@ -43,8 +48,19 @@ const OrderScreen: React.FC = () => {
   }
 
   const dispatch = useDispatch<AppDispatch>();
-  const navigation = useNavigation();
+  const navigation = useNavigation<DrawerNavProp>();
   const order = useSelector((state: RootState) => state.order.order);
+  // console.log(order._id)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      dispatch(readOrderStatus(order._id));
+    }, 60000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   const fadeAnims = useRef(
     [...Array(5)].map(() => new Animated.Value(0))
@@ -63,8 +79,33 @@ const OrderScreen: React.FC = () => {
     ).start();
   }, []);
 
-  const goToHome = () => {
-    navigation.navigate("HOME");
+  if(order.status === "pendiente"){
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "¡Tú Orden ha sido!",
+        body: "Tu Orden está siendo procesada y pronto tendrás una actualización.",
+      },
+      trigger: null,
+    });
+  } else if (order.status === "confirmado"){
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "¡Tu Orden ha sido confirmada!",
+        body: "Tu Orden ha sido confirmada y pronto será enviada.",
+      },
+      trigger: null,
+    });
+  }
+
+  const goToHome = async () => {
+    await Notifications.scheduleNotificationAsync({
+        content: {
+          title: "¡Has vuelto a casa!",
+          body: "Aquí va el cuerpo de la notificación.",
+        },
+        trigger: null,
+      });
+    // navigation.navigate("Home");
   };
 
   return (

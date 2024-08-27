@@ -27,7 +27,7 @@ import { AppDispatch, RootState } from "@/store/store";
 import { useNavigation } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 
-type DrawerNavProp = DrawerNavigationProp<RootParamList>;
+
 
 export default function SignInScreen() {
   let [fontsLoaded, fontError] = useFonts({

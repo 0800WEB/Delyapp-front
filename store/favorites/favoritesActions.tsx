@@ -4,6 +4,7 @@ import { SERVER_URI } from "@/utils/uri";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { _retrieveData, parseToJson } from "@/utils/util";
 import { RootState } from "../store";
+import { Toast } from "react-native-toast-notifications";
 
 export const removeFromFavorites = createAsyncThunk(
     "favorites/removeFromFavorites",
@@ -56,8 +57,11 @@ export const toggleFavorite = createAsyncThunk(
             },
           }
         );
-  
-        return response.data.favorite;
+        // console.log(response.data)
+        if(response.data.success){
+          Toast.show("Añadido a favoritos", { type: "success" });
+          return response.data.favorite;
+        }  
       } catch (error) {
         console.error(error);
         return rejectWithValue("Error toggling favorite");
@@ -80,7 +84,7 @@ export const toggleFavorite = createAsyncThunk(
             Authorization: `Bearer ${token}`,
           },
         });
-        // console.log(response.data.favorite)
+        // console.log(response.data)
         return response.data.favorite;
       } catch (error) {
         console.error(error);

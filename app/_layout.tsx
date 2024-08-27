@@ -16,7 +16,7 @@ import store from "@/store/store";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-
+import * as Notifications from 'expo-notifications';
 
 import Start from "./(routes)/start";
 import AdultDisclaimer from "./(routes)/adult-disclaimer";
@@ -36,6 +36,23 @@ SplashScreen.preventAutoHideAsync();
 let persistor = persistStore(store);
 const Stack = createStackNavigator<RootStackParamList>();
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
+
+async function requestPermissions() {
+  const { status } = await Notifications.requestPermissionsAsync();
+  if (status !== 'granted') {
+    alert('No notification permissions!');
+    return false;
+  }
+  return true;
+}
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -54,6 +71,11 @@ export default function RootLayout() {
   useEffect(() => {
     LogBox.ignoreAllLogs(true);
     // console.log("Store: ",store.getState());
+  }, []);
+
+  useEffect(() => {
+    // Solicita permisos de notificación cuando la aplicación se inicia
+    requestPermissions();
   }, []);
 
   if (!loaded) {

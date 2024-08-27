@@ -4,6 +4,7 @@ import { SERVER_URI } from "@/utils/uri";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { _retrieveData, parseToJson } from "@/utils/util";
 import { RootState } from "../store";
+import { Toast } from "react-native-toast-notifications";
 
 export const getCart = createAsyncThunk(
   "cart/getCart",
@@ -51,12 +52,20 @@ export const addToCart = createAsyncThunk(
           },
         }
       );
-      // console.log(response.data.cart)
+      console.log(response.data.success);
       // return response.data.cart;
-      const { cart } = getState() as RootState;
-      const newCart = { ...cart, products: [...cart.cart.products, response.data.product] };
-
-      return newCart;
+      if (response.data.success) {
+        const { cart } = getState() as RootState;
+        const newCart = {
+          ...cart,
+          products: [...cart.cart.products, response.data.product],
+        };
+        Toast.show("Producto añadido al carrito", {type: "success"});
+        return newCart;
+      } else {
+        Toast.show("Ha ocurrido un error, vuelve a intentar", { type: "danger" });
+        return rejectWithValue("Error adding product to cart");
+      }
     } catch (error) {
       console.error(error);
       return rejectWithValue("Error adding product to cart");
@@ -76,19 +85,18 @@ export const removeFromCart = createAsyncThunk(
         return rejectWithValue("No token found");
       }
 
-      const response = await axios.delete(
-        `${SERVER_URI}/carts`,
-        { 
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          data: { productId, quantity }
-        }
-      );
+      const response = await axios.delete(`${SERVER_URI}/carts`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: { productId, quantity },
+      });
       // console.log(response.data.cart)
       // return response.data.cart;
       const { cart } = getState() as RootState;
-      const productIndex = cart.cart.products.findIndex((product: Product) => product._id === productId);
+      const productIndex = cart.cart.products.findIndex(
+        (product: Product) => product._id === productId
+      );
       if (productIndex !== -1) {
         cart.cart.products.splice(productIndex, 1);
       }
@@ -103,5 +111,3 @@ export const removeFromCart = createAsyncThunk(
 
 const cartActions = { addToCart, getCart, removeFromCart };
 export default cartActions;
-
-
