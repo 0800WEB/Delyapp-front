@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, Platform } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
@@ -6,6 +6,8 @@ import { router } from "expo-router";
 import { transform } from "@babel/core";
 import React, { useState } from "react";
 import { RadioButton } from "react-native-paper";
+
+const isIOS = Platform.OS === 'ios';
 
 export default function AdultDisclaimerScreen() {
   let [fontsLoaded, fontError] = useFonts({
@@ -90,9 +92,10 @@ export default function AdultDisclaimerScreen() {
                 style={{
                   fontFamily: "Geomanist Light",
                   color: "#fff",
-                  fontSize: 13,
+                  fontSize: 14,
                   textAlign: "left",
                 }}
+                onPress={() => router.push("/welcome-intro")}
               >
                 Sí, tengo 18+ años
               </Text>
@@ -107,7 +110,7 @@ export default function AdultDisclaimerScreen() {
                 style={{
                   fontFamily: "Geomanist Light",
                   color: "#fff",
-                  fontSize: 13,
+                  fontSize: 14,
                   textAlign: "left",
                 }}
               >

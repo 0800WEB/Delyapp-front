@@ -108,6 +108,33 @@ export const removeFromCart = createAsyncThunk(
     }
   }
 );
+export const clearCart = createAsyncThunk(
+  "cart/clearCart",
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = await _retrieveData({ key: "userToken" });
+      if (!token) {
+        return rejectWithValue("No token found");
+      }
 
-const cartActions = { addToCart, getCart, removeFromCart };
+      const response = await axios.delete(`${SERVER_URI}/carts/clear-cart`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.success) {
+        return { products: [], totalPrice: 0 };
+      } else {
+        Toast.show("No se pudo limpiar el carrito", { type: "danger" });
+        return rejectWithValue("Error clearing cart");
+      }
+    } catch (error) {
+      console.error("Error clearing cart:", error);
+      Toast.show("Error al limpiar el carrito", { type: "danger" });
+      return rejectWithValue("Error clearing cart");
+    }
+  }
+);
+const cartActions = { addToCart, getCart, removeFromCart, clearCart };
 export default cartActions;

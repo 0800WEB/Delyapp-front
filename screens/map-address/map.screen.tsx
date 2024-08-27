@@ -11,6 +11,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
+import { _retrieveData } from "@/utils/util"; // Asegúrate de reemplazar esto con la ruta a tu función de almacenamiento
 
 import MapView, { Marker, Polyline } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
@@ -23,9 +24,14 @@ import { useFonts } from "expo-font";
 import { FontAwesome, Entypo, Ionicons, AntDesign } from "@expo/vector-icons";
 import { useCoupon } from "@/store/coupon/couponActions";
 import { createOrder } from "@/store/order/orderActions";
+import { clearCart } from "@/store/cart/cartActions";
+import { clearSelectedProduct } from '@/store/products/productsActions'
 import { useNavigation } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-
+import { useStripe } from "@stripe/stripe-react-native";
+import axios from "axios";
+import { SERVER_URI } from "@/utils/uri";
+import { Toast } from "react-native-toast-notifications";
 type DrawerNavProp = DrawerNavigationProp<RootParamList>;
 
 type LocationType = { latitude: number; longitude: number } | undefined;
@@ -174,7 +180,63 @@ const MapScreen: React.FC = () => {
       })
     );
     await navigation.navigate("(routes)/order/index");
+    dispatch(clearCart());
   };
+
+  let { initPaymentSheet, presentPaymentSheet } = useStripe();
+
+  const onCheckout = async ({ totalAmount, customerEmail }: { totalAmount: number; customerEmail: string; }) => {
+    try {
+      // 1. Crear el Payment Intent desde el backend
+      const response = await axios.post(`${SERVER_URI}/payments`, {
+        totalAmount,
+        customerEmail,
+      });
+  
+      if (response?.error) {
+        console.log("Something went wrong", response.error);
+        Toast.show("Hubo un problema al crear el Payment Intent", { type: "danger" });
+        return;
+      }
+  
+      // 2. Inicializar el Payment Sheet
+      const { error: paymentSheetError } = await initPaymentSheet({
+        merchantDisplayName: "Luks Testeando",
+        paymentIntentClientSecret: response.data, // Asegúrate de que esta es la correcta respuesta
+        defaultBillingDetails: {
+          name: "lucas",
+        },
+      });
+  
+      if (paymentSheetError) {
+        console.log("Something went wrong", paymentSheetError.message);
+        Toast.show("Error al inicializar el Payment Sheet", { type: "danger" });
+        return;
+      }
+  
+      // 3. Presentar el Payment Sheet
+      const { error: paymentError } = await presentPaymentSheet();
+  
+      if (paymentError) {
+        console.log(`Error code: ${paymentError.code}`, paymentError.message);
+        Toast.show("Pago cancelado o fallido", { type: "danger" });
+        return;
+      }
+  
+      // Si todo salió bien, mostramos un mensaje de éxito
+      Toast.show("Pago realizado con éxito", { type: "success" });
+      await dispatch(clearSelectedProduct())
+      await newOrder();
+
+      // Aquí puedes manejar la confirmación de éxito de la orden
+      console.log("Payment successful!");
+    } catch (error) {
+      console.error("Error en el checkout:", error);
+      Toast.show("Error en el proceso de pago", { type: "danger" });
+    }
+  };
+  
+  
 
   return (
     <LinearGradient
@@ -284,11 +346,12 @@ const MapScreen: React.FC = () => {
                 width: "30%",
                 height: 45,
                 justifyContent: "center",
-                backgroundColor: "#A1A1A1",
+                backgroundColor: couponCode ? "#A1A1A1" : "#cccccc", // Cambia el color si está deshabilitado
                 borderTopRightRadius: 15,
                 borderBottomRightRadius: 15,
               }}
               onPress={applyCoupon}
+              disabled={!couponCode} // Deshabilitar si el campo está vacío
             >
               <Text
                 style={{
@@ -358,7 +421,7 @@ const MapScreen: React.FC = () => {
               <Text style={styles.cartTotal}>TOTAL: </Text>
               {totalPrice && newPrice !== 0 ? (
                 <Text style={styles.cartTotal}>${newPrice.toFixed(2)}</Text>
-              ):(
+              ) : (
                 <Text style={styles.cartTotal}>${totalPrice.toFixed(2)}</Text>
               )}
             </View>
@@ -374,7 +437,12 @@ const MapScreen: React.FC = () => {
               paddingVertical: 15,
               borderRadius: 10,
             }}
-            onPress={newOrder}
+            onPress={() =>
+              onCheckout({
+                totalAmount: 10000,
+                customerEmail: "luxassilva@gmail.com",
+              })
+            }
           >
             <Text
               style={{

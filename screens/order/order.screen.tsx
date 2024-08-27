@@ -25,6 +25,7 @@ import { useNavigation } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import * as Notifications from 'expo-notifications';
 import { readOrderStatus } from "@/store/order/orderActions";
+import { clearSelectedProduct } from "@/store/products/productsActions";
 
 type DrawerNavProp = DrawerNavigationProp<RootParamList>;
 
@@ -105,7 +106,8 @@ const OrderScreen: React.FC = () => {
         },
         trigger: null,
       });
-    // navigation.navigate("Home");
+      dispatch(clearSelectedProduct())
+    navigation.navigate("HOME");
   };
 
   return (
@@ -115,14 +117,14 @@ const OrderScreen: React.FC = () => {
     >
       <View style={styles.top}>
         <Text style={styles.topText}>ESTADO DE LA ORDEN</Text>
-        <TouchableOpacity onPress={() => router.back()}>
+        {/* <TouchableOpacity onPress={() => router.back()}>
           <AntDesign
             name="close"
             size={28}
             color="#A1A1A1"
             style={styles.closeIcon}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       {order && (
         <View style={styles.container}>
@@ -166,7 +168,7 @@ const OrderScreen: React.FC = () => {
           >
             {order.status}
           </Animated.Text>
-          <Button title="Go to Home" onPress={goToHome} />
+          <Button title="Ir al Inicio" onPress={goToHome} />
         </View>
       )}
     </LinearGradient>

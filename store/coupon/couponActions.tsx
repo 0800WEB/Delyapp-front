@@ -9,7 +9,7 @@ export const useCoupon = createAsyncThunk(
   async (code: string, { rejectWithValue }) => {
     try {
       const token = await _retrieveData({ key: "userToken" });
-
+      console.log(token)
       if (!token) {
         return rejectWithValue("No token found");
       }
@@ -25,11 +25,20 @@ export const useCoupon = createAsyncThunk(
         Toast.show("Cupón aplicado con éxito", { type: "success" });
               return response.data.coupon;
       } else {
+        console.log("aca", response.data)
         Toast.show(response.data.message, { type: "danger" });
           return rejectWithValue(response.data.message);
       }
     } catch (error) {
-      console.error(error);
+      if(error?.response?.status == 400){
+        Toast.show(error?.response?.data?.message, { type: "danger" });
+        return rejectWithValue(error?.response?.data?.message);
+      }
+      else if(error?.response?.status == 404){
+        Toast.show(error?.response?.data?.message, { type: "danger" });
+        return rejectWithValue(error?.response?.data?.message);
+      }
+      console.error(error, error?.message);
       return rejectWithValue("Error using coupon");
     }
   }

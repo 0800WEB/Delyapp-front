@@ -262,7 +262,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
               // borderRadius: 4
             }}
           >
-            <Text
+            {/* <Text
               style={[
                 styles.nameText,
                 {
@@ -277,7 +277,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
               ]}
             >
               AGREGAR AL CARRITO
-            </Text>
+            </Text> */}
             <View
               style={{
                 flexDirection: "row",

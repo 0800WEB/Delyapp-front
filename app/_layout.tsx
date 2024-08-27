@@ -31,6 +31,7 @@ import UpdateAccount from "./(routes)/update-account";
 import MapScreen from "@/screens/map-address/map.screen";
 import Order from "./(routes)/order";
 import SearchScreen from "@/screens/searchScreen/search.screen";
+import { StripeProvider } from '@stripe/stripe-react-native'
 
 SplashScreen.preventAutoHideAsync();
 
@@ -85,13 +86,15 @@ export default function RootLayout() {
 
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ToastProvider>
-          <GestureHandlerRootView style={{ flex: 1 }}>
-              <RootLayoutNav />
-          </GestureHandlerRootView>
-        </ToastProvider>
-      </PersistGate>
+      <StripeProvider publishableKey="pk_test_51P8jwTDxD4xxO9b9NbsFppYu1psFaGm8OLe5PlIrE8tiPVUbOOt6XZW7ofdmAh2RGBcbWI4zKd533NW25o8ijDLa00XzNkREIW">
+        <PersistGate loading={null} persistor={persistor}>
+          <ToastProvider>
+            <GestureHandlerRootView style={{ flex: 1 }}>
+                <RootLayoutNav />
+            </GestureHandlerRootView>
+          </ToastProvider>
+        </PersistGate>
+      </StripeProvider>
     </Provider>
   );
 }

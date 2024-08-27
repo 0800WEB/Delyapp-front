@@ -53,15 +53,22 @@ const HomeScreen: React.FC = () => {
 
     return () => clearInterval(interval);
   }, []);
+
   const products = useSelector((state: RootState) => state.products);
   const categories = useSelector((state: RootState) => state.categories);
   const cartItems = useSelector((state: RootState) => state.cart.cart.products);
   const selectedProduct = useSelector((state: RootState) => state.products.selectedProductId);
+
   useEffect(() => {
-    if (selectedProduct) {
-      setSelectedProductId(selectedProduct);
-    }
-  }, [selectedProduct]);
+    setInterval(()=>{
+      if (selectedProduct) {
+        setSelectedProductId(selectedProduct);
+      }else if(selectedProduct?.length == 0){
+        setSelectedProductId("");
+      }
+    }, 1000)
+  }, []);
+  
   // const userInfo = useSelector((state: RootState) => state.user);
   // console.log("Products", userInfo);
 
