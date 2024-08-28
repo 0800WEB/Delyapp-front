@@ -161,7 +161,7 @@ const OrderScreen: React.FC = () => {
           <Animated.Text
             style={[styles.deliveryDetails, { opacity: fadeAnims[4] }]}
           >
-            Dirección de Entrega:
+            Estado del pedido:
           </Animated.Text>
           <Animated.Text
             style={[styles.deliveryStatus, { opacity: fadeAnims[4] }]}

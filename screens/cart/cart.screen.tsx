@@ -25,6 +25,7 @@ import { _retrieveData } from "@/utils/util";
 import { addToCart, removeFromCart } from "@/store/cart/cartActions";
 import { useNavigation } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { clearSelectedProduct } from "@/store/products/productsActions";
 
 type DrawerNavProp = DrawerNavigationProp<RootParamList>;
 
@@ -71,6 +72,13 @@ const CartScreen: React.FC = () => {
   const goToMapScreen = async () => {
     await navigation.navigate('(routes)/map/index');
   }
+  const goToHome = () => {
+    // console.log(prod)
+    if (dispatch) {
+      dispatch(clearSelectedProduct());
+    }
+    router.back();
+  };
 
   if (!cartProducts || cartProducts.length === 0) {
     return (
@@ -82,7 +90,7 @@ const CartScreen: React.FC = () => {
       >
         <View style={styles.top}>
           <Text style={styles.topText}>CARRITO DE COMPRA</Text>
-          <TouchableOpacity onPress={() => router.back()}>
+          <TouchableOpacity onPress={() => goToHome()}>
             <AntDesign
               name="close"
               size={28}
@@ -216,7 +224,7 @@ const CartScreen: React.FC = () => {
       <View style={{ flex: 1, marginTop: 25 }}>
         <View style={styles.top}>
           <Text style={styles.topText}>CARRITO DE COMPRA</Text>
-          <TouchableOpacity onPress={() => router.back()}>
+          <TouchableOpacity onPress={() => goToHome()}>
             <AntDesign
               name="close"
               size={28}

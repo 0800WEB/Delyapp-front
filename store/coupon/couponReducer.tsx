@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { useCoupon } from "./couponActions"; // Asegúrate de reemplazar esto con la ruta a tu acción useCoupon
+import { clearCoupon, useCoupon } from "./couponActions"; // Asegúrate de reemplazar esto con la ruta a tu acción useCoupon
 
 const initialState = {
   coupon: {
@@ -27,7 +27,9 @@ const couponReducer = createReducer(initialState, (builder) => {
     .addCase(useCoupon.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as null;
-    });
+    }).addCase(clearCoupon, (state) => {
+      state.coupon = initialState.coupon// manejar la acción clearSelectedProduct
+    })
 });
 
 export default couponReducer;

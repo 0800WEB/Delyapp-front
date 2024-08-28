@@ -24,7 +24,7 @@ const initialState = {
   totalProducts: 0,
   error: null as any,
   loading: false,
-  selectedProductId: null as string | null,
+  selectedProductId: "",
 };
 
 const productsReducer = createReducer(initialState, (builder) => {
@@ -46,7 +46,7 @@ const productsReducer = createReducer(initialState, (builder) => {
       state.selectedProductId = action.payload ?? null; // manejar la acción selectProduct
     })
     .addCase(clearSelectedProduct, (state) => {
-      state.selectedProductId = null; // manejar la acción clearSelectedProduct
+      state.selectedProductId = ""; // manejar la acción clearSelectedProduct
     })
     .addCase(get_SearchItem.pending, (state) => {
       state.loading = true;

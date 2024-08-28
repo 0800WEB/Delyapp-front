@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 import { SERVER_URI } from '@/utils/uri'; // Asegúrate de reemplazar esto con la ruta a tu archivo de constantes
 import { _retrieveData } from '@/utils/util'; // Asegúrate de reemplazar esto con la ruta a tu función de almacenamiento
@@ -43,3 +43,4 @@ export const useCoupon = createAsyncThunk(
     }
   }
 );
+export const clearCoupon = createAction('coupon/clearCoupon');

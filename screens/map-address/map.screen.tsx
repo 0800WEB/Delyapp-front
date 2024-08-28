@@ -22,7 +22,7 @@ import { GOOGLE_MAPS_APIKEY } from "@/utils/uri";
 import { router } from "expo-router";
 import { useFonts } from "expo-font";
 import { FontAwesome, Entypo, Ionicons, AntDesign } from "@expo/vector-icons";
-import { useCoupon } from "@/store/coupon/couponActions";
+import { useCoupon, clearCoupon} from "@/store/coupon/couponActions";
 import { createOrder } from "@/store/order/orderActions";
 import { clearCart } from "@/store/cart/cartActions";
 import { clearSelectedProduct } from '@/store/products/productsActions'
@@ -181,16 +181,23 @@ const MapScreen: React.FC = () => {
     );
     await navigation.navigate("(routes)/order/index");
     dispatch(clearCart());
+    dispatch(clearCoupon())
   };
 
   let { initPaymentSheet, presentPaymentSheet } = useStripe();
 
-  const onCheckout = async ({ totalAmount, customerEmail }: { totalAmount: number; customerEmail: string; }) => {
+  const onCheckout = async ({ cartId, couponId }: { cartId: string; couponId?: string }) => {
     try {
+      const token = await _retrieveData({ key: "userToken" });
+      if (!token) {
+        Toast.show("Usuario no autenticado", { type: "danger" });
+        return;
+      }
       // 1. Crear el Payment Intent desde el backend
-      const response = await axios.post(`${SERVER_URI}/payments`, {
-        totalAmount,
-        customerEmail,
+      const response = await axios.post(`${SERVER_URI}/payments`, { cartId, couponId }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
   
       if (response?.error) {
@@ -201,8 +208,8 @@ const MapScreen: React.FC = () => {
   
       // 2. Inicializar el Payment Sheet
       const { error: paymentSheetError } = await initPaymentSheet({
-        merchantDisplayName: "Luks Testeando",
-        paymentIntentClientSecret: response.data, // Asegúrate de que esta es la correcta respuesta
+        merchantDisplayName: "Charro Negro",
+        paymentIntentClientSecret: response.data.clientSecret, // Asegúrate de que esta es la correcta respuesta
         defaultBillingDetails: {
           name: "lucas",
         },
@@ -381,20 +388,10 @@ const MapScreen: React.FC = () => {
                   Sutotal:{" "}
                 </Text>
                 <Text style={[styles.cartResume, { textAlign: "left" }]}>
-                  IVA:{" "}
-                </Text>
-                <Text style={[styles.cartResume, { textAlign: "left" }]}>
                   DESCUENTO:{" "}
-                </Text>
-                <Text style={[styles.cartResume, { textAlign: "left" }]}>
-                  PUNTOS:{" "}
-                </Text>
-                <Text style={[styles.cartResume, { textAlign: "left" }]}>
-                  COSTO DE ENVÍO:{" "}
                 </Text>
               </View>
               <View>
-                <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
                 <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
                 {discountPercentage ? (
                   <Text style={styles.cartResume}>
@@ -403,8 +400,6 @@ const MapScreen: React.FC = () => {
                 ) : (
                   <Text style={styles.cartResume}>${discount?.toFixed(2)}</Text>
                 )}
-                <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
-                <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
               </View>
             </View>
             <View
@@ -427,33 +422,34 @@ const MapScreen: React.FC = () => {
             </View>
           </View>
           <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              marginHorizontal: 20,
-              marginBottom: 15,
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "#A1A1A1",
-              paddingVertical: 15,
-              borderRadius: 10,
-            }}
-            onPress={() =>
-              onCheckout({
-                totalAmount: 10000,
-                customerEmail: "luxassilva@gmail.com",
-              })
-            }
-          >
-            <Text
-              style={{
-                color: "white",
-                fontFamily: "Cherione Normal",
-                fontSize: 16,
-              }}
-            >
-              REALIZAR PEDIDO
-            </Text>
-          </TouchableOpacity>
+  style={{
+    flexDirection: "row",
+    marginHorizontal: 20,
+    marginBottom: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: destinationAddress ? "#A1A1A1" : "#cccccc", // Cambia el color si está deshabilitado
+    paddingVertical: 15,
+    borderRadius: 10,
+  }}
+  onPress={() =>
+    onCheckout({
+      cartId: cart._id,
+      ...(coupon?._id && { couponId: coupon._id }), // Solo incluye couponId si existe
+    })
+  }
+  disabled={!destinationAddress} // Deshabilitar si destinationAddress está vacío
+>
+  <Text
+    style={{
+      color: "white",
+      fontFamily: "Cherione Normal",
+      fontSize: 16,
+    }}
+  >
+    REALIZAR PEDIDO
+  </Text>
+</TouchableOpacity>
         </View>
       </ScrollView>
     </LinearGradient>

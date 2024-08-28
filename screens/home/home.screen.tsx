@@ -6,7 +6,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "@/components/header/header";
 import Categories from "@/components/categories/categories";
@@ -59,15 +61,15 @@ const HomeScreen: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.cart.products);
   const selectedProduct = useSelector((state: RootState) => state.products.selectedProductId);
 
-  useEffect(() => {
-    setInterval(()=>{
+  useFocusEffect(
+    useCallback(() => {
       if (selectedProduct) {
         setSelectedProductId(selectedProduct);
-      }else if(selectedProduct?.length == 0){
+      } else if(!selectedProduct) {
         setSelectedProductId("");
       }
-    }, 1000)
-  }, []);
+    }, [selectedProduct])
+  );
   
   // const userInfo = useSelector((state: RootState) => state.user);
   // console.log("Products", userInfo);
