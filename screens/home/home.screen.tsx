@@ -214,7 +214,7 @@ const HomeScreen: React.FC = () => {
             </>
           ) : (
             <>
-              <Highlights />
+              <Highlights selectedProductId={handleProductSelected} />
               <Promos />
               {categories?.categories?.map((category: Category) => {
                 const productsForCategory = products.products.filter(

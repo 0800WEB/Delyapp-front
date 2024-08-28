@@ -14,7 +14,11 @@ import axios from "axios";
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 
-export default function Favorites() {
+interface Favorites{
+  onProductSelected: (productId: string)=> void
+}
+
+export default function Favorites({onProductSelected}:Favorites) {
   let [fontsLoaded, fontError] = useFonts({
     "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
     "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
@@ -46,7 +50,7 @@ export default function Favorites() {
 
   const renderItem = ({ item }: { item: Product }) => {
     return (
-      <TouchableOpacity style={{ marginHorizontal: 2, width: 150 }}>
+      <TouchableOpacity style={{ marginHorizontal: 2, width: 150 }} onPress={()=>onProductSelected(item._id)}>
         <Image
           source={require("@/assets/images/ICONOS-47.png")}
           style={[

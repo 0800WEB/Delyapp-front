@@ -32,7 +32,11 @@ import { categorySliderData } from "@/constants/constants";
 import Popular from "../popular/popular";
 import Favorites from "../favorites/favorites";
 
-export default function Highlights() {
+interface HighlightsProps {
+  selectedProductId: (productId: string)=> void;
+}
+
+export default function Highlights({selectedProductId}:HighlightsProps) {
   const [popularSelect, setPopularSelect] = useState(true);
   const [favoritesSelect, setFavoritesSelect] = useState(false);
   let [fontsLoaded, fontError] = useFonts({
@@ -60,6 +64,11 @@ export default function Highlights() {
     setPopularSelect(false);
     setFavoritesSelect(true);
   };
+
+  const handleProductSelected = (productId: string) => {
+    // console.log(productId);
+    selectedProductId(productId);
+  }
   return (
     <SafeAreaView>
       <View style={styles.selectButtons}>
@@ -80,7 +89,7 @@ export default function Highlights() {
           )}
         </TouchableOpacity>
       </View>
-      {popularSelect ? <Popular /> : <Favorites />}
+      {popularSelect ? <Popular /> : <Favorites onProductSelected={handleProductSelected} />}
     </SafeAreaView>
   );
 }
