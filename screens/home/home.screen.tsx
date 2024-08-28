@@ -16,21 +16,22 @@ import SearchInput from "@/components/search/searchInput";
 import Highlights from "@/components/highlights/highlights";
 import Promos from "@/components/promos/promos";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/store/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-import { get_allItems, selectProduct } from "@/store/products/productsActions";
-import { get_allCategories } from "@/store/categories/categoriesActions";
 import CategoryProducts from "@/components/categoryProducts/categoryProducts";
 import AllCategoryProducts from "@/components/alProducts/allProductsCategories";
-import { getCart } from "@/store/cart/cartActions";
 import ProductDetailsScreen from "../product-details/product.detail";
 import { useNavigation } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { DrawerActions } from "@react-navigation/native";
-import { getFavorites } from "@/store/favorites/favoritesActions";
 import { PanResponder, Animated } from "react-native";
 import { Dimensions } from "react-native";
+//store
+import { AppDispatch, RootState } from "@/store/store";
+import { get_allItems, selectProduct } from "@/store/products/productsActions";
+import { get_allCategories } from "@/store/categories/categoriesActions";
+import { getCart } from "@/store/cart/cartActions";
+import { getFavorites } from "@/store/favorites/favoritesActions";
 
 type DrawerNavProp = DrawerNavigationProp<RootParamList>;
 
@@ -111,7 +112,9 @@ const HomeScreen: React.FC = () => {
   useEffect(() => {
     if (selectedCategory) {
       const selectedCategoryObj = (categories.categories as Category[])?.find(
-        (category: Category) => category.name === selectedCategory
+        (category: Category) => {
+        return category.name.toLowerCase() == selectedCategory.toLowerCase()
+        }
       );
       console.log("Cat:", selectedCategoryObj);
       let selectedProducts: Product[] = [];
@@ -196,6 +199,7 @@ const HomeScreen: React.FC = () => {
           <Categories
             onItemSelected={(title: string) => {
               setSelectedCategory(title);
+              console.log(title)
             }}
             resetSelectedTitle={reset}
           />
@@ -214,7 +218,7 @@ const HomeScreen: React.FC = () => {
               <Promos />
               {categories?.categories?.map((category: Category) => {
                 const productsForCategory = products.products.filter(
-                  (product: Product) => product.category === category._id
+                  (product: Product) => product.category === category._id 
                 );
                 return (
                   <AllCategoryProducts

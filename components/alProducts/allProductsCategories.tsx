@@ -53,7 +53,7 @@ const AllCategoryProducts: React.FC<AllCategoryProductsProps> = ({
           onPress={() => onProductSelected(item._id)}
         >
           <Image
-            source={require("@/assets/images/ICONOS-47.png")}
+            source={{ uri: item.images[0] }}
             style={[
               styles.imageStyle,
               { alignSelf: "center", backgroundColor: "#A1A1A1" },

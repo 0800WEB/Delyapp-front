@@ -36,7 +36,7 @@ export const get_SearchItem = createAsyncThunk(
       if (!token) {
         return rejectWithValue("No token found");
       }
-      const response = await axios.get(`${SERVER_URI}/products?name=${productName}`, {
+      const response = await axios.get(`${SERVER_URI}/products?name=${productName?.trim()}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

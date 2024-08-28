@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 
 export const get_allCategories = createAsyncThunk(
-  "products/getAllProducts",
+  "categories/getAllCategories",
   async () => {
     try {
       const response = await axios.get(`${SERVER_URI}/categories`);

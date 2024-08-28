@@ -226,7 +226,6 @@ const MapScreen: React.FC = () => {
   
       if (paymentError) {
         console.log(`Error code: ${paymentError.code}`, paymentError.message);
-        Toast.show("Pago cancelado o fallido", { type: "danger" });
         return;
       }
   
