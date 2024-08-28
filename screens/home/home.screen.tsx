@@ -75,40 +75,6 @@ const HomeScreen: React.FC = () => {
   // const userInfo = useSelector((state: RootState) => state.user);
   // console.log("Products", userInfo);
 
-  const screenWidth = Dimensions.get("window").width;
-  const screenHeight = Dimensions.get("window").height;
-  const buttonRadius = 30;
-
-  const pan = new Animated.ValueXY();
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onPanResponderGrant: () => {
-      pan.setOffset({
-        x: pan.x._value,
-        y: pan.y._value,
-      });
-    },
-    onPanResponderMove: Animated.event(
-      [
-        null,
-        {
-          dx: pan.x, // x,y are Animated.Value
-          dy: pan.y,
-        },
-      ],
-      { useNativeDriver: false }
-    ),
-    onPanResponderRelease: (e, gesture) => {
-      pan.flattenOffset();
-    },
-  });
-
-  const logout = async () => {
-    await AsyncStorage.removeItem("userToken");
-    await AsyncStorage.removeItem("userInfo");
-    router.push("select-sign");
-  };
-
   useEffect(() => {
     if (selectedCategory) {
       const selectedCategoryObj = (categories.categories as Category[])?.find(
@@ -152,32 +118,7 @@ const HomeScreen: React.FC = () => {
         openDrawer={() => navigation.dispatch(DrawerActions.openDrawer())}
       />
       {cartItems.length > 0 && (
-        <Animated.View
-          {...panResponder.panHandlers}
-          style={[
-            styles.floatingButton,
-            {
-              left: 0,
-              top: 25,
-              transform: [
-                {
-                  translateX: pan.x.interpolate({
-                    inputRange: [-1, screenWidth - buttonRadius * 2 + 1],
-                    outputRange: [0, screenWidth - buttonRadius * 2],
-                    extrapolate: "clamp",
-                  }),
-                },
-                {
-                  translateY: pan.y.interpolate({
-                    inputRange: [-1, screenHeight - buttonRadius * 2 + 1],
-                    outputRange: [0, screenHeight - buttonRadius * 2],
-                    extrapolate: "clamp",
-                  }),
-                },
-              ],
-            },
-          ]}
-        >
+        <View style={styles.floatingButton}>
           <TouchableOpacity onPress={() => navigation.navigate("CARRITO")}>
             <AntDesign
               name="shoppingcart"
@@ -186,7 +127,7 @@ const HomeScreen: React.FC = () => {
               style={[styles.floatingButtonText]}
             />
           </TouchableOpacity>
-        </Animated.View>
+        </View>
       )}
       {selectedProductId !== "" ? (
         <ProductDetailsScreen
@@ -266,6 +207,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#A1A1A1",
     borderRadius: 35,
     zIndex: 100,
+    //Color de la sombra
     shadowColor: "#54AB6A",
     shadowOffset: {
       width: 15,
@@ -273,7 +215,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 2,
+    right: 25,
+    bottom: 25,
   },
   floatingButtonText: {
     marginLeft: -4,

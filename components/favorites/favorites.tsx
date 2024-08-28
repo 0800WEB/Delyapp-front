@@ -40,6 +40,8 @@ export default function Favorites({onProductSelected}:Favorites) {
     (state: RootState) => state.favorite.favorites.products
   );
 
+  
+
   const getItem = (favoriteItems: Product[], index: number) =>
     favoriteItems[index];
 
@@ -78,7 +80,7 @@ export default function Favorites({onProductSelected}:Favorites) {
               },
             ]}
           >
-            {item.category.substring(0, 11)}
+            {item.description.substring(0, 11)}
           </Text>
           <View style={{ flexDirection: "row" }}>
             <Text style={[styles.titleText]}>${item.price}</Text>

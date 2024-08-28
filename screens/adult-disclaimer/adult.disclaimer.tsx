@@ -1,4 +1,11 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, Platform } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
@@ -7,7 +14,7 @@ import { transform } from "@babel/core";
 import React, { useState } from "react";
 import { RadioButton } from "react-native-paper";
 
-const isIOS = Platform.OS === 'ios';
+const isIOS = Platform.OS === "ios";
 
 export default function AdultDisclaimerScreen() {
   let [fontsLoaded, fontError] = useFonts({
@@ -28,7 +35,16 @@ export default function AdultDisclaimerScreen() {
 
   if (!fontsLoaded && !fontError) {
     return null;
-  }  
+  }
+  const [selectedOption, setSelectedOption] = useState<"first" | "second" | "">(
+    ""
+  );
+  const handleOptionChange = (option: "first" | "second") => {
+    setSelectedOption(option);
+    if (option === "first") {
+      router.push("/welcome-intro");
+    }
+  };
 
   return (
     <LinearGradient
@@ -72,52 +88,51 @@ export default function AdultDisclaimerScreen() {
         <View
           style={{ flex: 1, marginTop: 40, gap: 2, marginHorizontal: "20%" }}
         >
-          <RadioButton.Group
-            onValueChange={(newValue: React.SetStateAction<string>) =>
-              {setChecked(newValue as "first" | "second" | "");
-              if (newValue === 'first') {
-                router.push('/welcome-intro');
-              }}
-            }
-            value={checked}
+          <TouchableOpacity
+            style={styles.radioButton}
+            onPress={() => handleOptionChange("first")}
           >
-            <View style={styles.radioButton}>
-              <RadioButton
-                uncheckedColor="white"
-                color="black"
-                value="first"
-                onPress={() => router.push("/welcome-intro")}
-              />
-              <Text
-                style={{
-                  fontFamily: "Geomanist Light",
-                  color: "#fff",
-                  fontSize: 14,
-                  textAlign: "left",
-                }}
-                onPress={() => router.push("/welcome-intro")}
-              >
-                Sí, tengo 18+ años
-              </Text>
-            </View>
-            <View style={styles.radioButton}>
-              <RadioButton
-                uncheckedColor="white"
-                color="black"
-                value="second"
-              />
-              <Text
-                style={{
-                  fontFamily: "Geomanist Light",
-                  color: "#fff",
-                  fontSize: 14,
-                  textAlign: "left",
-                }}
-              >
-                No, no cumplo la edad requerida
-              </Text>
-            </View>
-          </RadioButton.Group>
+            <View
+              style={[
+                styles.radioCircle,
+                selectedOption === "first" && styles.selectedRadioCircle,
+              ]}
+            />
+            <Text
+              style={{
+                fontFamily: "Geomanist Light",
+                color: "#fff",
+                fontSize: 14,
+                textAlign: "left",
+                marginLeft: 10,
+              }}
+            >
+              Sí, tengo 18+ años
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.radioButton}
+            onPress={() => handleOptionChange("second")}
+          >
+            <View
+              style={[
+                styles.radioCircle,
+                selectedOption === "second" && styles.selectedRadioCircle,
+              ]}
+            />
+            <Text
+              style={{
+                fontFamily: "Geomanist Light",
+                color: "#fff",
+                fontSize: 14,
+                textAlign: "left",
+                marginLeft: 10,
+              }}
+            >
+              No, no cumplo la edad requerida
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </LinearGradient>
@@ -162,5 +177,17 @@ export const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "cover",
+  },
+  radioCircle: {
+    height: 20,
+    width: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  selectedRadioCircle: {
+    backgroundColor: "white",
   },
 });
