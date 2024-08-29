@@ -78,7 +78,7 @@ export default function SearchScreen() {
   const renderItem = ({ item }: { item: any }) => (
     <TouchableOpacity style={styles.productCard} onPress={() => handleProductSelected(item._id)}>
       <Image
-        source={require("@/assets/images/ICONOS-47.png")}
+        source={{uri: item.images[0]}}
         style={styles.imageStyle}
       />
       <View style={styles.textContainer}>
@@ -125,7 +125,6 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 0.15,
     borderColor: "#A1A1A1",
-    backgroundColor: "#A1A1A1",
   },
   textContainer: {
     marginLeft: 10,

@@ -125,6 +125,7 @@ type CartProduct ={
   _id: string;
   product: Product;
   quantity: number;
+  images: string;
 }
 
 type RootParamList = {

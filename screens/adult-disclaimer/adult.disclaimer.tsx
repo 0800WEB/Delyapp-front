@@ -1,20 +1,10 @@
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  Platform,
-} from "react-native";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { View, Text, Image, StyleSheet, TouchableOpacity, Platform } from "react-native";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import { transform } from "@babel/core";
 import React, { useState } from "react";
-import { RadioButton } from "react-native-paper";
 
-const isIOS = Platform.OS === "ios";
+const isIOS = Platform.OS === 'ios';
 
 export default function AdultDisclaimerScreen() {
   let [fontsLoaded, fontError] = useFonts({
@@ -29,16 +19,14 @@ export default function AdultDisclaimerScreen() {
     "Geomanist Thin": require("../../assets/fonts/Geomanist-Thin.otf"),
     "Geomanist ExtraLight": require("../../assets/fonts/Geomanist-ExtraLight.otf"),
     "Geomanist Ultra": require("../../assets/fonts/Geomanist-Ultra.otf"),
-    ...FontAwesome.font,
   });
-  const [checked, setChecked] = useState<"first" | "second" | "">("");
+  
+  const [selectedOption, setSelectedOption] = useState<"first" | "second" | "">("");
 
   if (!fontsLoaded && !fontError) {
     return null;
-  }
-  const [selectedOption, setSelectedOption] = useState<"first" | "second" | "">(
-    ""
-  );
+  }  
+
   const handleOptionChange = (option: "first" | "second") => {
     setSelectedOption(option);
     if (option === "first") {
@@ -110,7 +98,7 @@ export default function AdultDisclaimerScreen() {
               Sí, tengo 18+ años
             </Text>
           </TouchableOpacity>
-
+          
           <TouchableOpacity
             style={styles.radioButton}
             onPress={() => handleOptionChange("second")}
@@ -139,7 +127,7 @@ export default function AdultDisclaimerScreen() {
   );
 }
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   imageContainer: {
     position: "absolute",
     alignItems: "center",
@@ -157,6 +145,19 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     marginBottom: 10,
+    paddingVertical: 10,
+  },
+  radioCircle: {
+    height: 20,
+    width: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  selectedRadioCircle: {
+    backgroundColor: "white",
   },
   centeredText: {
     display: "flex",
@@ -177,17 +178,5 @@ export const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "cover",
-  },
-  radioCircle: {
-    height: 20,
-    width: 20,
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  selectedRadioCircle: {
-    backgroundColor: "white",
   },
 });

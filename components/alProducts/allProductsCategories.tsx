@@ -56,7 +56,7 @@ const AllCategoryProducts: React.FC<AllCategoryProductsProps> = ({
             source={{ uri: item.images[0] }}
             style={[
               styles.imageStyle,
-              { alignSelf: "center", backgroundColor: "#A1A1A1" },
+              { alignSelf: "center" },
             ]}
           />
           <View style={styles.containerTitle}>

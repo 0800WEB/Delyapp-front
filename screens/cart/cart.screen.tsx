@@ -133,15 +133,26 @@ const CartScreen: React.FC = () => {
         }}
       >
         <View style={{ flexDirection: "row", width: "60%" }}>
+          {item.images ? (
           <Image
-            source={require("@/assets/images/ICONOS-47.png")}
-            style={{
-              backgroundColor: "#A1A1A1",
-              aspectRatio: 1,
-              width: 85,
-              borderRadius: 15,
-            }}
+          source={{uri: item?.images[0]}}
+          style={{
+            aspectRatio: 1,
+            width: 85,
+            borderRadius: 15,
+          }}
           />
+          ):(
+          <Image
+          source={require("@/assets/images/ICONOS-47.png")}
+          style={{
+            aspectRatio: 1,
+            width: 85,
+            borderRadius: 15,
+            backgroundColor: "#A1A1A1",
+          }}
+          />
+          )}
           <View>
             <Text
               style={{
@@ -340,7 +351,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   imageContainer: {
-    backgroundColor: "#A1A1A1",
     alignSelf: "center",
     aspectRatio: 1,
     height: 250,

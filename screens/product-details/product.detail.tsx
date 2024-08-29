@@ -196,6 +196,8 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
       </View>
     );
   }
+  
+  // console.log(product)
 
   return (
     <View style={{ flex: 1 }}>
@@ -237,7 +239,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
         </TouchableOpacity>
         <View>
           <Image
-            source={require("@/assets/images/ICONOS-47.png")}
+            source={{uri: product.images[0]}}
             style={styles.imageContainer}
           />
         </View>
@@ -367,7 +369,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   imageContainer: {
-    backgroundColor: "#A1A1A1",
     alignSelf: "center",
     aspectRatio: 1,
     height: 250,
