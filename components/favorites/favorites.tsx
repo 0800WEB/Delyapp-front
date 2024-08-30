@@ -14,11 +14,11 @@ import axios from "axios";
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 
-interface Favorites{
-  onProductSelected: (productId: string)=> void
+interface Favorites {
+  onProductSelected: (productId: string) => void;
 }
 
-export default function Favorites({onProductSelected}:Favorites) {
+export default function Favorites({ onProductSelected }: Favorites) {
   let [fontsLoaded, fontError] = useFonts({
     "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
     "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
@@ -40,8 +40,6 @@ export default function Favorites({onProductSelected}:Favorites) {
     (state: RootState) => state.favorite.favorites.products
   );
 
-  
-
   const getItem = (favoriteItems: Product[], index: number) =>
     favoriteItems[index];
 
@@ -52,38 +50,78 @@ export default function Favorites({onProductSelected}:Favorites) {
 
   const renderItem = ({ item }: { item: Product }) => {
     return (
-      <TouchableOpacity style={{ marginHorizontal: 2, width: 150 }} onPress={()=>onProductSelected(item._id)}>
+      <TouchableOpacity
+        style={{
+          marginHorizontal: 5,
+          height: 280,
+          width: 130,
+          borderColor: "#A1A1A1",
+          borderWidth: 0.3,
+          borderRadius: 15,
+          shadowColor: "#A1A1A1",
+          justifyContent: "space-between",
+        }}
+        onPress={() => onProductSelected(item._id)}
+      >
         <Image
-          source={{uri: item.images[0]}}
-          style={[
-            styles.imageStyle,
-            { alignSelf: "center" },
-          ]}
+          source={{ uri: item.images[0] }}
+          style={[styles.imageStyle, { alignSelf: "center" }]}
         />
-        <View style={styles.containerTitle}>
-          <Text style={styles.titleText}>{item.name.substring(0, 11)}</Text>
-          <View style={{ flexDirection: "row" }}>
-            <Image
-              source={require("@/assets/images/ICONOS-12.png")}
-              style={styles.starStyle}
-            />
-          </View>
-        </View>
         <View style={styles.containerTitle}>
           <Text
             style={[
               styles.titleText,
               {
-                fontFamily: "Cherione Regular",
-                fontSize: 10.5,
+                fontFamily: "Geomanist Medium",
+                fontSize: 17,
                 alignSelf: "center",
+                color: "#000024",
               },
             ]}
           >
-            {item.description.substring(0, 11)}
+            {item.name.substring(0, 11)}
           </Text>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Text
+            style={[
+              styles.titleText,
+              {
+                fontFamily: "Geomanist Regular",
+                fontSize: 17,
+                justifyContent: "center",
+                color: "#000024",
+                marginHorizontal: "auto",
+                textAlign: "center",
+                paddingVertical: 5,
+              },
+            ]}
+          >
+            {item.description}
+          </Text>
+        </View>
+        <View
+          style={{
+            backgroundColor: "#000024",
+            borderBottomLeftRadius: 15,
+            borderBottomRightRadius: 15,
+            alignItems: "center",
+          }}
+        >
           <View style={{ flexDirection: "row" }}>
-            <Text style={[styles.titleText]}>${item.price}</Text>
+            <Text
+              style={[
+                styles.titleText,
+                {
+                  paddingVertical: 13,
+                  fontFamily: "Geomanist Medium",
+                  color: "white",
+                  fontSize: 15,
+                },
+              ]}
+            >
+              ${item.price} MXN
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -112,10 +150,9 @@ export const styles = StyleSheet.create({
   imageStyle: {
     height: 130,
     aspectRatio: 1,
-    marginHorizontal: 5,
-    marginTop: 10,
     marginBottom: 5,
-    borderRadius: 15,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
     borderWidth: 0.15,
     borderColor: "#A1A1A1",
   },
@@ -130,8 +167,8 @@ export const styles = StyleSheet.create({
     color: "#A1A1A1",
   },
   containerTitle: {
-    flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     width: 130,
     alignSelf: "center",
   },
@@ -149,6 +186,6 @@ export const styles = StyleSheet.create({
   titleText: {
     fontFamily: "Geomanist Medium",
     fontSize: 14,
-    color: "#A1A1A1",
+    color: "#000024",
   },
 });

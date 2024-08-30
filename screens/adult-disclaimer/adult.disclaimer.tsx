@@ -36,7 +36,7 @@ export default function AdultDisclaimerScreen() {
 
   return (
     <LinearGradient
-      colors={["#000", "#000"]}
+      colors={["#000026", "#000026"]}
       style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
     >
       <View style={styles.imageContainer}>
@@ -47,7 +47,7 @@ export default function AdultDisclaimerScreen() {
       </View>
       <View style={styles.centeredContainer}>
         <Image
-          style={[{ transform: [{ scale: 0.4 }] }]}
+          style={[{ transform: [{ scale: 1}], alignSelf: "center", marginBottom: 30 }]}
           source={require("@/assets/images/ICONOS-38.png")}
         />
         <Text style={styles.centeredText}>
@@ -55,10 +55,10 @@ export default function AdultDisclaimerScreen() {
             style={{
               fontFamily: "Geomanist Light",
               color: "#fff",
-              fontSize: 11,
+              fontSize: 14,
             }}
           >
-            CHARRO NEGRO
+            DRINGO
           </Text>
           <Text> </Text>
           <Text
@@ -66,6 +66,8 @@ export default function AdultDisclaimerScreen() {
               fontFamily: "Geomanist Light",
               color: "#fff",
               fontSize: 15,
+              lineHeight: 20,
+              textAlign: "center"
             }}
           >
             ofrece productos válidos solo para mayores de 18 años, por esta
@@ -74,7 +76,7 @@ export default function AdultDisclaimerScreen() {
         </Text>
 
         <View
-          style={{ flex: 1, marginTop: 40, gap: 2, marginHorizontal: "20%" }}
+          style={{ flex: 1, marginTop: 20, gap: 2, marginHorizontal: "20%" }}
         >
           <TouchableOpacity
             style={styles.radioButton}
@@ -163,8 +165,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: -20,
-    marginHorizontal: "22%",
+    marginHorizontal: "15%",
     textAlign: "center",
   },
   fullscreenContainer: {

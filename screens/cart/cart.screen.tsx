@@ -1,22 +1,17 @@
 import {
-  StatusBar,
   StyleSheet,
   View,
   Text,
   ScrollView,
   Image,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   SafeAreaView,
   FlatList,
-  TextInput,
 } from "react-native";
-import { FontAwesome, Entypo, Ionicons, AntDesign } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
-import { useRouting } from "expo-next-react-navigation";
+import { FontAwesome, AntDesign } from "@expo/vector-icons";
+import React, { useEffect} from "react";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import AllCategoryProducts from "@/components/alProducts/allProductsCategories";
 import { router } from "expo-router";
 import { useFonts } from "expo-font";
 import { useDispatch } from "react-redux";
@@ -26,6 +21,9 @@ import { addToCart, removeFromCart } from "@/store/cart/cartActions";
 import { useNavigation } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { clearSelectedProduct } from "@/store/products/productsActions";
+import Header from "@/components/header/header";
+import SearchInput from "@/components/search/searchInput";
+import { DrawerActions } from "@react-navigation/native";
 
 type DrawerNavProp = DrawerNavigationProp<RootParamList>;
 
@@ -233,27 +231,22 @@ const CartScreen: React.FC = () => {
 
     return (
       <View style={{ flex: 1, marginTop: 25 }}>
+        <Header
+        openDrawer={() => navigation.dispatch(DrawerActions.openDrawer())}
+      />
+      <SearchInput homeScreen={true} />
         <View style={styles.top}>
-          <Text style={styles.topText}>CARRITO DE COMPRA</Text>
+          <Text style={[styles.topText, {marginTop: 2}]}>CARRITO DE COMPRAS</Text>
           <TouchableOpacity onPress={() => goToHome()}>
             <AntDesign
               name="close"
-              size={28}
-              color="#A1A1A1"
-              style={styles.closeIcon}
+              size={20}
+              color="#000024"
+              style={{ height: 40, aspectRatio: 1 }}
             />
           </TouchableOpacity>
         </View>
-        <ScrollView>
-          <Image
-            source={require("@/assets/images/img-06.jpg")}
-            style={{
-              height: 150,
-              width: "100%",
-              objectFit: "cover",
-              overflow: "hidden",
-            }}
-          />
+        <ScrollView style={{ marginBottom: 10 }}>          
           <SafeAreaView
             style={{ borderTopRightRadius: 50, borderTopLeftRadius: 50 }}
           >
@@ -327,16 +320,16 @@ const styles = StyleSheet.create({
   },
   top: {
     flexDirection: "row",
-    paddingTop: 15,
+    paddingTop: 18,
     paddingLeft: 15,
-    borderBottomColor: "#949494",
+    borderBottomColor: "#A1A1A1",
     justifyContent: "space-between",
     borderBottomWidth: 1,
   },
   topText: {
-    fontFamily: "Cherione Regular",
-    fontSize: 20,
-    color: "#949494",
+    fontFamily: "Geomanist Regular",
+    fontSize: 15,
+    color: "#000024",
   },
   closeIcon: {
     height: 40,

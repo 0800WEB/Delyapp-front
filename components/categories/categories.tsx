@@ -90,18 +90,16 @@ export const styles = StyleSheet.create({
     aspectRatio: 1,
     marginHorizontal: 5,
     marginVertical: 10,
-    borderRadius: 15,
-    borderWidth: 0.15,
-    borderColor: "#A1A1A1",
   },
   topText: {
     display: "flex",
-    paddingTop: 8,
-    paddingBottom: 8,
+    paddingTop: 16,
+    paddingBottom: 16,
     paddingLeft: 15,
     fontFamily: "Geomanist Regular",
     borderBottomColor: "#A1A1A1",
     borderBottomWidth: 0.8,
-    color: "#A1A1A1",
+    color: "#000024",
+    backgroundColor: "white"
   },
 });

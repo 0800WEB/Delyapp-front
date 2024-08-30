@@ -7,7 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
   Platform,
-  ActivityIndicator
+  ActivityIndicator,
+  Keyboard
 } from "react-native";
 import {
   AntDesign,
@@ -64,9 +65,29 @@ export default function SignUpScreen() {
   const [dateChanged, setDateChanged] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
-
+  const [keyboardStatus, setKeyboardStatus] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const authState = useSelector((state: {user: AuthState}) => state.user);
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardStatus(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardStatus(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   function isOver18(birthDate: Date) {
     const currentDate = new Date();
@@ -204,13 +225,13 @@ export default function SignUpScreen() {
     >
       <Text style={styles.topText}>REGISTRO</Text>
       <ScrollView
-        style={{ backgroundColor: "#F9F6F7", flex: 1, alignContent: "center" }}
+        style={{ flex: 1, alignContent: "center", zIndex: 2 }}
       >
         <Image
-          source={require("@/assets/images/CHARRO_NEGRO-03.png")}
+          source={require("@/assets/images/ICONOS-01.png")}
           style={[
             styles.signInImage,
-            { backgroundColor: "#F9F6F7", opacity: 0.67 },
+            { transform:[{scale:0.4}] },
           ]}
         />
         <View style={styles.inputContainer}>
@@ -219,17 +240,11 @@ export default function SignUpScreen() {
               style={[styles.input, {}]}
               keyboardType="default"
               value={userInfo.name}
-              placeholder="Nombre de Usuario"
+              placeholder="Nombre"
               onChangeText={(value) =>
                 setUserInfo({ ...userInfo, name: value })
               }
-            />
-            <AntDesign
-              style={{ position: "absolute", left: 26, top: 12 }}
-              name="user"
-              size={20}
-              color="#A1A1A1"
-            />
+            />           
           </View>
           <View>
             <TextInput
@@ -241,29 +256,19 @@ export default function SignUpScreen() {
                 setUserInfo({ ...userInfo, email: value })
               }
             />
-            <Fontisto
-              style={{ position: "absolute", left: 26, top: 12 }}
-              name="email"
-              size={20}
-              color="#A1A1A1"
-            />
+           
           </View>
           <View>
             <TextInput
               style={[styles.input, {}]}
               keyboardType="number-pad"
               value={userInfo.phone}
-              placeholder="Número de Teléfono"
+              placeholder="Teléfono"
               onChangeText={(value) =>
                 setUserInfo({ ...userInfo, phone: value })
               }
             />
-            <AntDesign
-              style={{ position: "absolute", left: 26, top: 12 }}
-              name="phone"
-              size={20}
-              color="#A1A1A1"
-            />
+           
           </View>
           <View>
             <TouchableOpacity style={styles.button} onPress={showDatepicker}>
@@ -282,13 +287,7 @@ export default function SignUpScreen() {
                 display="default"
                 onChange={onChange}
               />
-            )}
-            <AntDesign
-              style={{ position: "absolute", left: 26, top: 12 }}
-              name="calendar"
-              size={20}
-              color="white"
-            />
+            )}           
           </View>
           <View>
             <TextInput
@@ -309,12 +308,7 @@ export default function SignUpScreen() {
                 <Ionicons name="eye-outline" size={23} color={"#A1A1A1"} />
               )}
             </TouchableOpacity>
-            <SimpleLineIcons
-              style={{ position: "absolute", left: 26, top: 12 }}
-              name="lock"
-              size={20}
-              color="#A1A1A1"
-            />
+            
             {error.password && (
               <View style={[styles.errorContainer, { top: 10 }]}>
                 <Entypo name="cross" size={18} color={"red"} />
@@ -345,37 +339,48 @@ export default function SignUpScreen() {
         </View>
         <TouchableOpacity
           style={[
-            styles.button,
-            { paddingLeft: -35, marginHorizontal: 32, marginTop: 15 },
+            styles.button3,
+            { paddingLeft: -35, marginHorizontal: 32, marginTop: 20 },
           ]}
-        >
-          {buttonSpinner ? (
-            <ActivityIndicator size="small" color="white" style={{marginVertical: "auto"}} />
-          ) : (
-          <Text
-          style={[
-            {
-              color: "white",
-              marginTop: 11,
-              fontSize: 16,
-              fontFamily: "Cherione Regular",
-              textAlign: "center",
-            },
-          ]}
-          onPress={handleSignIn}
           >
-            REGISTRARSE
-          </Text>
+          {buttonSpinner ? (
+            <ActivityIndicator size="small" color="#016AF5" style={{marginVertical: "auto"}} />
+            ) : (
+              <View style={styles.buttonWrapper}>
+            <Image
+              source={require("@/assets/images/BUTTON.png")}
+              style={styles.button2}
+              />
+            <Text
+              onPress={handleSignIn}
+              style={[
+                {
+                  fontFamily: "Geomanist Regular",
+                  color: "white",
+                  fontSize: 19,
+                },
+              ]}
+            >
+              REGISTRARSE
+            </Text>
+          </View>
             )}
         </TouchableOpacity>
       </ScrollView>
+      {!keyboardStatus && (
+        <Image
+          source={require("@/assets/images/ICONOS-42.png")}
+          style={{ position: "absolute", zIndex: 1, left: 0, bottom: 0 }}
+          resizeMode="contain"
+        />
+      )}
     </LinearGradient>
   );
 }
 
 export const styles = StyleSheet.create({
   checkboxContainer: {
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "transparent",
     borderWidth: 0,
     marginTop: -5,
     marginLeft: 25,
@@ -401,28 +406,29 @@ export const styles = StyleSheet.create({
     rowGap: 20,
   },
   input: {
-    height: 45,
+    height: 40,
     marginHorizontal: 16,
-    borderRadius: 15,
+    borderRadius: 25,
     borderColor: "#A1A1A1",
-    borderWidth: 0.8,
+    borderWidth: 0.4,
     paddingLeft: 35,
     fontSize: 16,
+    alignContent: "center",
     fontFamily: "Geomanist Regular",
     backgroundColor: "white",
     color: "#A1A1A1",
   },
   button: {
-    height: 45,
+    height: 40,
     marginHorizontal: 16,
-    borderRadius: 15,
+    borderRadius: 25,
     borderColor: "#A1A1A1",
     borderWidth: 0.8,
     paddingLeft: 35,
     backgroundColor: "#A1A1A1",
   },
   signInImage: {
-    width: "60%",
+    aspectRatio:1,
     height: 250,
     alignSelf: "center",
     marginTop: -40,
@@ -435,12 +441,13 @@ export const styles = StyleSheet.create({
     fontFamily: "Geomanist Regular",
     borderBottomColor: "#949494",
     borderBottomWidth: 1,
-    color: "#949494",
+    color: "white",
+    backgroundColor: "#000024"
   },
   buttonText: {
     color: "white",
     textAlign: "left",
-    marginTop: 11,
+    marginTop: 9,
     fontSize: 16,
     fontFamily: "Geomanist Regular",
   },
@@ -481,12 +488,29 @@ export const styles = StyleSheet.create({
   visibleIcon: {
     position: "absolute",
     right: 30,
-    top: 11,
+    top: 8,
   },
   errorContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 16,
     top: 60,
+  },
+  buttonWrapper: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button2: {
+    position: "absolute",
+    width: 200,
+    height: 45,
+    borderRadius: 60,
+  },
+  button3: {
+    width: 200,
+    height: 45,
+    borderRadius: 60,
+    alignSelf: "center",
   },
 });

@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  Keyboard
 } from "react-native";
 import {
   AntDesign,
@@ -16,7 +17,7 @@ import {
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { responsiveWidth } from "react-native-responsive-dimensions";
 
 import { Toast } from "react-native-toast-notifications";
@@ -25,9 +26,6 @@ import { sign_in } from "@/store/user/authActions";
 import { AppDispatch, RootState } from "@/store/store";
 
 import { useNavigation } from "@react-navigation/native";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
-
-
 
 export default function SignInScreen() {
   let [fontsLoaded, fontError] = useFonts({
@@ -46,10 +44,11 @@ export default function SignInScreen() {
   });
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [buttonSpinner, setButtonSpinner] = useState(false);
+  const [keyboardStatus, setKeyboardStatus] = useState(false);
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
-  });  
+  });
 
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigation<DrawerNavProp>();
@@ -60,6 +59,25 @@ export default function SignInScreen() {
     return null;
   }
 
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardStatus(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardStatus(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   const handleSignIn = async () => {
     setButtonSpinner(true);
@@ -75,10 +93,13 @@ export default function SignInScreen() {
         type: "danger",
       });
       setButtonSpinner(false);
-    }   
+    }
   };
 
   return (
+    <View
+      style={{ flex: 1}}
+    >
     <LinearGradient
       colors={["#F9F6F7", "#F9F6F7"]}
       style={{ flex: 1, paddingTop: 30 }}
@@ -89,15 +110,13 @@ export default function SignInScreen() {
           backgroundColor: "#F9F6F7",
           flex: 1,
           alignContent: "center",
-          justifyContent: "center",
+          marginTop: 50,
+          // justifyContent: "center",
         }}
       >
         <Image
-          source={require("@/assets/images/CHARRO_NEGRO-03.png")}
-          style={[
-            styles.signInImage,
-            { backgroundColor: "#F9F6F7", opacity: 0.67 },
-          ]}
+          source={require("@/assets/images/ICONOS-01.png")}
+          style={[styles.signInImage, { transform: [{ scale: 0.4 }] }]}
         />
         <View style={styles.inputContainer}>
           <View>
@@ -109,12 +128,6 @@ export default function SignInScreen() {
               onChangeText={(value) =>
                 setUserInfo({ ...userInfo, email: value })
               }
-            />
-            <AntDesign
-              style={{ position: "absolute", left: 26, top: 12 }}
-              name="user"
-              size={20}
-              color="#A1A1A1"
             />
           </View>
           <View>
@@ -138,63 +151,55 @@ export default function SignInScreen() {
                 <Ionicons name="eye-outline" size={23} color={"#A1A1A1"} />
               )}
             </TouchableOpacity>
-            <SimpleLineIcons
-              style={{ position: "absolute", left: 26, top: 12 }}
-              name="lock"
-              size={20}
-              color="#A1A1A1"
-            />
           </View>
         </View>
         <TouchableOpacity
           style={[
-            styles.button,
-            { paddingLeft: -35, marginHorizontal: 32, marginTop: 20 },
+            styles.button3,
+            { paddingLeft: -35, marginHorizontal: 32, marginTop: 30 },
           ]}
         >
           {buttonSpinner ? (
             <ActivityIndicator
               size="small"
-              color="white"
+              color="#000024"
               style={{ marginVertical: "auto" }}
             />
           ) : (
-            <Text
-              style={[
-                {
-                  color: "white",
-                  marginTop: 11,
-                  fontSize: 16,
-                  fontFamily: "Cherione Regular",
-                  textAlign: "center",
-                },
-              ]}
-              onPress={handleSignIn}
-            >
-              INGRESAR
-            </Text>
+            <View style={styles.buttonWrapper}>
+              <Image
+                source={require("@/assets/images/BUTTON.png")}
+                style={styles.button2}
+              />
+              <Text
+                onPress={handleSignIn}
+                style={[
+                  {
+                    fontFamily: "Geomanist Regular",
+                    color: "white",
+                    fontSize: 19,
+                  },
+                ]}
+              >
+                INGRESAR
+              </Text>
+            </View>
           )}
         </TouchableOpacity>
       </View>
-    </LinearGradient>
+      </LinearGradient>
+      {!keyboardStatus && (
+        <Image
+          source={require("@/assets/images/ICONOS-44.png")}
+          style={{ position: "absolute", left: 0, bottom: 0 }}
+          resizeMode="contain"
+        />
+      )}
+    </View>
   );
 }
 
 export const styles = StyleSheet.create({
-  checkboxContainer: {
-    backgroundColor: "#f9f9f9",
-    borderWidth: 0,
-    marginTop: -5,
-    marginLeft: 25,
-    width: "80%",
-    textAlign: "left",
-    padding: 0,
-  },
-  checkboxText: {
-    color: "#A1A1A1",
-    fontSize: 12,
-    fontFamily: "Geomanist Regular",
-  },
   imageContainer: {
     position: "absolute",
     alignItems: "center",
@@ -204,17 +209,18 @@ export const styles = StyleSheet.create({
   },
   inputContainer: {
     marginHorizontal: 16,
-    marginTop: -40,
+    marginTop: -60,
     rowGap: 20,
   },
   input: {
-    height: 45,
+    height: 40,
     marginHorizontal: 16,
-    borderRadius: 15,
+    borderRadius: 25,
     borderColor: "#A1A1A1",
-    borderWidth: 0.8,
+    borderWidth: 0.4,
     paddingLeft: 35,
     fontSize: 16,
+    alignContent: "center",
     fontFamily: "Geomanist Regular",
     backgroundColor: "white",
     color: "#A1A1A1",
@@ -229,10 +235,10 @@ export const styles = StyleSheet.create({
     backgroundColor: "#A1A1A1",
   },
   signInImage: {
-    width: "60%",
+    aspectRatio: 1,
     height: 250,
     alignSelf: "center",
-    marginTop: -180,
+    marginTop: -40,
   },
   topText: {
     display: "flex",
@@ -242,7 +248,8 @@ export const styles = StyleSheet.create({
     fontFamily: "Geomanist Regular",
     borderBottomColor: "#949494",
     borderBottomWidth: 1,
-    color: "#949494",
+    color: "white",
+    backgroundColor: "#000024"
   },
   buttonText: {
     color: "white",
@@ -288,6 +295,23 @@ export const styles = StyleSheet.create({
   visibleIcon: {
     position: "absolute",
     right: 30,
-    top: 11,
+    top: 8,
+  },
+  buttonWrapper: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button2: {
+    position: "absolute",
+    width: 200,
+    height: 45,
+    borderRadius: 60,
+  },
+  button3: {
+    width: 200,
+    height: 45,
+    borderRadius: 60,
+    alignSelf: "center",
   },
 });

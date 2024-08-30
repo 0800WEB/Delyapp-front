@@ -1,19 +1,13 @@
 import {
-  ScrollView,
   View,
   Text,
   Image,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
-  Button,
-  Platform,
-  DrawerLayoutAndroid,
 } from "react-native";
 import {SimpleLineIcons} from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import { router } from "expo-router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { _retrieveData } from "@/utils/util";
 import { UserInfo } from '../../store/user/userReducer';
@@ -48,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
         <SimpleLineIcons
           name="menu"
           size={24}
-          color="#A1A1A1"
+          color="white"
           style={{ alignSelf: 'center' }}
         />
       </TouchableOpacity>
@@ -66,20 +60,21 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
 const styles = StyleSheet.create({
   headerStyle: {
     flexDirection: 'row',
-    paddingVertical: '2.5%',
-    marginHorizontal: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
     justifyContent: 'space-between',
+    backgroundColor: '#000024',
   },
   userText: {
     fontFamily: 'Cherione Regular',
     fontSize: 18,
-    color: '#A1A1A1',
+    color: 'white',
     alignSelf: 'center',
   },
   profilePhoto: {
     height: 30,
     width: 30,
-    backgroundColor: '#A1A1A1',
+    backgroundColor: 'white',
     borderRadius: 30,
     alignSelf: 'center',
   },

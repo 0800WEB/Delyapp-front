@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useEffect, useMemo, useRef, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -16,19 +16,15 @@ import SearchInput from "@/components/search/searchInput";
 import Highlights from "@/components/highlights/highlights";
 import Promos from "@/components/promos/promos";
 import { useDispatch, useSelector } from "react-redux";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { router } from "expo-router";
 import CategoryProducts from "@/components/categoryProducts/categoryProducts";
 import AllCategoryProducts from "@/components/alProducts/allProductsCategories";
 import ProductDetailsScreen from "../product-details/product.detail";
 import { useNavigation } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { DrawerActions } from "@react-navigation/native";
-import { PanResponder, Animated } from "react-native";
-import { Dimensions } from "react-native";
 //store
 import { AppDispatch, RootState } from "@/store/store";
-import { get_allItems, selectProduct } from "@/store/products/productsActions";
+import { get_allItems } from "@/store/products/productsActions";
 import { get_allCategories } from "@/store/categories/categoriesActions";
 import { getCart } from "@/store/cart/cartActions";
 import { getFavorites } from "@/store/favorites/favoritesActions";

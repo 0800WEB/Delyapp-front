@@ -3,14 +3,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import { transform } from "@babel/core";
-import React, { useState } from "react";
-import { welcomeIntroSwipperData } from "@/constants/constants";
-import AppIntroSlider from "react-native-app-intro-slider";
-import {
-  responsiveHeight,
-  responsiveWidth,
-} from "react-native-responsive-dimensions";
+import React from "react";
 
 export default function SelectSignScreen() {
   let [fontsLoaded, fontError] = useFonts({
@@ -35,44 +28,58 @@ export default function SelectSignScreen() {
       <View style={styles.imageContainer}>
         <Image
           source={require("@/assets/images/img-05.jpg")}
-          style={[styles.fullscreenImage, { opacity: 0.6 }]}
+          style={[styles.fullscreenImage, { opacity: 1 }]}
         />
       </View>
-      <View style={[styles.container]}>
+      <View style={[styles.container, { paddingTop: 30 }]}>
         <Image
           source={require("@/assets/images/ICONOS-38.png")}
-          style={{ transform: [{ scale: 0.48 }] }}
+          style={{ transform: [{ scale: 1 }] }}
         />
         <Image
           source={require("@/assets/images/ICONOS-01.png")}
-          style={{ transform: [{ scale: 0.45 }], top: 0 }}
+          style={{ transform: [{ scale: 1 }], top: 0 }}
         />
         <View style={[styles.innerContainer, { top: 0 }]}>
-          <TouchableOpacity
-            style={[styles.buttonWrapper]}
-            onPress={() => router.push("/(routes)/sign-up")}
-          >
-            <Text
-              style={[
-                styles.buttonText,
-                { fontFamily: "Cherione Bold", fontSize: 19 },
-              ]}
-            >
-              REGÍSTRATE
-            </Text>
+          <TouchableOpacity onPress={() => router.push("/(routes)/sign-up")}>
+            <View style={styles.buttonWrapper}>
+              <Image
+                source={require("@/assets/images/BUTTON.png")}
+                style={styles.button}
+              />
+              <Text
+                style={[
+                  styles.buttonText,
+                  {
+                    fontFamily: "Geomanist Regular",
+                    color: "white",
+                    fontSize: 19,
+                  },
+                ]}
+              >
+                REGÍSTRATE
+              </Text>
+            </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.buttonWrapper]}
-            onPress={() => router.push("/(routes)/sign-in")}
-          >
-            <Text
-              style={[
-                styles.buttonText,
-                { fontFamily: "Cherione Bold", fontSize: 19 },
-              ]}
-            >
-              INGRESA
-            </Text>
+          <TouchableOpacity onPress={() => router.push("/(routes)/sign-in")}>
+            <View style={styles.buttonWrapper}>
+              <Image
+                source={require("@/assets/images/BUTTON.png")}
+                style={styles.button}
+              />
+              <Text
+                style={[
+                  styles.buttonText,
+                  {
+                    fontFamily: "Geomanist Regular",
+                    color: "white",
+                    fontSize: 19,
+                  },
+                ]}
+              >
+                INGRESA
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -91,7 +98,7 @@ export const styles = StyleSheet.create({
   container: {
     display: "flex",
     margin: "auto",
-    gap: 5,
+    gap: 70,
     alignItems: "center",
     width: "80%",
     height: "90%",
@@ -114,13 +121,14 @@ export const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   buttonWrapper: {
-    backgroundColor: "white",
-    width: "45%",
-    height: 45,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 15,
-    bottom: 28,
+  },
+  button: {
+    position: "absolute",
+    width: 200,
+    height: 45,
+    borderRadius: 60,
   },
 });

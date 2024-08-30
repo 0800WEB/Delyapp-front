@@ -1,5 +1,4 @@
 import {
-  StatusBar,
   StyleSheet,
   View,
   Text,
@@ -7,7 +6,6 @@ import {
   Image,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  Animated,
 } from "react-native";
 import { FontAwesome, Entypo, Ionicons, AntDesign } from "@expo/vector-icons";
 import React, { useState, useEffect } from "react";
@@ -52,7 +50,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
     (state: RootState) => state.cart.cart.products
   );
   const products = useSelector((state: RootState) => state.products);
-  const { selectedProductId } = products
+  const { selectedProductId } = products;
   const categories = useSelector((state: RootState) => state.categories);
   const favoriteProducts = useSelector(
     (state: RootState) => state.favorite.favorites.products
@@ -145,7 +143,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
 
   const handleClose = () => {
     // router.push("/(routes)/home");
-    if(selectedProductId){
+    if (selectedProductId) {
       dispatch(clearSelectedProduct());
     }
     setProductId("");
@@ -196,18 +194,20 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
       </View>
     );
   }
-  
+
   // console.log(product)
 
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.top}>
-        <Text style={styles.topText}>{selectedCategory?.name}</Text>
+        <Text style={styles.topText}>
+          {selectedCategory?.name.toUpperCase()}
+        </Text>
         <TouchableOpacity onPress={handleClose}>
           <AntDesign
-            name="arrowleft"
-            size={28}
-            color="#A1A1A1"
+            name="close"
+            size={20}
+            color="#000024"
             style={{ height: 40, aspectRatio: 1 }}
           />
         </TouchableOpacity>
@@ -223,34 +223,37 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
         >
           {favoriteSelect ? (
             <Ionicons
-              name="star"
+              name="heart"
               size={35}
-              color="#A1A1A1"
+              color="#00BFFF"
               style={{ marginHorizontal: 10 }}
             />
           ) : (
             <Ionicons
-              name="star-outline"
+              name="heart-outline"
               size={35}
-              color="#A1A1A1"
+              color="#00BFFF"
               style={{ marginHorizontal: 10 }}
             />
           )}
         </TouchableOpacity>
         <View>
           <Image
-            source={{uri: product.images[0]}}
+            source={{ uri: product.images[0] }}
             style={styles.imageContainer}
           />
         </View>
         <View style={styles.middleSection}>
           <View style={{ justifyContent: "center" }}>
-            <Text style={styles.commonText}>${product.price}</Text>
-            {chunks.map((chunk, index) => (
-              <Text key={index} style={[styles.nameText]}>
-                {chunk}
-              </Text>
-            ))}
+            <Text
+              style={[
+                styles.commonText,
+                { color: "#000024", fontFamily: "Geomanist Medium" },
+              ]}
+            >
+              ${Number(product.price).toFixed(2)} MXN
+            </Text>
+            <Text style={[styles.nameText]}>{product?.name}</Text>
           </View>
           <View
             style={{
@@ -258,7 +261,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
               shadowRadius: 50,
               shadowOpacity: 15,
               shadowOffset: { width: 0, height: 4 },
-              elevation: 1, 
+              elevation: 1,
               // borderColor: "#A1A1A1",
               // borderWidth: 0.8,
               // borderRadius: 4
@@ -286,34 +289,73 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
                 gap: 10,
                 alignItems: "center",
                 justifyContent: "center",
-                paddingHorizontal: 4
+                paddingHorizontal: 4,
               }}
             >
               <TouchableWithoutFeedback onPress={handleDiscount}>
                 <Entypo
                   name="minus"
-                  size={38}
-                  color="#A1A1A1"
+                  size={30}
+                  color="#000024"
                   style={{ alignSelf: "center" }}
                 />
               </TouchableWithoutFeedback>
-              <Text style={[styles.commonText, { fontSize: 26 }]}>
+              <Text
+                style={[
+                  styles.commonText,
+                  { fontSize: 33, paddingHorizontal: 5 },
+                ]}
+              >
                 {quantity}
               </Text>
               <TouchableWithoutFeedback onPress={handleAdd}>
                 <Entypo
                   name="plus"
-                  size={38}
-                  color="#A1A1A1"
+                  size={30}
+                  color="#000024"
                   style={{ alignSelf: "center" }}
                 />
               </TouchableWithoutFeedback>
             </View>
           </View>
         </View>
-        <Text style={[styles.commonText, styles.description]}>
-          {product.description}
-        </Text>
+        <View>
+          <Text style={[styles.commonText, styles.description]}>
+            {product.description}
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              marginHorizontal: "auto",
+              width: "90%",
+              justifyContent: "space-between",
+              alignItems: "center",
+              alignContent: "center",
+              backgroundColor:"#C4F6F3",
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+              borderRadius: 40,
+              marginTop: 15,
+            }}
+          >
+            <Entypo
+              name="warning"
+              size={28}
+              color="#000024"
+              style={{ alignSelf: "center", justifyContent:"center",height:30 }}
+            />
+            <Text
+              style={{
+                fontSize: 12,
+                justifyContent: "flex-start",
+                width: "85%",
+              }}
+            >
+              Al momento de la entrega se solicitará una identificación oficial
+              que avale la mayoría de edad.
+            </Text>
+          </View>
+        </View>
         <AllCategoryProducts
           key={selectedCategory?._id}
           category={selectedCategory!}
@@ -345,16 +387,16 @@ const styles = StyleSheet.create({
   },
   top: {
     flexDirection: "row",
-    // paddingTop: 15,
+    paddingTop: 18,
     paddingLeft: 15,
-    borderBottomColor: "#949494",
+    borderBottomColor: "#A1A1A1",
     justifyContent: "space-between",
     borderBottomWidth: 1,
   },
   topText: {
-    fontFamily: "Cherione Regular",
-    fontSize: 20,
-    color: "#949494",
+    fontFamily: "Geomanist Regular",
+    fontSize: 15,
+    color: "#000024",
   },
   closeIcon: {
     height: 40,
@@ -373,15 +415,17 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     height: 250,
     marginVertical: 5,
+    borderRadius: 15,
   },
   middleSection: {
     flexDirection: "row",
     marginHorizontal: 15,
     justifyContent: "space-between",
-    marginVertical: 10,
+    marginVertical: 15,
     borderBottomColor: "#A1A1A1",
-    borderBottomWidth: 0.8,
-    paddingVertical: 5,
+    borderBottomWidth: 0.3,
+    paddingTop: 5,
+    paddingBottom: 15,
   },
   priceNameContainer: {
     justifyContent: "center",
@@ -389,12 +433,13 @@ const styles = StyleSheet.create({
   commonText: {
     fontFamily: "Cherione Bold",
     fontSize: 18,
-    color: "#A1A1A1",
   },
   nameText: {
     fontFamily: "Geomanist Medium",
-    fontSize: 15,
-    color: "#A1A1A1",
+    fontSize: 14,
+    color: "#000024",
+    width: "60%",
+    lineHeight: 18,
   },
   addToCartContainer: {
     alignItems: "center",
@@ -419,7 +464,8 @@ const styles = StyleSheet.create({
   },
   description: {
     marginHorizontal: 15,
-    fontSize: 17,
+    fontSize: 15,
+    color: "#A1A1A1",
     justifyContent: "space-evenly",
     fontFamily: "Geomanist Regular",
   },

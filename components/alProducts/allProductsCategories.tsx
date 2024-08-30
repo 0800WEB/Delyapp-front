@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 interface AllCategoryProductsProps {
   category: Category;
@@ -49,34 +49,78 @@ const AllCategoryProducts: React.FC<AllCategoryProductsProps> = ({
     return (
       <View>
         <TouchableOpacity
-          style={{ marginHorizontal: 5, width: 150 }}
+          style={{
+            marginHorizontal: 8,
+            height: 280,
+            width: 130,
+            borderColor: "#A1A1A1",
+            borderWidth: 0.3,
+            borderRadius: 15,
+            shadowColor: "#A1A1A1",
+            justifyContent: "space-between",
+          }}
           onPress={() => onProductSelected(item._id)}
         >
           <Image
             source={{ uri: item.images[0] }}
-            style={[
-              styles.imageStyle,
-              { alignSelf: "center" },
-            ]}
+            style={[styles.imageStyle, { alignSelf: "center" }]}
           />
-          <View style={styles.containerTitle}>
-            <Text style={styles.titleText}>{item.name.substring(0, 20)}</Text>
-          </View>
           <View style={styles.containerTitle}>
             <Text
               style={[
                 styles.titleText,
                 {
-                  fontFamily: "Cherione Regular",
-                  fontSize: 10.5,
+                  fontFamily: "Geomanist Medium",
+                  fontSize: 17,
                   alignSelf: "center",
+                  textAlign: "center",
+                  color: "#000024",
                 },
               ]}
             >
-              {category.name.substring(0, 11)}
+              {item.name}
             </Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <Text
+              style={[
+                styles.titleText,
+                {
+                  fontFamily: "Geomanist Regular",
+                  fontSize: 17,
+                  justifyContent: "center",
+                  color: "#000024",
+                  marginHorizontal: "auto",
+                  textAlign: "center",
+                  paddingVertical: 5,
+                },
+              ]}
+            >
+              {category.name.substring(0, 15)}
+            </Text>
+          </View>
+          <View
+            style={{
+              backgroundColor: "#000024",
+              borderBottomLeftRadius: 15,
+              borderBottomRightRadius: 15,
+              alignItems: "center",
+            }}
+          >
             <View style={{ flexDirection: "row" }}>
-              <Text style={[styles.titleText]}>${item.price}</Text>
+              <Text
+                style={[
+                  styles.titleText,
+                  {
+                    paddingVertical: 13,
+                    fontFamily: "Geomanist Medium",
+                    color: "white",
+                    fontSize: 15,
+                  },
+                ]}
+              >
+                ${item.price} MXN
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -87,9 +131,9 @@ const AllCategoryProducts: React.FC<AllCategoryProductsProps> = ({
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {!homeScreen ? (
-        <Text style={styles.topText}>También te puede interesar</Text>
+        <Text style={[styles.topText, {marginVertical: 15}]}>También te puede interesar</Text>
       ) : (
-        <Text style={styles.topText}>{category.name}</Text>
+        <Text style={[styles.topText, {marginVertical: 15}]}>{category.name}</Text>
       )}
 
       <VirtualizedList
@@ -114,11 +158,9 @@ export const styles = StyleSheet.create({
   imageStyle: {
     height: 130,
     aspectRatio: 1,
-    marginHorizontal: 5,
-    marginTop: 10,
     marginBottom: 5,
-    borderRadius: 15,
-    borderWidth: 0.15,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
     borderColor: "#A1A1A1",
   },
   topText: {
@@ -131,8 +173,8 @@ export const styles = StyleSheet.create({
     color: "#A1A1A1",
   },
   containerTitle: {
-    flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
     width: 130,
     alignSelf: "center",
   },
@@ -150,6 +192,6 @@ export const styles = StyleSheet.create({
   titleText: {
     fontFamily: "Geomanist Medium",
     fontSize: 14,
-    color: "#A1A1A1",
+    color: "#000024",
   },
 });

@@ -35,7 +35,7 @@ export default function StartScreen() {
 
   return (
     <LinearGradient
-      colors={["#000", "#000"]}
+      colors={["#000024", "#000024"]}
       style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
     >
       <Animated.View style={[styles.imageContainer, { transform: [{ scale: scaleAnim }] }]}>
@@ -44,7 +44,7 @@ export default function StartScreen() {
       <Animated.View style={[styles.fullscreenContainer, { opacity: opacityAnim }]}>
         <Image style={styles.fullscreenImage} source={require("@/assets/images/img-01.jpg")} />
       </Animated.View>
-      <Animated.View style={[styles.imageContainer, {transform: [{scale: 0.5}]},{ opacity: opacityAnim }]}>
+      <Animated.View style={[styles.imageContainer, {transform: [{scale: 1}]},{ opacity: opacityAnim }]}>
         <Image source={require("@/assets/images/ICONOS-76.png")} />
       </Animated.View>
     </LinearGradient>

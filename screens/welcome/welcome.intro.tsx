@@ -47,21 +47,21 @@ export default function WelcomeIntroScreen() {
               justifyContent: "space-between",
             }}
           >
-            <Image
+            {item.image2 && <Image
               source={item.image2}
               style={[
                 {
-                  transform: [{ scale: 0.35 }],
+                  transform: [{ scale: 1 }],
                   top: item.top,
                   right: item.right,
                 },
               ]}
-            />
+            />}
             <Image
               source={item.image3}
               style={[
                 {
-                  transform: [{ scale: 0.35 }],
+                  transform: [{ scale: 1 }],
                   position: "absolute",
                   bottom: item.bottom,
                 },

@@ -2,33 +2,14 @@ import {
   SafeAreaView,
   View,
   Text,
-  Image,
   StyleSheet,
   TouchableOpacity,
-  VirtualizedList,
 } from "react-native";
 import {
-  AntDesign,
-  Entypo,
   FontAwesome,
-  Fontisto,
-  Ionicons,
-  SimpleLineIcons,
 } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import { LinearGradient } from "expo-linear-gradient";
-import { router } from "expo-router";
-import { transform } from "@babel/core";
 import React, { useState } from "react";
-import { welcomeIntroSwipperData } from "@/constants/constants";
-import AppIntroSlider from "react-native-app-intro-slider";
-import {
-  responsiveHeight,
-  responsiveWidth,
-} from "react-native-responsive-dimensions";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { CheckBox } from "react-native-elements";
-import { categorySliderData } from "@/constants/constants";
 import Popular from "../popular/popular";
 import Favorites from "../favorites/favorites";
 
@@ -70,22 +51,20 @@ export default function Highlights({selectedProductId}:HighlightsProps) {
     selectedProductId(productId);
   }
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{marginBottom: 15}}>
       <View style={styles.selectButtons}>
         <TouchableOpacity onPress={handlePopular}>
-          <Text style={styles.text}>LO MÁS PEDIDO</Text>
-          {popularSelect && (
-            <View
-              style={{ borderBottomWidth: 2, borderBottomColor: "#A1A1A1" , opacity: 0.5}}
-            />
+          {popularSelect ? (          
+          <Text style={[styles.text, {color:"#00BFFF"}]}>LO MÁS PEDIDO</Text>
+          ) : (
+            <Text style={styles.text}>LO MÁS PEDIDO</Text>
           )}
         </TouchableOpacity>
         <TouchableOpacity onPress={handleFavorites}>
-          <Text style={styles.text}>TUS FAVORITOS</Text>
-          {favoritesSelect && (
-            <View
-              style={{ borderBottomWidth: 2, borderBottomColor: "#A1A1A1", opacity: 0.5 }}
-            />
+          {favoritesSelect ? (          
+          <Text style={[styles.text, {color:"#00BFFF"}]}>TUS FAVORITOS</Text>
+          ) : (
+            <Text style={styles.text}>TUS FAVORITOS</Text>
           )}
         </TouchableOpacity>
       </View>
@@ -111,9 +90,10 @@ export const styles = StyleSheet.create({
   },
   text: {
     display: "flex",
-    paddingTop: 8,
-    paddingBottom: 4,
+    paddingTop: 18,
+    paddingBottom: 18, 
     fontFamily: "Geomanist Regular",
     color: "#A1A1A1",
+    fontSize: 16,
   },
 });

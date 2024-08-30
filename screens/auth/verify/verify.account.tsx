@@ -6,8 +6,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Button,
-  Platform,
+  Keyboard
 } from "react-native";
 import {
   AntDesign,
@@ -59,6 +58,7 @@ export default function VerifyAccountScreen() {
   }
   const [code, setCode] = useState(new Array(4).fill(""));
   const [email, setEmail] = useState('');
+  const [keyboardStatus, setKeyboardStatus] = useState(false);
   const inputs = useRef<any>([...Array(4)].map(() => React.createRef()));
 
   const handleInput = (text: any, index: any) => {
@@ -74,6 +74,25 @@ export default function VerifyAccountScreen() {
       inputs.current[index - 1].current.focus();
     }
   };
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardStatus(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardStatus(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
   const dispatch = useDispatch<AppDispatch>();
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
   if (userInfo && typeof userInfo === 'object' && userInfo.hasOwnProperty('email')) {
@@ -109,7 +128,7 @@ export default function VerifyAccountScreen() {
       colors={["#F9F6F7", "#F9F6F7"]}
       style={{ flex: 1, paddingTop: 30 }}
     >
-      <Text style={styles.topText}>REGISTRO</Text>
+      <Text style={styles.topText}>VERIFICACIÓN</Text>
       <View style={[styles.container]}>
         <Text style={styles.headerText}>CÓDIGO DE VERIFICACIÓN</Text>
         <Text style={styles.subText}>
@@ -129,21 +148,24 @@ export default function VerifyAccountScreen() {
             />
           ))}
         </View>
-        <TouchableOpacity style={[styles.button, {}]}>
-          <Text
-            style={[
-              {
-                color: "white",
-                marginTop: 11,
-                fontSize: 16,
-                fontFamily: "Cherione Regular",
-                textAlign: "center",
-              },
-            ]}
-            onPress={handleSumbit}
-          >
-            VERIFICAR
-          </Text>
+        <TouchableOpacity style={{marginTop: 15}} onPress={handleSumbit}>
+        <View style={styles.buttonWrapper}>
+            <Image
+              source={require("@/assets/images/BUTTON.png")}
+              style={styles.button2}
+              />
+            <Text
+              style={[
+                {
+                  fontFamily: "Geomanist Regular",
+                  color: "white",
+                  fontSize: 19,
+                },
+              ]}
+            >
+              VERIFICAR
+            </Text>
+          </View>
         </TouchableOpacity>
         <View style={styles.loginLink}>
           <Text style={[styles.subText, { fontFamily: "Geomanist Regular" }]}>
@@ -157,6 +179,13 @@ export default function VerifyAccountScreen() {
             </Text>
           </TouchableOpacity>
         </View>
+        {!keyboardStatus && (
+        <Image
+          source={require("@/assets/images/ICONOS-43.png")}
+          style={{ position: "absolute", left: 0, bottom: 0 }}
+          resizeMode="contain"
+        />
+      )}
       </View>
     </LinearGradient>
   );
@@ -181,13 +210,14 @@ const styles = StyleSheet.create({
     fontFamily: "Geomanist Regular",
     borderBottomColor: "#949494",
     borderBottomWidth: 1,
-    color: "#949494",
+    color: "white",
+    backgroundColor: "#000024"
   },
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    padding: 20,
+    padding: 13,
     backgroundColor: "#fff",
     color: "#949494",
   },
@@ -196,6 +226,7 @@ const styles = StyleSheet.create({
     fontFamily: "Cherione Normal",
     color: "#949494",
     marginBottom: 10,
+    marginTop: -40,
   },
   subText: {
     fontSize: 16,
@@ -230,4 +261,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   backText: { fontSize: 16 },
+  buttonWrapper: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button2: {
+    position: "absolute",
+    width: 200,
+    height: 45,
+    borderRadius: 60,
+  },
 });
