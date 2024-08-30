@@ -5,15 +5,14 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  StatusBar,
 } from "react-native";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { _retrieveData } from "@/utils/util"; // Asegúrate de reemplazar esto con la ruta a tu función de almacenamiento
 
-import MapView, { Marker, Polyline } from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import * as Location from "expo-location";
 // import { GOOGLE_MAPS_APIKEY } from "@env";
@@ -21,7 +20,7 @@ import { GOOGLE_MAPS_APIKEY } from "@/utils/uri";
 
 import { router } from "expo-router";
 import { useFonts } from "expo-font";
-import { FontAwesome, Entypo, Ionicons, AntDesign } from "@expo/vector-icons";
+import { FontAwesome, AntDesign } from "@expo/vector-icons";
 import { useCoupon, clearCoupon} from "@/store/coupon/couponActions";
 import { createOrder } from "@/store/order/orderActions";
 import { clearCart } from "@/store/cart/cartActions";
@@ -251,7 +250,7 @@ const MapScreen: React.FC = () => {
     >
       <ScrollView>
         <View style={styles.top}>
-          <Text style={styles.topText}>DIRECCIÓN DE ENTREGA</Text>
+          <Text style={styles.topText}>DETALLES DE ENVÍO</Text>
           <TouchableOpacity onPress={() => router.back()}>
             <AntDesign
               name="close"

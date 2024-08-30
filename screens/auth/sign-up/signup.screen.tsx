@@ -8,28 +8,20 @@ import {
   TouchableOpacity,
   Platform,
   ActivityIndicator,
-  Keyboard
+  Keyboard,
 } from "react-native";
-import {
-  AntDesign,
-  Entypo,
-  FontAwesome,
-  Fontisto,
-  Ionicons,
-  SimpleLineIcons,
-} from "@expo/vector-icons";
+import { Entypo, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
-import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { responsiveWidth } from "react-native-responsive-dimensions";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { CheckBox } from "react-native-elements";
 
 import { Toast } from "react-native-toast-notifications";
-import{ useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { sign_up } from "@/store/user/authActions";
-import { AppDispatch } from '../../../store/store';
+import { AppDispatch } from "../../../store/store";
 
 export default function SignUpScreen() {
   let [fontsLoaded, fontError] = useFonts({
@@ -55,7 +47,6 @@ export default function SignUpScreen() {
     phone: "",
     ageVerified: false,
   });
-  const [required, setRequired] = useState("");
   const [error, setError] = useState({
     password: "",
   });
@@ -67,17 +58,17 @@ export default function SignUpScreen() {
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const authState = useSelector((state: {user: AuthState}) => state.user);
+  const authState = useSelector((state: { user: AuthState }) => state.user);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
+      "keyboardDidShow",
       () => {
         setKeyboardStatus(true);
       }
     );
     const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
+      "keyboardDidHide",
       () => {
         setKeyboardStatus(false);
       }
@@ -152,7 +143,7 @@ export default function SignUpScreen() {
       setUserInfo({ ...userInfo, password: value });
     }
   };
- 
+
   const handleSignIn = async () => {
     if (!userInfo.name) {
       Toast.show("El nombre es requerido", {
@@ -160,50 +151,55 @@ export default function SignUpScreen() {
       });
       return;
     }
-  
+
     if (!userInfo.email || !/\S+@\S+\.\S+/.test(userInfo.email)) {
       Toast.show("El email es requerido o no es válido", {
         type: "danger",
       });
       return;
     }
-  
+
     if (!userInfo.phone || userInfo.phone.length < 9) {
       Toast.show("El teléfono es requerido o no es válido", {
         type: "danger",
       });
       return;
     }
-  
+
     if (!userInfo.ageVerified) {
       Toast.show("La edad debe ser mayor de 18 años", {
         type: "danger",
       });
       return;
     }
-  
+
     if (!termsAccepted || !privacyAccepted) {
-      Toast.show("Debe aceptar los términos y condiciones y el aviso de privacidad", {
-        type: "danger",
-      });
+      Toast.show(
+        "Debe aceptar los términos y condiciones y el aviso de privacidad",
+        {
+          type: "danger",
+        }
+      );
       return;
     }
-  
+
     if (!userInfo.password || error.password !== "") {
       Toast.show("Hay un problema con la contraseña", {
         type: "danger",
       });
       return;
     }
-  
+
     setButtonSpinner(true);
-    dispatch(sign_up({
-      name: userInfo.name,
-      email: userInfo.email,
-      password: userInfo.password,
-      phone: userInfo.phone,
-      ageVerified: userInfo.ageVerified,
-    })).catch(error => {
+    dispatch(
+      sign_up({
+        name: userInfo.name,
+        email: userInfo.email,
+        password: userInfo.password,
+        phone: userInfo.phone,
+        ageVerified: userInfo.ageVerified,
+      })
+    ).catch((error) => {
       // Crear un objeto de error personalizado con solo las propiedades serializables
       const serializableError = {
         name: error.name,
@@ -211,12 +207,11 @@ export default function SignUpScreen() {
       };
       // Lanzar el error serializable
       throw serializableError;
-    }); 
+    });
     setTimeout(() => {
       setButtonSpinner(false);
     }, 3000);
   };
-
 
   return (
     <LinearGradient
@@ -224,15 +219,10 @@ export default function SignUpScreen() {
       style={{ flex: 1, paddingTop: 30 }}
     >
       <Text style={styles.topText}>REGISTRO</Text>
-      <ScrollView
-        style={{ flex: 1, alignContent: "center", zIndex: 2 }}
-      >
+      <ScrollView style={{ flex: 1, alignContent: "center", zIndex: 2 }}>
         <Image
           source={require("@/assets/images/ICONOS-01.png")}
-          style={[
-            styles.signInImage,
-            { transform:[{scale:0.4}] },
-          ]}
+          style={[styles.signInImage, { transform: [{ scale: 0.4 }] }]}
         />
         <View style={styles.inputContainer}>
           <View>
@@ -244,7 +234,7 @@ export default function SignUpScreen() {
               onChangeText={(value) =>
                 setUserInfo({ ...userInfo, name: value })
               }
-            />           
+            />
           </View>
           <View>
             <TextInput
@@ -256,7 +246,6 @@ export default function SignUpScreen() {
                 setUserInfo({ ...userInfo, email: value })
               }
             />
-           
           </View>
           <View>
             <TextInput
@@ -268,7 +257,6 @@ export default function SignUpScreen() {
                 setUserInfo({ ...userInfo, phone: value })
               }
             />
-           
           </View>
           <View>
             <TouchableOpacity style={styles.button} onPress={showDatepicker}>
@@ -287,7 +275,7 @@ export default function SignUpScreen() {
                 display="default"
                 onChange={onChange}
               />
-            )}           
+            )}
           </View>
           <View>
             <TextInput
@@ -308,7 +296,7 @@ export default function SignUpScreen() {
                 <Ionicons name="eye-outline" size={23} color={"#A1A1A1"} />
               )}
             </TouchableOpacity>
-            
+
             {error.password && (
               <View style={[styles.errorContainer, { top: 10 }]}>
                 <Entypo name="cross" size={18} color={"red"} />
@@ -342,29 +330,33 @@ export default function SignUpScreen() {
             styles.button3,
             { paddingLeft: -35, marginHorizontal: 32, marginTop: 20 },
           ]}
-          >
+        >
           {buttonSpinner ? (
-            <ActivityIndicator size="small" color="#016AF5" style={{marginVertical: "auto"}} />
-            ) : (
-              <View style={styles.buttonWrapper}>
-            <Image
-              source={require("@/assets/images/BUTTON.png")}
-              style={styles.button2}
+            <ActivityIndicator
+              size="small"
+              color="#016AF5"
+              style={{ marginVertical: "auto" }}
+            />
+          ) : (
+            <View style={styles.buttonWrapper}>
+              <Image
+                source={require("@/assets/images/BUTTON.png")}
+                style={styles.button2}
               />
-            <Text
-              onPress={handleSignIn}
-              style={[
-                {
-                  fontFamily: "Geomanist Regular",
-                  color: "white",
-                  fontSize: 19,
-                },
-              ]}
-            >
-              REGISTRARSE
-            </Text>
-          </View>
-            )}
+              <Text
+                onPress={handleSignIn}
+                style={[
+                  {
+                    fontFamily: "Geomanist Regular",
+                    color: "white",
+                    fontSize: 19,
+                  },
+                ]}
+              >
+                REGISTRARSE
+              </Text>
+            </View>
+          )}
         </TouchableOpacity>
       </ScrollView>
       {!keyboardStatus && (
@@ -428,7 +420,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#A1A1A1",
   },
   signInImage: {
-    aspectRatio:1,
+    aspectRatio: 1,
     height: 250,
     alignSelf: "center",
     marginTop: -40,
@@ -442,7 +434,7 @@ export const styles = StyleSheet.create({
     borderBottomColor: "#949494",
     borderBottomWidth: 1,
     color: "white",
-    backgroundColor: "#000024"
+    backgroundColor: "#000024",
   },
   buttonText: {
     color: "white",

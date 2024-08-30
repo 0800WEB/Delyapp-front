@@ -272,7 +272,16 @@ const CartScreen: React.FC = () => {
               keyExtractor={(item) => item._id}
             />
           </SafeAreaView>
-          <View style={{ margin: 10, elevation: 0.8, borderColor: "#A1A1A1" }}>
+          <View
+            style={{
+              margin: 10,
+              marginHorizontal: "auto",
+              width: "90%",
+              borderTopWidth: 0.4,
+              borderBottomWidth: 0.4,
+              borderColor: "#A1A1A1",
+            }}
+          >
             <View
               style={{
                 flexDirection: "row",
@@ -289,27 +298,29 @@ const CartScreen: React.FC = () => {
             </View>
           </View>
           <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              marginHorizontal: 20,
-              marginBottom: 15,
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "#A1A1A1",
-              paddingVertical: 15,
-              borderRadius: 10,
-            }}
+            style={[
+              styles.button3,
+              { paddingLeft: -35, marginHorizontal: 32, marginTop: 15 },
+            ]}
             onPress={goToMapScreen}
           >
-            <Text
-              style={{
-                color: "white",
-                fontFamily: "Cherione Normal",
-                fontSize: 16,
-              }}
-            >
-              COMPLETAR PEDIDO
-            </Text>
+            <View style={styles.buttonWrapper}>
+              <Image
+                source={require("@/assets/images/BUTTON.png")}
+                style={styles.button2}
+              />
+              <Text
+                style={[
+                  {
+                    fontFamily: "Geomanist Regular",
+                    color: "white",
+                    fontSize: 19,
+                  },
+                ]}
+              >
+                COMPLETAR PEDIDO
+              </Text>
+            </View>
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -417,7 +428,7 @@ const styles = StyleSheet.create({
   cartTotal: {
     textAlign: "center",
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "Geomanist Regular",
     marginVertical: 10,
     color: "#A1A1A1",
   },
@@ -442,5 +453,22 @@ const styles = StyleSheet.create({
     fontFamily: "Geomanist Regular",
     backgroundColor: "white",
     color: "#A1A1A1",
+  },
+  buttonWrapper: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button2: {
+    position: "absolute",
+    width: 200,
+    height: 45,
+    borderRadius: 60,
+  },
+  button3: {
+    width: 200,
+    height: 45,
+    borderRadius: 60,
+    alignSelf: "center",
   },
 });
