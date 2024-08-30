@@ -136,6 +136,7 @@ type RootParamList = {
   '(routes)/order/index': undefined;
   '(routes)/update-account/index': undefined;
   '(routes)/home/index': undefined;
+  '(routes)/search/index': undefined;
   // Agrega aquí otras rutas según sea necesario
 };
 

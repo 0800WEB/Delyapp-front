@@ -8,8 +8,8 @@ import {
   SafeAreaView,
   FlatList,
 } from "react-native";
-import { FontAwesome, AntDesign } from "@expo/vector-icons";
-import React, { useEffect} from "react";
+import { FontAwesome5, AntDesign, FontAwesome } from "@expo/vector-icons";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { router } from "expo-router";
@@ -68,8 +68,8 @@ const CartScreen: React.FC = () => {
   };
 
   const goToMapScreen = async () => {
-    await navigation.navigate('(routes)/map/index');
-  }
+    await navigation.navigate("(routes)/map/index");
+  };
   const goToHome = () => {
     // console.log(prod)
     if (dispatch) {
@@ -130,36 +130,27 @@ const CartScreen: React.FC = () => {
           borderBottomWidth: 0.5,
         }}
       >
-        <View style={{ flexDirection: "row", width: "60%" }}>
-          {item.images ? (
-          <Image
-          source={{uri: item?.images[0]}}
-          style={{
-            aspectRatio: 1,
-            width: 85,
-            borderRadius: 15,
-          }}
-          />
-          ):(
-          <Image
-          source={require("@/assets/images/ICONOS-47.png")}
-          style={{
-            aspectRatio: 1,
-            width: 85,
-            borderRadius: 15,
-            backgroundColor: "#A1A1A1",
-          }}
-          />
+        <View style={{ flexDirection: "row" }}>
+          {item.product.images && (
+            <Image
+              source={{ uri: item.product.images[0] }}
+              style={{
+                aspectRatio: 1,
+                width: 85,
+                borderRadius: 15,
+              }}
+            />
           )}
-          <View>
+          <View
+            style={{ justifyContent: "space-between", alignContent: "center" }}
+          >
             <Text
               style={{
                 textAlign: "left",
                 marginHorizontal: 15,
-                marginVertical: "auto",
                 fontFamily: "Geomanist Medium",
-                fontSize: 16,
-                color: "#A1A1A1",
+                fontSize: 17,
+                color: "#000024",
               }}
             >
               {item.product.name}
@@ -168,13 +159,23 @@ const CartScreen: React.FC = () => {
               style={{
                 textAlign: "left",
                 marginHorizontal: 15,
-                marginVertical: "auto",
-                fontFamily: "Geomanist Light",
-                fontSize: 13,
-                color: "#A1A1A1",
+                fontFamily: "Geomanist Regular",
+                fontSize: 14,
+                color: "#000024",
               }}
             >
               {item.product.description}
+            </Text>
+            <Text
+              style={{
+                textAlign: "left",
+                fontFamily: "Geomanist Medium",
+                fontSize: 17,
+                color: "#000024",
+                marginHorizontal: 15,
+              }}
+            >
+              ${Number(item.product?.price?.toString()).toFixed(2)}
             </Text>
           </View>
         </View>
@@ -182,48 +183,42 @@ const CartScreen: React.FC = () => {
           style={{
             justifyContent: "center",
             alignItems: "center",
-            width: "20%",
           }}
         >
-          <Text
-            style={{
-              textAlign: "left",
-              fontFamily: "Geomanist Regular",
-              fontSize: 17,
-              color: "#A1A1A1",
-            }}
-          >
-            ${item.product?.price?.toString()}
-          </Text>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "100%",
-              paddingVertical: 10,
-            }}
-          >
-            <TouchableOpacity onPress={() => handleDiscount(item.product._id)}>
-              <AntDesign
-                name={item.quantity == 1 ? "delete" : "minus"}
-                color="#A1A1A1"
-                size={25}
-              />
-            </TouchableOpacity>
-            <Text
+          <View>
+            <View
               style={{
-                textAlign: "left",
-                fontFamily: "Geomanist Regular",
-                fontSize: 17,
-                color: "#A1A1A1",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingVertical: 10,
               }}
             >
-              {item.quantity?.toString()}
-            </Text>
-            <TouchableOpacity onPress={() => handleAdd(item.product._id)}>
-              <AntDesign name="plus" color="#A1A1A1" size={25} />
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => handleDiscount(item.product._id)}
+              >
+                <FontAwesome5
+                  name={item.quantity == 1 ? "trash-alt" : "minus"}
+                  color="#000024"
+                  size={20}
+                />
+              </TouchableOpacity>
+              <Text
+                style={{
+                  textAlign: "left",
+                  fontFamily: "Geomanist Regular",
+                  fontSize: 38,
+                  color: "#000024",
+                  paddingHorizontal: 17,
+                }}
+              >
+                {item.quantity?.toString()}
+              </Text>
+              <TouchableOpacity onPress={() => handleAdd(item.product._id)}>
+                <FontAwesome5 name="plus" color="#000024" size={20} />
+              </TouchableOpacity>
+            </View>
+            <Text style={{fontSize:11, textAlign: "center", fontFamily:"Geomanist Medium", marginTop: -12}}>CANTIDAD</Text>
           </View>
         </View>
       </View>
@@ -232,11 +227,13 @@ const CartScreen: React.FC = () => {
     return (
       <View style={{ flex: 1, marginTop: 25 }}>
         <Header
-        openDrawer={() => navigation.dispatch(DrawerActions.openDrawer())}
-      />
-      <SearchInput homeScreen={true} />
+          openDrawer={() => navigation.dispatch(DrawerActions.openDrawer())}
+        />
+        <SearchInput homeScreen={true} />
         <View style={styles.top}>
-          <Text style={[styles.topText, {marginTop: 2}]}>CARRITO DE COMPRAS</Text>
+          <Text style={[styles.topText, { marginTop: 2 }]}>
+            CARRITO DE COMPRAS
+          </Text>
           <TouchableOpacity onPress={() => goToHome()}>
             <AntDesign
               name="close"
@@ -246,7 +243,7 @@ const CartScreen: React.FC = () => {
             />
           </TouchableOpacity>
         </View>
-        <ScrollView style={{ marginBottom: 10 }}>          
+        <ScrollView style={{ marginBottom: 10 }}>
           <SafeAreaView
             style={{ borderTopRightRadius: 50, borderTopLeftRadius: 50 }}
           >
@@ -255,8 +252,8 @@ const CartScreen: React.FC = () => {
               renderItem={renderProductItem}
               keyExtractor={(item) => item._id}
             />
-          </SafeAreaView>          
-          <View style={{ margin: 10, elevation: 0.8, borderColor: "#A1A1A1" }}>            
+          </SafeAreaView>
+          <View style={{ margin: 10, elevation: 0.8, borderColor: "#A1A1A1" }}>
             <View
               style={{
                 flexDirection: "row",

@@ -11,10 +11,9 @@ import {
 import { useFonts } from "expo-font";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { useNavigation } from "expo-router";
 import { get_SearchItem } from "@/store/products/productsActions";
 import { useDispatch } from "react-redux";
-import { AppDispatch, RootState } from "@/store/store";
+import { AppDispatch } from "@/store/store";
 
 export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
   const [value, setValue] = useState("");
@@ -48,7 +47,9 @@ export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
 
   return (
     <View>
-      {!homeScreen && <View style={{ marginTop: 50 }}></View>}
+      {!homeScreen && <View style={{ marginTop: 25 }}>
+        <View style={{marginTop: 25, backgroundColor:"#000024", height:10, width:"100%"}}></View>
+        </View>}
       <View style={styles.filteringContainer}>
         <View style={styles.searchContainer}>
           <TextInput
