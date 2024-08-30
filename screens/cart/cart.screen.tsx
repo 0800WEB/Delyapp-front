@@ -218,7 +218,16 @@ const CartScreen: React.FC = () => {
                 <FontAwesome5 name="plus" color="#000024" size={20} />
               </TouchableOpacity>
             </View>
-            <Text style={{fontSize:11, textAlign: "center", fontFamily:"Geomanist Medium", marginTop: -12}}>CANTIDAD</Text>
+            <Text
+              style={{
+                fontSize: 11,
+                textAlign: "center",
+                fontFamily: "Geomanist Medium",
+                marginTop: -12,
+              }}
+            >
+              CANTIDAD
+            </Text>
           </View>
         </View>
       </View>
@@ -244,6 +253,16 @@ const CartScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
         <ScrollView style={{ marginBottom: 10 }}>
+          <Text
+            style={{
+              paddingTop: 10,
+              paddingLeft: 10,
+              color: "#A1A1A1",
+              fontFamily: "Geomanist Regular",
+            }}
+          >
+            {cartProducts.length} productos agregado(s)
+          </Text>
           <SafeAreaView
             style={{ borderTopRightRadius: 50, borderTopLeftRadius: 50 }}
           >
