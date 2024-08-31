@@ -279,7 +279,7 @@ export default function SignUpScreen() {
           </View>
           <View>
             <TextInput
-              style={[styles.input, { paddingTop: 0, paddingLeft: 35 }]}
+              style={[styles.input, { paddingTop: 0 }]}
               keyboardType="default"
               secureTextEntry={!isPasswordVisible}
               defaultValue=""
@@ -433,21 +433,20 @@ export const styles = StyleSheet.create({
     borderRadius: 25,
     borderColor: "#A1A1A1",
     borderWidth: 0.4,
-    paddingLeft: 35,
     fontSize: 16,
     alignContent: "center",
     fontFamily: "Geomanist Regular",
     backgroundColor: "white",
-    color: "#A1A1A1",
+    color: "#000024",
+    textAlign: "center",
   },
   button: {
     height: 40,
     marginHorizontal: 16,
     borderRadius: 25,
-    borderColor: "#A1A1A1",
+    borderColor: "#016AF5",
     borderWidth: 0.8,
-    paddingLeft: 35,
-    backgroundColor: "#A1A1A1",
+    backgroundColor: "#016AF5",
   },
   signInImage: {
     aspectRatio: 1,
@@ -468,7 +467,7 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    textAlign: "left",
+    textAlign: "center",
     marginTop: 9,
     fontSize: 16,
     fontFamily: "Geomanist Regular",

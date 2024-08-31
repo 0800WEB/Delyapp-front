@@ -7,11 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import {
-  AntDesign,
-  FontAwesome,
-  Fontisto,
-} from "@expo/vector-icons";
+import { AntDesign, FontAwesome, Fontisto } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
@@ -21,7 +17,10 @@ import { responsiveWidth } from "react-native-responsive-dimensions";
 import { useDispatch, useSelector } from "react-redux";
 import { update_user } from "@/store/user/authActions";
 import { AppDispatch, RootState } from "../../../store/store";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
+import Header from "@/components/header/header";
+import SearchInput from "@/components/search/searchInput";
+import { DrawerActions } from "@react-navigation/native";
 
 export default function UpdateAccountScreen() {
   let [fontsLoaded, fontError] = useFonts({
@@ -60,7 +59,7 @@ export default function UpdateAccountScreen() {
     name: userData?.name,
     email: userData?.email,
     phone: userData?.phone,
-  }); 
+  });
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -70,12 +69,14 @@ export default function UpdateAccountScreen() {
 
   const handleUpdate = async () => {
     if (userData) {
-      dispatch(update_user({
-        id: userData.id,
-        name: userInfo.name,
-        email: userInfo.email,
-        phone: userInfo.phone,
-      }));
+      dispatch(
+        update_user({
+          id: userData.id,
+          name: userInfo.name,
+          email: userInfo.email,
+          phone: userInfo.phone,
+        })
+      );
     }
     setButtonSpinner(true);
     router.back();
@@ -85,11 +86,24 @@ export default function UpdateAccountScreen() {
   };
 
   return (
-    <LinearGradient
-      colors={["#F9F6F7", "#F9F6F7"]}
-      style={{ flex: 1, paddingTop: 30 }}
-    >
-      <Text style={styles.topText}>ACTUALIZAR PERFIL</Text>
+    <View style={{ flex: 1, marginTop: 26 }}>
+      <Header
+        openDrawer={() => navigation.dispatch(DrawerActions.openDrawer())}
+      />
+      <SearchInput homeScreen={true} />
+      <View style={styles.top}>
+        <Text style={[styles.topText, { marginTop: 2 }]}>
+          EDITAR PERFIL
+        </Text>
+        <TouchableOpacity onPress={() => router.back()}>
+          <AntDesign
+            name="close"
+            size={20}
+            color="#000024"
+            style={{ height: 40, aspectRatio: 1 }}
+          />
+        </TouchableOpacity>
+      </View>
       {userData && (
         <View
           style={{
@@ -100,7 +114,7 @@ export default function UpdateAccountScreen() {
           }}
         >
           <Image
-            source={require("@/assets/images/CHARRO_NEGRO-03.png")}
+            source={require("@/assets/images/ICONOS-01.png")}
             style={[
               styles.signInImage,
               { backgroundColor: "transparent", opacity: 0.67 },
@@ -117,12 +131,6 @@ export default function UpdateAccountScreen() {
                   setUserInfo({ ...userInfo, name: value })
                 }
               />
-              <AntDesign
-                style={{ position: "absolute", left: 26, top: 12 }}
-                name="user"
-                size={20}
-                color="#A1A1A1"
-              />
             </View>
             <View>
               <TextInput
@@ -135,12 +143,6 @@ export default function UpdateAccountScreen() {
                 }
                 editable={false}
               />
-              <Fontisto
-                style={{ position: "absolute", left: 26, top: 12 }}
-                name="email"
-                size={20}
-                color="#A1A1A1"
-              />
             </View>
             <View>
               <TextInput
@@ -152,46 +154,44 @@ export default function UpdateAccountScreen() {
                   setUserInfo({ ...userInfo, phone: value })
                 }
               />
-              <AntDesign
-                style={{ position: "absolute", left: 26, top: 12 }}
-                name="phone"
-                size={20}
-                color="#A1A1A1"
-              />
             </View>
           </View>
           <TouchableOpacity
             style={[
-              styles.button,
+              styles.button3,
               { paddingLeft: -35, marginHorizontal: 32, marginTop: 20 },
             ]}
           >
             {buttonSpinner ? (
               <ActivityIndicator
-                size="small"
-                color="white"
-                style={{ marginVertical: "auto" }}
+              size="small"
+              color="#016AF5"
+              style={{ marginVertical: "auto" }}
               />
             ) : (
+              <View style={styles.buttonWrapper}>
+              <Image
+                source={require("@/assets/images/BUTTON.png")}
+                style={styles.button2}
+              />
               <Text
+                onPress={handleUpdate}
                 style={[
                   {
+                    fontFamily: "Geomanist Regular",
                     color: "white",
-                    marginTop: 11,
-                    fontSize: 16,
-                    fontFamily: "Cherione Regular",
-                    textAlign: "center",
+                    fontSize: 19,
                   },
                 ]}
-                onPress={handleUpdate}
               >
                 ACTUALIZAR
               </Text>
+            </View>
             )}
           </TouchableOpacity>
         </View>
       )}
-    </LinearGradient>
+    </View>
   );
 }
 
@@ -220,44 +220,37 @@ export const styles = StyleSheet.create({
   inputContainer: {
     marginHorizontal: 16,
     marginTop: -40,
+    marginBottom: 10,
     rowGap: 20,
   },
   input: {
-    height: 45,
+    height: 40,
     marginHorizontal: 16,
-    borderRadius: 15,
+    borderRadius: 25,
     borderColor: "#A1A1A1",
-    borderWidth: 0.8,
-    paddingLeft: 35,
+    borderWidth: 0.4,
     fontSize: 16,
+    alignContent: "center",
     fontFamily: "Geomanist Regular",
     backgroundColor: "white",
-    color: "#A1A1A1",
+    color: "#000024",
+    textAlign: "center",
   },
   button: {
-    height: 45,
+    height: 40,
     marginHorizontal: 16,
-    borderRadius: 15,
+    borderRadius: 25,
     borderColor: "#A1A1A1",
     borderWidth: 0.8,
     paddingLeft: 35,
     backgroundColor: "#A1A1A1",
   },
   signInImage: {
-    width: "60%",
-    height: 250,
+    aspectRatio: 1,
+    height: 100,
     alignSelf: "center",
-    marginTop: -85,
-  },
-  topText: {
-    display: "flex",
-    paddingTop: 15,
-    paddingBottom: 8,
-    paddingLeft: 15,
-    fontFamily: "Geomanist Regular",
-    borderBottomColor: "#949494",
-    borderBottomWidth: 1,
-    color: "#949494",
+    marginTop: -120,
+    marginBottom: 90,
   },
   buttonText: {
     color: "white",
@@ -310,5 +303,39 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: 16,
     top: 60,
+  },
+  top: {
+    flexDirection: "row",
+    paddingTop: 18,
+    paddingLeft: 15,
+    borderBottomColor: "#A1A1A1",
+    justifyContent: "space-between",
+    borderBottomWidth: 1,
+  },
+  topText: {
+    fontFamily: "Geomanist Regular",
+    fontSize: 15,
+    color: "#000024",
+  },
+  closeIcon: {
+    height: 40,
+    aspectRatio: 1,
+  },
+  buttonWrapper: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button2: {
+    position: "absolute",
+    width: 200,
+    height: 45,
+    borderRadius: 60,
+  },
+  button3: {
+    width: 200,
+    height: 45,
+    borderRadius: 60,
+    alignSelf: "center",
   },
 });
