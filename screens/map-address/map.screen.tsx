@@ -7,7 +7,8 @@ import {
   TextInput,
   SafeAreaView,
   FlatList,
-  Image
+  Image,
+  Alert
 } from "react-native";
 import { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -73,6 +74,9 @@ const MapScreen: React.FC = () => {
   const [currentLocation, setCurrentLocation] = useState<LocationType>();
   const [destinationAddress, setDestinationAddress] = useState("");
 
+  //radio de la entrega en km
+  const deliveryRadius = 10;
+
   const getLocationPermission = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -124,9 +128,8 @@ const MapScreen: React.FC = () => {
 
   const getReverseGeocode = async (location: LocationType): Promise<string> => {
     if (!location) {
-      return ""; // Return an empty string if location is undefined
+      return ""; 
     }
-
     try {
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=${GOOGLE_MAPS_APIKEY}`
@@ -137,6 +140,24 @@ const MapScreen: React.FC = () => {
       console.error(error);
       return "";
     }
+  };
+
+  const calculateDistance = (loc1: LocationType, loc2: LocationType) => {
+    if (!loc1 || !loc2) return 0;
+
+    const toRadians = (degrees: number) => degrees * (Math.PI / 180);
+    const R = 6371; // Radio de la Tierra en km
+    const dLat = toRadians(loc2.latitude - loc1.latitude);
+    const dLng = toRadians(loc2.longitude - loc1.longitude);
+    const lat1 = toRadians(loc1.latitude);
+    const lat2 = toRadians(loc2.latitude);
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.sin(dLng / 2) * Math.sin(dLng / 2) * Math.cos(lat1) * Math.cos(lat2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c; // Distancia en km
   };
 
   useEffect(() => {
@@ -205,6 +226,16 @@ const MapScreen: React.FC = () => {
     couponId?: string;
   }) => {
     try {
+      const distance = calculateDistance(origin, destination);
+
+      if (distance > deliveryRadius) {
+        Alert.alert(
+          "Dirección fuera de la zona de entrega",
+          `La dirección ingresada está fuera del área de entrega permitida de ${deliveryRadius} km.`,
+          [{ text: "OK" }]
+        );
+        return;
+      }
       const token = await _retrieveData({ key: "userToken" });
       if (!token) {
         Toast.show("Usuario no autenticado", { type: "danger" });
