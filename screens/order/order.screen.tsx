@@ -5,20 +5,13 @@ import {
   Text,
   TouchableOpacity,
   Animated,
-  Button,
+  Image,
 } from "react-native";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef} from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 
-import MapView, { Marker, Polyline } from "react-native-maps";
-import MapViewDirections from "react-native-maps-directions";
-import * as Location from "expo-location";
-// import { GOOGLE_MAPS_APIKEY } from "@env";
-import { GOOGLE_MAPS_APIKEY } from "@/utils/uri";
-
-import { router } from "expo-router";
 import { useFonts } from "expo-font";
 import { FontAwesome, AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -51,16 +44,23 @@ const OrderScreen: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigation<DrawerNavProp>();
   const order = useSelector((state: RootState) => state.order.order);
-  // console.log(order._id)
+  // console.log(order)
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    // const interval = setInterval(() => {
       dispatch(readOrderStatus(order._id));
-    }, 60000);
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: "¡Tú Orden ha sido tomada!",
+          body: "Tu Orden está siendo procesada y pronto tendrás una actualización.",
+        },
+        trigger: null,
+      });
+    // }, 60000);
 
-    return () => {
-      clearInterval(interval);
-    };
+    // return () => {
+    //   clearInterval(interval);
+    // };
   }, []);
 
   const fadeAnims = useRef(
@@ -80,23 +80,23 @@ const OrderScreen: React.FC = () => {
     ).start();
   }, []);
 
-  if(order.status === "pendiente"){
-    Notifications.scheduleNotificationAsync({
-      content: {
-        title: "¡Tú Orden ha sido!",
-        body: "Tu Orden está siendo procesada y pronto tendrás una actualización.",
-      },
-      trigger: null,
-    });
-  } else if (order.status === "confirmado"){
-    Notifications.scheduleNotificationAsync({
-      content: {
-        title: "¡Tu Orden ha sido confirmada!",
-        body: "Tu Orden ha sido confirmada y pronto será enviada.",
-      },
-      trigger: null,
-    });
-  }
+  // if(order.status === "pendiente"){
+  //   Notifications.scheduleNotificationAsync({
+  //     content: {
+  //       title: "¡Tú Orden ha sido tomada!",
+  //       body: "Tu Orden está siendo procesada y pronto tendrás una actualización.",
+  //     },
+  //     trigger: null,
+  //   });
+  // } else if (order.status === "confirmado"){
+  //   Notifications.scheduleNotificationAsync({
+  //     content: {
+  //       title: "¡Tu Orden ha sido confirmada!",
+  //       body: "Tu Orden ha sido confirmada y pronto será enviada.",
+  //     },
+  //     trigger: null,
+  //   });
+  // }
 
   const goToHome = async () => {
     await Notifications.scheduleNotificationAsync({
@@ -112,65 +112,42 @@ const OrderScreen: React.FC = () => {
 
   return (
     <LinearGradient
-      colors={["#F9F6F7", "#F9F6F7"]}
-      style={{ flex: 1, marginTop: 25 }}
+      colors={["#000026", "#000026"]}
+      style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
     >
-      <View style={styles.top}>
-        <Text style={styles.topText}>ESTADO DE LA ORDEN</Text>
-        {/* <TouchableOpacity onPress={() => router.back()}>
-          <AntDesign
-            name="close"
-            size={28}
-            color="#A1A1A1"
-            style={styles.closeIcon}
-          />
-        </TouchableOpacity> */}
+      <View style={styles.imageContainer}>
+        <Image
+          style={styles.fullscreenImage}
+          source={require("@/assets/images/CONFIRM.png")}
+        />
       </View>
-      {order && (
-        <View style={styles.container}>
-          <Animated.Text
-            style={[styles.deliveryDetails, { opacity: fadeAnims[0] }]}
-          >
-            Dirección de Entrega:
-          </Animated.Text>
-          <Animated.Text
-            style={[styles.deliveryStatus, { opacity: fadeAnims[1] }]}
-          >
-            {order.deliveryAddress}
-          </Animated.Text>
-          <Animated.Text
-            style={[styles.deliveryDetails, { opacity: fadeAnims[2] }]}
-          >
-            Método de Pago:
-          </Animated.Text>
-          <Animated.Text
-            style={[styles.deliveryStatus, { opacity: fadeAnims[3] }]}
-          >
-            {order.paymentMethod}
-          </Animated.Text>
-          <Animated.Text
-            style={[styles.deliveryDetails, { opacity: fadeAnims[4] }]}
-          >
-            Valor del Pedido:
-          </Animated.Text>
-          <Animated.Text
-            style={[styles.deliveryStatus, { opacity: fadeAnims[4] }]}
-          >
-            $ {order.totalPrice}
-          </Animated.Text>
-          <Animated.Text
-            style={[styles.deliveryDetails, { opacity: fadeAnims[4] }]}
-          >
-            Estado del pedido:
-          </Animated.Text>
-          <Animated.Text
-            style={[styles.deliveryStatus, { opacity: fadeAnims[4] }]}
-          >
-            {order.status}
-          </Animated.Text>
-          <Button title="Ir al Inicio" onPress={goToHome} />
+      <View style={styles.top}>
+          <Text style={[styles.topText, { marginTop: 2 }]}>
+            DETALLES DE ENVÍO
+          </Text>
+          <TouchableOpacity onPress={() => goToHome()}>
+            <AntDesign
+              name="close"
+              size={20}
+              color="white"
+              style={{ height: 40, aspectRatio: 1 }}
+            />
+          </TouchableOpacity>
         </View>
-      )}
+      <View style={styles.centeredContainer}>
+        <Image
+          style={[{ transform: [{ scale: 1}], alignSelf: "center", marginVertical: 30 }]}
+          source={require("@/assets/images/ICONOS-38.png")}
+        />
+        <Image
+          style={[{ transform: [{ scale: 1}], alignSelf: "center", marginTop: 30 }]}
+          source={require("@/assets/images/GRACIAS.png")}
+        />
+        <Image
+          style={[{ transform: [{ scale: 0.8}], alignSelf: "center", marginVertical: 30 }]}
+          source={require("@/assets/images/ENJOY.png")}
+        />        
+      </View>
     </LinearGradient>
   );
 };
@@ -178,38 +155,78 @@ const OrderScreen: React.FC = () => {
 const styles = StyleSheet.create({
   top: {
     flexDirection: "row",
-    paddingTop: 15,
+    paddingTop: 18,
     paddingLeft: 15,
-    borderBottomColor: "#949494",
+    borderBottomColor: "#A1A1A1",
     justifyContent: "space-between",
     borderBottomWidth: 1,
+    width: "100%",
+    marginTop: 25
   },
   topText: {
-    fontFamily: "Cherione Regular",
-    fontSize: 20,
-    color: "#949494",
+    fontFamily: "Geomanist Regular",
+    fontSize: 15,
+    color: "white",
+    textAlign: "left"
   },
   closeIcon: {
     height: 40,
     aspectRatio: 1,
   },
-  deliveryStatus: {
-    fontFamily: "Geomanist Regular",
-    color: "#A1A1A1",
-    fontSize: 17,
+  imageContainer: {
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
   },
-  container: {
+  centeredContainer: {
+    // position: "absolute",
     flex: 1,
-    marginHorizontal: 10,
-    marginVertical: 15,
-    justifyContent: "flex-start",
-    gap: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
+    marginVertical: "auto",
+    // justifyContent:"space-between",
   },
-  deliveryDetails: {
-    fontFamily: "Cherione Bold",
-    color: "#A1A1A1",
-    fontSize: 14,
+  radioButton: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    width: "100%",
+    marginBottom: 10,
+    paddingVertical: 10,
+  },
+  radioCircle: {
+    height: 20,
+    width: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  selectedRadioCircle: {
+    backgroundColor: "white",
+  },
+  centeredText: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: "15%",
+    textAlign: "center",
+  },
+  fullscreenContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+  },
+  fullscreenImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
 });
-
 export default OrderScreen;

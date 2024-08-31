@@ -56,44 +56,48 @@ const HomeScreen: React.FC = () => {
   const products = useSelector((state: RootState) => state.products);
   const categories = useSelector((state: RootState) => state.categories);
   const cartItems = useSelector((state: RootState) => state.cart.cart.products);
-  const selectedProduct = useSelector((state: RootState) => state.products.selectedProductId);
+  const selectedProduct = useSelector(
+    (state: RootState) => state.products.selectedProductId
+  );
 
   useFocusEffect(
     useCallback(() => {
       if (selectedProduct) {
         setSelectedProductId(selectedProduct);
-      } else if(!selectedProduct) {
+      } else if (!selectedProduct) {
         setSelectedProductId("");
       }
     }, [selectedProduct])
   );
-  
+
   // const userInfo = useSelector((state: RootState) => state.user);
-  // console.log("Products", userInfo);
-
-  useEffect(() => {
-    if (selectedCategory) {
-      const selectedCategoryObj = (categories.categories as Category[])?.find(
-        (category: Category) => {
-        return category.name.toLowerCase() == selectedCategory.toLowerCase()
+  // console.log("Cart Items: ", cartItems.length);
+  if (categories) {
+    useEffect(() => {
+      if (selectedCategory) {
+        const selectedCategoryObj = (categories.categories as Category[])?.find(
+          (category: Category) => {
+            return (
+              category.name.toLowerCase() == selectedCategory.toLowerCase()
+            );
+          }
+        );
+        console.log("Cat:", selectedCategoryObj);
+        let selectedProducts: Product[] = [];
+        if (selectedCategoryObj) {
+          selectedProducts = (products.products as Product[]).filter(
+            (product: Product) => product.category === selectedCategoryObj._id
+          );
+          console.log(selectedProducts);
+          setFilteredProducts(selectedProducts);
+        } else {
+          console.log(
+            "Categoría seleccionada no encontrada en las categorías disponibles"
+          );
         }
-      );
-      console.log("Cat:", selectedCategoryObj);
-      let selectedProducts: Product[] = [];
-      if (selectedCategoryObj) {
-        selectedProducts = (products.products as Product[]).filter(
-          (product: Product) => product.category === selectedCategoryObj._id
-        );
-        console.log(selectedProducts);
-        setFilteredProducts(selectedProducts);
-      } else {
-        console.log(
-          "Categoría seleccionada no encontrada en las categorías disponibles"
-        );
       }
-    }
-  }, [selectedCategory]);
-
+    }, [selectedCategory]);
+  }
   const handleProductSelected = (productId: string) => {
     setSelectedProductId(productId);
   };
@@ -112,19 +116,7 @@ const HomeScreen: React.FC = () => {
     >
       <Header
         openDrawer={() => navigation.dispatch(DrawerActions.openDrawer())}
-      />
-      {cartItems.length > 0 && (
-        <View style={styles.floatingButton}>
-          <TouchableOpacity onPress={() => navigation.navigate("CARRITO")}>
-            <AntDesign
-              name="shoppingcart"
-              size={35}
-              color={"white"}
-              style={[styles.floatingButtonText]}
-            />
-          </TouchableOpacity>
-        </View>
-      )}
+      />      
       {selectedProductId !== "" ? (
         <ProductDetailsScreen
           productId={selectedProductId}
@@ -136,7 +128,7 @@ const HomeScreen: React.FC = () => {
           <Categories
             onItemSelected={(title: string) => {
               setSelectedCategory(title);
-              console.log(title)
+              console.log(title);
             }}
             resetSelectedTitle={reset}
           />
@@ -155,7 +147,7 @@ const HomeScreen: React.FC = () => {
               <Promos />
               {categories?.categories?.map((category: Category) => {
                 const productsForCategory = products.products.filter(
-                  (product: Product) => product.category === category._id 
+                  (product: Product) => product.category === category._id
                 );
                 return (
                   <AllCategoryProducts

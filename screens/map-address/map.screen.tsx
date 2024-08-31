@@ -5,6 +5,9 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  SafeAreaView,
+  FlatList,
+  Image
 } from "react-native";
 import { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -20,11 +23,11 @@ import { GOOGLE_MAPS_APIKEY } from "@/utils/uri";
 
 import { router } from "expo-router";
 import { useFonts } from "expo-font";
-import { FontAwesome, AntDesign } from "@expo/vector-icons";
-import { useCoupon, clearCoupon} from "@/store/coupon/couponActions";
+import { FontAwesome, AntDesign, Entypo } from "@expo/vector-icons";
+import { useCoupon, clearCoupon } from "@/store/coupon/couponActions";
 import { createOrder } from "@/store/order/orderActions";
 import { clearCart } from "@/store/cart/cartActions";
-import { clearSelectedProduct } from '@/store/products/productsActions'
+import { clearSelectedProduct } from "@/store/products/productsActions";
 import { useNavigation } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { useStripe } from "@stripe/stripe-react-native";
@@ -58,6 +61,7 @@ const MapScreen: React.FC = () => {
 
   const cart = useSelector((state: RootState) => state.cart.cart);
   const { products, totalPrice } = cart;
+  const cartProducts = JSON.parse(JSON.stringify(products));
   const coupon = useSelector((state: RootState) => state.coupon.coupon);
   const [couponCode, setCouponCode] = useState("");
 
@@ -180,12 +184,26 @@ const MapScreen: React.FC = () => {
     );
     await navigation.navigate("(routes)/order/index");
     dispatch(clearCart());
-    dispatch(clearCoupon())
+    dispatch(clearCoupon());
+  };
+
+  const goToHome = () => {
+    // console.log(prod)
+    if (dispatch) {
+      dispatch(clearSelectedProduct());
+    }
+    router.back();
   };
 
   let { initPaymentSheet, presentPaymentSheet } = useStripe();
 
-  const onCheckout = async ({ cartId, couponId }: { cartId: string; couponId?: string }) => {
+  const onCheckout = async ({
+    cartId,
+    couponId,
+  }: {
+    cartId: string;
+    couponId?: string;
+  }) => {
     try {
       const token = await _retrieveData({ key: "userToken" });
       if (!token) {
@@ -193,18 +211,24 @@ const MapScreen: React.FC = () => {
         return;
       }
       // 1. Crear el Payment Intent desde el backend
-      const response = await axios.post(`${SERVER_URI}/payments`, { cartId, couponId }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-  
+      const response = await axios.post(
+        `${SERVER_URI}/payments`,
+        { cartId, couponId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       if (response?.error) {
         console.log("Something went wrong", response.error);
-        Toast.show("Hubo un problema al crear el Payment Intent", { type: "danger" });
+        Toast.show("Hubo un problema al crear el Payment Intent", {
+          type: "danger",
+        });
         return;
       }
-  
+
       // 2. Inicializar el Payment Sheet
       const { error: paymentSheetError } = await initPaymentSheet({
         merchantDisplayName: "Charro Negro",
@@ -213,24 +237,24 @@ const MapScreen: React.FC = () => {
           name: "lucas",
         },
       });
-  
+
       if (paymentSheetError) {
         console.log("Something went wrong", paymentSheetError.message);
         Toast.show("Error al inicializar el Payment Sheet", { type: "danger" });
         return;
       }
-  
+
       // 3. Presentar el Payment Sheet
       const { error: paymentError } = await presentPaymentSheet();
-  
+
       if (paymentError) {
         console.log(`Error code: ${paymentError.code}`, paymentError.message);
         return;
       }
-  
+
       // Si todo salió bien, mostramos un mensaje de éxito
       Toast.show("Pago realizado con éxito", { type: "success" });
-      await dispatch(clearSelectedProduct())
+      await dispatch(clearSelectedProduct());
       await newOrder();
 
       // Aquí puedes manejar la confirmación de éxito de la orden
@@ -240,47 +264,112 @@ const MapScreen: React.FC = () => {
       Toast.show("Error en el proceso de pago", { type: "danger" });
     }
   };
-  
-  
 
-  return (
-    <LinearGradient
-      colors={["#F9F6F7", "#F9F6F7"]}
-      style={{ flex: 1, marginTop: 25 }}
-    >
-      <ScrollView>
+  if (cart) {
+    const renderProductItem = ({ item }: { item: CartProduct }) => (
+      <View
+        style={{
+          flexDirection: "row",
+          marginHorizontal: 10,
+          marginVertical: 15,
+          justifyContent: "space-between",
+          paddingBottom: 15,
+          // width: "90%",
+          borderBottomColor: "#A1A1A1",
+          borderBottomWidth: 0.5,
+        }}
+      >
+        <View style={{ flexDirection: "row" }}>
+          <View
+            style={{ justifyContent: "space-between", alignContent: "center" }}
+          >
+            <Text
+              style={{
+                textAlign: "left",
+                marginHorizontal: 15,
+                fontFamily: "Geomanist Medium",
+                fontSize: 17,
+                color: "#000024",
+              }}
+            >
+              {item.product.name}
+            </Text>
+            <Text
+              style={{
+                textAlign: "left",
+                marginHorizontal: 15,
+                fontFamily: "Geomanist Regular",
+                fontSize: 14,
+                color: "#000024",
+              }}
+            >
+              {item.product.description}
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <View>
+            <Text
+              style={{
+                textAlign: "left",
+                fontFamily: "Geomanist Regular",
+                fontSize: 17,
+                color: "#000024",
+                marginHorizontal: 15,
+              }}
+            >
+              ${Number(item.product?.price?.toString()).toFixed(2)} MXN
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+
+    return (
+      <LinearGradient
+        colors={["#F9F6F7", "#F9F6F7"]}
+        style={{ flex: 1, marginTop: 25 }}
+      >
         <View style={styles.top}>
-          <Text style={styles.topText}>DETALLES DE ENVÍO</Text>
-          <TouchableOpacity onPress={() => router.back()}>
+          <Text style={[styles.topText, { marginTop: 2 }]}>
+            DETALLES DE ENVÍO
+          </Text>
+          <TouchableOpacity onPress={() => goToHome()}>
             <AntDesign
               name="close"
-              size={28}
-              color="#A1A1A1"
-              style={styles.closeIcon}
+              size={20}
+              color="#000024"
+              style={{ height: 40, aspectRatio: 1 }}
             />
           </TouchableOpacity>
         </View>
-        <View style={{ flex: 1, marginTop: 15 }}>
-          <Text
-            style={{
-              marginHorizontal: 10,
-              fontFamily: "Geomanist Regular",
-              fontSize: 18,
-              color: "#A1A1A1",
-            }}
-          >
-            Dónde deseas recibir tu pedido:
-          </Text>
-          <MapView
-            style={{ height: 300, marginVertical: 15, marginHorizontal: 10 }}
-            initialRegion={{
-              latitude: origin?.latitude,
-              longitude: origin?.longitude,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-          >
-            {/* <Marker
+        <ScrollView>
+          <View style={{ flex: 1, marginTop: 15 }}>
+            <Text
+              style={{
+                marginHorizontal: 10,
+                fontFamily: "Geomanist Regular",
+                fontSize: 15,
+                color: "#000024",
+              }}
+            >
+              ¿Dónde deseas recibir tu pedido?
+            </Text>
+            <MapView
+              style={{ height: 300, marginVertical: 15 }}
+              initialRegion={{
+                latitude: origin?.latitude,
+                longitude: origin?.longitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+            >
+              {/* <Marker
               draggable={false}
               coordinate={origin}
               title={"title"}
@@ -289,184 +378,241 @@ const MapScreen: React.FC = () => {
                 setOrigin(direction.nativeEvent.coordinate);
               }}
             /> */}
-            {currentLocation && (
-              <Marker
-                draggable={true}
-                coordinate={currentLocation}
-                title={"title"}
-                description={"description"}
-                onDragEnd={async (e) => {
-                  const newDestination = e.nativeEvent.coordinate;
-                  setDestination(newDestination);
-                  const newDestinationAddress = await getReverseGeocode(
-                    newDestination
-                  );
-                  setDestinationAddress(newDestinationAddress);
-                }}
+              {currentLocation && (
+                <Marker
+                  draggable={true}
+                  coordinate={currentLocation}
+                  title={"title"}
+                  description={"description"}
+                  onDragEnd={async (e) => {
+                    const newDestination = e.nativeEvent.coordinate;
+                    setDestination(newDestination);
+                    const newDestinationAddress = await getReverseGeocode(
+                      newDestination
+                    );
+                    setDestinationAddress(newDestinationAddress);
+                  }}
+                />
+              )}
+              <MapViewDirections
+                origin={origin}
+                destination={currentLocation}
+                apikey={GOOGLE_MAPS_APIKEY}
+                strokeWidth={3}
+                strokeColor="#000"
               />
-            )}
-            <MapViewDirections
-              origin={origin}
-              destination={currentLocation}
-              apikey={GOOGLE_MAPS_APIKEY}
-              strokeWidth={3}
-              strokeColor="#000"
-            />
-          </MapView>
-          <View style={{ marginHorizontal: 10 }}>
-            {/* <TextInput
+            </MapView>
+            <View style={{ marginHorizontal: 10 }}>
+              {/* <TextInput
               style={styles.inputs}
               value={originAddress}
               onChangeText={setOriginAddress}
               placeholder="Dirección de la tienda"
             /> */}
-            <TextInput
-              style={styles.inputs}
-              value={destinationAddress}
-              onChangeText={setDestinationAddress}
-              placeholder="Dirección del pedido"
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              marginHorizontal: 16,
-            }}
-          >
-            <TextInput
-              style={[styles.input, { color: "#A1A1A1" }]}
-              keyboardType="default"
-              value={couponCode}
-              placeholder="CUPÓN DE DESCUENTO"
-              onChangeText={setCouponCode}
-            />
-            <AntDesign
-              style={{ position: "absolute", left: 10, top: 12 }}
-              name="tago"
-              size={20}
-              color="#A1A1A1"
-            />
-            <TouchableOpacity
-              style={{
-                width: "30%",
-                height: 45,
-                justifyContent: "center",
-                backgroundColor: couponCode ? "#A1A1A1" : "#cccccc", // Cambia el color si está deshabilitado
-                borderTopRightRadius: 15,
-                borderBottomRightRadius: 15,
-              }}
-              onPress={applyCoupon}
-              disabled={!couponCode} // Deshabilitar si el campo está vacío
+              <TextInput
+                style={styles.inputs}
+                value={destinationAddress}
+                onChangeText={setDestinationAddress}
+                placeholder="Dirección del pedido"
+              />
+            </View>
+
+            <SafeAreaView
+              style={{ borderTopRightRadius: 50, borderTopLeftRadius: 50 }}
             >
-              <Text
-                style={{
-                  textAlign: "center",
-                  alignContent: "center",
-                  color: "white",
-                  fontFamily: "Cherione Regular",
-                  fontSize: 16,
-                }}
-              >
-                APLICAR
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{ margin: 10, elevation: 0.8, borderColor: "#A1A1A1" }}>
+              <FlatList
+                data={cartProducts}
+                renderItem={renderProductItem}
+                keyExtractor={(item) => item._id}
+              />
+            </SafeAreaView>
+
             <View
               style={{
-                flexDirection: "row",
-                marginHorizontal: 20,
-                marginVertical: 10,
-                justifyContent: "space-between",
-                alignItems: "center",
+                margin: 10,
+                borderTopWidth: 0.4,
+                borderBottomWidth: 0.4,
+                borderColor: "#A1A1A1",
               }}
             >
-              <View>
-                <Text style={[styles.cartResume, { textAlign: "left" }]}>
-                  Sutotal:{" "}
-                </Text>
-                <Text style={[styles.cartResume, { textAlign: "left" }]}>
-                  DESCUENTO:{" "}
-                </Text>
-              </View>
-              <View>
-                <Text style={styles.cartResume}>${totalPrice.toFixed(2)}</Text>
-                {discountPercentage ? (
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginHorizontal: 20,
+                  marginVertical: 10,
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <View>
+                  <Text style={[styles.cartResume, { textAlign: "left" }]}>
+                    Sutotal:{" "}
+                  </Text>
+                  <Text style={[styles.cartResume, { textAlign: "left" }]}>
+                    DESCUENTO:{" "}
+                  </Text>
+                </View>
+                <View>
                   <Text style={styles.cartResume}>
-                    ${discountPercentage?.toFixed(2)}
+                    ${totalPrice.toFixed(2)} MXN
+                  </Text>
+                  {discountPercentage ? (
+                    <Text style={styles.cartResume}>
+                      ${discountPercentage?.toFixed(2)}
+                    </Text>
+                  ) : (
+                    <Text style={styles.cartResume}>
+                      ${discount?.toFixed(2)} MXN
+                    </Text>
+                  )}
+                </View>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  paddingTop: 10,
+                  marginBottom: 10,
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  borderTopColor: "#A1A1A1",
+                  borderTopWidth: 0.5,
+                }}
+              >
+                <Text style={[styles.cartTotal, { marginLeft: 20 }]}>
+                  TOTAL:{" "}
+                </Text>
+                {totalPrice && newPrice !== 0 ? (
+                  <Text style={[styles.cartTotal, { marginRight: 20 }]}>
+                    ${newPrice.toFixed(2)} MXN
                   </Text>
                 ) : (
-                  <Text style={styles.cartResume}>${discount?.toFixed(2)}</Text>
+                  <Text style={[styles.cartTotal, { marginRight: 20 }]}>
+                    ${totalPrice.toFixed(2)} MXN
+                  </Text>
                 )}
               </View>
             </View>
             <View
               style={{
                 flexDirection: "row",
-                marginHorizontal: 20,
-                marginBottom: 10,
-                justifyContent: "space-between",
-                alignItems: "center",
-                borderTopColor: "#A1A1A1",
-                borderTopWidth: 0.5,
+                marginHorizontal: 16,
+                marginBottom: 15,
+                marginTop: 5,
               }}
             >
-              <Text style={styles.cartTotal}>TOTAL: </Text>
-              {totalPrice && newPrice !== 0 ? (
-                <Text style={styles.cartTotal}>${newPrice.toFixed(2)}</Text>
-              ) : (
-                <Text style={styles.cartTotal}>${totalPrice.toFixed(2)}</Text>
-              )}
+              <TextInput
+                style={[styles.input, { color: "#A1A1A1" }]}
+                keyboardType="default"
+                value={couponCode}
+                placeholder="Escribe aquí tu cupón"
+                onChangeText={setCouponCode}
+              />
+              <TouchableOpacity
+                style={{
+                  width: "40%",
+                  height: 40,
+                  justifyContent: "center",
+                  backgroundColor: "#000024", // Cambia el color si está deshabilitado
+                  borderTopRightRadius: 25,
+                  borderBottomRightRadius: 25,
+                }}
+                onPress={applyCoupon}
+                disabled={!couponCode} // Deshabilitar si el campo está vacío
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    alignContent: "center",
+                    color: "white",
+                    fontFamily: "Geomanist Regular",
+                    fontSize: 15,
+                  }}
+                >
+                  APLICAR CUPÓN
+                </Text>
+              </TouchableOpacity>
             </View>
+            <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              alignContent: "center",
+              backgroundColor:"#C4F6F3",
+              paddingHorizontal: 20,
+              paddingVertical: 10,
+              marginTop: 5,
+              marginBottom: 12
+            }}
+          >
+            <Entypo
+              name="warning"
+              size={28}
+              color="#000024"
+              style={{ alignSelf: "center", justifyContent:"center",height:30 }}
+            />
+            <Text
+              style={{
+                fontSize: 12,
+                justifyContent: "center",
+                width: "85%",
+                textAlign: "center"
+              }}
+            >
+              AL REALIZAR EL PEDIDO, CONFIRMO QUE TENGO 18 AÑOS O MÁS Y ACEPTO LOS TÉRMINOS Y CONDICIONES
+            </Text>
           </View>
-          <TouchableOpacity
-  style={{
-    flexDirection: "row",
-    marginHorizontal: 20,
-    marginBottom: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: destinationAddress ? "#A1A1A1" : "#cccccc", // Cambia el color si está deshabilitado
-    paddingVertical: 15,
-    borderRadius: 10,
-  }}
-  onPress={() =>
-    onCheckout({
-      cartId: cart._id,
-      ...(coupon?._id && { couponId: coupon._id }), // Solo incluye couponId si existe
-    })
+            <TouchableOpacity
+              style={[
+                styles.button3,
+                { paddingLeft: -35, marginHorizontal: 32, marginTop: 15, marginBottom: 15 },
+              ]}
+              onPress={() =>
+                onCheckout({
+                  cartId: cart._id,
+                  ...(coupon?._id && { couponId: coupon._id }), // Solo incluye couponId si existe
+                })
+              }
+              disabled={!destinationAddress} // Deshabilitar si destinationAddress está vacío
+            >
+              <View style={styles.buttonWrapper}>
+              <Image
+                source={require("@/assets/images/BUTTON.png")}
+                style={styles.button2}
+              />
+              <Text
+                style={[
+                  {
+                    fontFamily: "Geomanist Regular",
+                    color: "white",
+                    fontSize: 19,
+                  },
+                ]}
+              >
+                REALIZAR PEDIDO
+              </Text>
+            </View>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </LinearGradient>
+    );
   }
-  disabled={!destinationAddress} // Deshabilitar si destinationAddress está vacío
->
-  <Text
-    style={{
-      color: "white",
-      fontFamily: "Cherione Normal",
-      fontSize: 16,
-    }}
-  >
-    REALIZAR PEDIDO
-  </Text>
-</TouchableOpacity>
-        </View>
-      </ScrollView>
-    </LinearGradient>
-  );
 };
 
 const styles = StyleSheet.create({
   top: {
     flexDirection: "row",
-    paddingTop: 15,
+    paddingTop: 18,
     paddingLeft: 15,
-    borderBottomColor: "#949494",
+    borderBottomColor: "#A1A1A1",
     justifyContent: "space-between",
     borderBottomWidth: 1,
   },
   topText: {
-    fontFamily: "Cherione Regular",
-    fontSize: 20,
-    color: "#949494",
+    fontFamily: "Geomanist Regular",
+    fontSize: 15,
+    color: "#000024",
   },
   closeIcon: {
     height: 40,
@@ -474,40 +620,60 @@ const styles = StyleSheet.create({
   },
   inputs: {
     marginBottom: 10,
-    height: 45,
+    height: 40,
     borderColor: "#949494",
-    borderWidth: 0.8,
-    borderRadius: 5,
-    padding: 10,
+    borderBottomWidth: 0.8,
+    textAlign: "center",
+    color: "#000024",
+    fontSize: 15,
+    fontFamily: "Geomanist Regular",
   },
   cartTotal: {
     textAlign: "center",
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "Geomanist Regular",
     marginVertical: 10,
     color: "#A1A1A1",
   },
   cartResume: {
     textAlign: "center",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "regular",
+    fontFamily: "Geomanist Regular",
     marginVertical: 5,
     color: "#A1A1A1",
   },
   input: {
-    width: "70%",
-    height: 45,
+    width: "60%",
+    height: 40,
     // marginLeft: 16,
-    borderRadius: 15,
+    borderRadius: 25,
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
     borderColor: "#A1A1A1",
-    borderWidth: 0.8,
-    paddingLeft: 35,
-    fontSize: 16,
+    borderWidth: 0.4,
+    paddingLeft: 25,
+    fontSize: 15,
     fontFamily: "Geomanist Regular",
     backgroundColor: "white",
-    color: "#A1A1A1",
+    color: "#000024",
+  },
+  buttonWrapper: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button2: {
+    position: "absolute",
+    width: 200,
+    height: 45,
+    borderRadius: 60,
+  },
+  button3: {
+    width: 200,
+    height: 45,
+    borderRadius: 60,
+    alignSelf: "center",
   },
 });
 
