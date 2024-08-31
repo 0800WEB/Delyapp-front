@@ -86,14 +86,20 @@ const CartScreen: React.FC = () => {
           marginTop: 25,
         }}
       >
+        <Header
+          openDrawer={() => navigation.dispatch(DrawerActions.openDrawer())}
+        />
+        <SearchInput homeScreen={true} />
         <View style={styles.top}>
-          <Text style={styles.topText}>CARRITO DE COMPRA</Text>
+          <Text style={[styles.topText, { marginTop: 2 }]}>
+            CARRITO DE COMPRAS
+          </Text>
           <TouchableOpacity onPress={() => goToHome()}>
             <AntDesign
               name="close"
-              size={28}
-              color="#A1A1A1"
-              style={styles.closeIcon}
+              size={20}
+              color="#000024"
+              style={{ height: 40, aspectRatio: 1 }}
             />
           </TouchableOpacity>
         </View>
@@ -105,7 +111,7 @@ const CartScreen: React.FC = () => {
             alignContent: "center",
             alignSelf: "center",
             textAlign: "center",
-            fontFamily: "Cherione Regular",
+            fontFamily: "Geomanist Regular",
             fontSize: 20,
             color: "#A1A1A1",
           }}

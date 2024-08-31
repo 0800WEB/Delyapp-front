@@ -4,8 +4,12 @@ import { useFonts } from "expo-font";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 
-export default function SelectSignScreen() {
+type DrawerNavProp = DrawerNavigationProp<RootParamList>;
+
+const SelectSignScreen:React.FC = () => {
   let [fontsLoaded, fontError] = useFonts({
     "Cherione Bold": require("../../../assets/fonts/Cherione Bold.ttf"),
     "Cherione Normal": require("../../../assets/fonts/Cherione Normal.ttf"),
@@ -23,6 +27,13 @@ export default function SelectSignScreen() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+
+  const navigation = useNavigation<DrawerNavProp>();
+
+  const goToAbout = async () => {
+    navigation.navigate("ABOUT_US");
+  }
+
   return (
     <LinearGradient colors={["#000", "#000"]} style={{ flex: 1 }}>
       <View style={styles.imageContainer}>
@@ -81,6 +92,25 @@ export default function SelectSignScreen() {
               </Text>
             </View>
           </TouchableOpacity>
+          <TouchableOpacity onPress={goToAbout}>
+            <View style={styles.buttonWrapper}>
+              <Text
+                style={[
+                  styles.buttonText,
+                  {
+                    fontFamily: "Geomanist Regular",
+                    color: "white",
+                    fontSize: 17,
+                    borderBottomWidth: 0.4,
+                    borderColor: "#fff",
+                    paddingBottom: 5,
+                  },
+                ]}
+              >
+                ACERCA DE
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </LinearGradient>
@@ -132,3 +162,6 @@ export const styles = StyleSheet.create({
     borderRadius: 60,
   },
 });
+
+
+export default SelectSignScreen;

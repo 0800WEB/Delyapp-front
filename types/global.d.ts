@@ -131,12 +131,14 @@ type CartProduct ={
 type RootParamList = {
   Home: undefined;
   Details: { itemId: number };
-  CARRITO: undefined;
+  Carrito: undefined;
+  NOSOTROS: undefined;
   '(routes)/map/index': undefined;
   '(routes)/order/index': undefined;
   '(routes)/update-account/index': undefined;
   '(routes)/home/index': undefined;
   '(routes)/search/index': undefined;
+  '(routes)/about/index': undefined;
   // Agrega aquí otras rutas según sea necesario
 };
 
