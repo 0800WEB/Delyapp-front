@@ -109,25 +109,24 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginLeft: 10,
-    justifyContent: "center",
+    justifyContent: "space-around",
     flex: 1,
   },
   titleText: {
     fontFamily: "Geomanist Medium",
-    fontSize: 15,
-    color: "#A1A1A1",
+    fontSize: 17,
+    color: "#000024",
     textAlign: "left",
   },
   descriptionText: {
-    fontFamily: "Cherione Regular",
-    fontSize: 12,
-    color: "#666",
+    fontFamily: "Geomanist Regular",
+    fontSize: 15,
+    color: "#000024",
   },
   priceText: {
     fontFamily: "Geomanist Medium",
-    fontSize: 15,
-    color: "#A1A1A1",
-    marginTop: 5,
+    fontSize: 18,
+    color: "#000024",
   },
   topText: {
     display: "flex",

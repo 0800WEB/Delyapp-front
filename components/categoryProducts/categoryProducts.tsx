@@ -43,10 +43,12 @@ const CategoryProducts: React.FC<{
         <TouchableOpacity
           onPress={() => onProductSelected(item._id)}
           style={{
-            marginHorizontal: "auto",
-            width: "95%",
+            marginHorizontal: 10,
             flexDirection: "row",
             alignContent: "center",
+            borderBottomWidth: 0.5,
+            marginBottom: 10,
+            borderColor: "#A1A1A1",
           }}
         >
           <Image
@@ -58,20 +60,21 @@ const CategoryProducts: React.FC<{
           />
           <View>
             <View style={styles.containerTitle}>
-              <Text style={styles.titleText}>{item.name}</Text>
+              <Text style={[styles.titleText, {fontSize:16}]}>{item.name}</Text>
               <Text
                 style={[
                   styles.titleText,
                   {
-                    fontFamily: "Cherione Regular",
-                    fontSize: 12,
+                    fontFamily: "Geomanist Regular",
+                    fontSize: 15,
+                    color: "#000024"
                   },
                 ]}
               >
                 {item.description}
               </Text>
               <View style={{ flexDirection: "row" }}>
-                <Text style={[styles.titleText]}>${item.price}</Text>
+                <Text style={[styles.titleText, {color:"#000024"}]}>${item.price}</Text>
               </View>
             </View>
           </View>
@@ -93,12 +96,12 @@ const CategoryProducts: React.FC<{
           borderColor: "#A1A1A1",
         }}
       >
-        <Text style={styles.topText}>{categoryName}</Text>
+        <Text style={[styles.topText,{color:"#000024", fontSize:17}]}>{categoryName}</Text>
         <TouchableOpacity onPress={()=> onHomeReset()}>
           <AntDesign
             name="close"
-            size={23}
-            color="#A1A1A1"
+            size={20}
+            color="#000024"
             style={{ paddingRight: 15 }}
           />
         </TouchableOpacity>
@@ -126,8 +129,6 @@ export const styles = StyleSheet.create({
     marginHorizontal: 5,
     marginVertical: 10,
     borderRadius: 15,
-    borderWidth: 0.15,
-    borderColor: "#A1A1A1",
   },
   topText: {
     display: "flex",
@@ -150,8 +151,8 @@ export const styles = StyleSheet.create({
   },
   titleText: {
     fontFamily: "Geomanist Medium",
-    fontSize: 15,
-    color: "#A1A1A1",
+    fontSize: 17,
+    color: "#000024",
     textAlign: "left",
   },
 });

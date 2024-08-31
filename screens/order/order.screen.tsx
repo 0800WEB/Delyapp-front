@@ -48,7 +48,7 @@ const OrderScreen: React.FC = () => {
 
   useEffect(() => {
     // const interval = setInterval(() => {
-      dispatch(readOrderStatus(order._id));
+      // dispatch(readOrderStatus(order._id));
       Notifications.scheduleNotificationAsync({
         content: {
           title: "¡Tú Orden ha sido tomada!",
