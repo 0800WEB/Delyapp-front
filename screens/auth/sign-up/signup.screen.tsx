@@ -306,24 +306,54 @@ export default function SignUpScreen() {
               </View>
             )}
           </View>
-          <CheckBox
-            title="Acepto los términos y condiciones para el uso de la aplicación"
-            checked={termsAccepted}
-            onPress={() => setTermsAccepted(!termsAccepted)}
-            containerStyle={styles.checkboxContainer}
-            textStyle={styles.checkboxText}
-            checkedColor="#A1A1A1"
-            uncheckedColor="#A1A1A1"
-          />
-          <CheckBox
-            title="He leído y estoy de acuerdo con el aviso de privacidad"
-            checked={privacyAccepted}
-            onPress={() => setPrivacyAccepted(!privacyAccepted)}
-            containerStyle={styles.checkboxContainer}
-            textStyle={styles.checkboxText}
-            checkedColor="#A1A1A1"
-            uncheckedColor="#A1A1A1"
-          />
+          <View
+            style={{ marginHorizontal: 10, backgroundColor:"rgba(249, 246, 247, 0.8)", borderRadius:25, paddingHorizontal: 10 }}
+          >
+            <TouchableOpacity
+              style={[styles.radioButton, { marginTop: 10 }]}
+              onPress={() => setTermsAccepted(!termsAccepted)}
+            >
+              <View
+                style={[
+                  styles.radioCircle,
+                  termsAccepted && styles.selectedRadioCircle,
+                ]}
+              />
+              <Text
+                style={{
+                  fontFamily: "Geomanist Light",
+                  color: "#000024",
+                  fontSize: 14,
+                  textAlign: "left",
+                  marginLeft: 10,
+                }}
+              >
+                Acepto los términos y condiciones para el uso de la aplicación
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.radioButton}
+              onPress={() => setPrivacyAccepted(!privacyAccepted)}
+            >
+              <View
+                style={[
+                  styles.radioCircle,
+                  privacyAccepted && styles.selectedRadioCircle,
+                ]}
+              />
+              <Text
+                style={{
+                  fontFamily: "Geomanist Light",
+                  color: "#000024",
+                  fontSize: 14,
+                  textAlign: "left",
+                  marginLeft: 10,
+                }}
+              >
+                He leído y estoy de acuerdo con el aviso de privacidad
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
         <TouchableOpacity
           style={[
@@ -504,5 +534,25 @@ export const styles = StyleSheet.create({
     height: 45,
     borderRadius: 60,
     alignSelf: "center",
+  },
+  radioButton: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    width: "100%",
+    marginBottom: 10,
+    paddingBottom: 5,
+  },
+  radioCircle: {
+    height: 20,
+    width: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#000024",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  selectedRadioCircle: {
+    backgroundColor: "#000024",
   },
 });
