@@ -63,22 +63,22 @@ const OrderScreen: React.FC = () => {
     // };
   }, []);
 
-  const fadeAnims = useRef(
-    [...Array(5)].map(() => new Animated.Value(0))
-  ).current;
+  // const fadeAnims = useRef(
+  //   [...Array(5)].map(() => new Animated.Value(0))
+  // ).current;
 
-  useEffect(() => {
-    Animated.stagger(
-      200,
-      fadeAnims.map((fadeAnim) =>
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        })
-      )
-    ).start();
-  }, []);
+  // useEffect(() => {
+  //   Animated.stagger(
+  //     200,
+  //     fadeAnims.map((fadeAnim) =>
+  //       Animated.timing(fadeAnim, {
+  //         toValue: 1,
+  //         duration: 1000,
+  //         useNativeDriver: true,
+  //       })
+  //     )
+  //   ).start();
+  // }, []);
 
   // if(order.status === "pendiente"){
   //   Notifications.scheduleNotificationAsync({

@@ -1,6 +1,5 @@
 import {
   View,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -20,9 +19,79 @@ import * as Notifications from "expo-notifications";
 import { clearSelectedProduct } from "@/store/products/productsActions";
 import { router } from "expo-router";
 
-import Accordion from "react-native-collapsible/Accordion";
 
-type DrawerNavProp = DrawerNavigationProp<RootParamList>;
+type LayoutChangeEvent = {
+  nativeEvent: {
+    layout: {
+      x: number;      // La posición x del componente
+      y: number;      // La posición y del componente
+      width: number;  // El ancho del componente
+      height: number; // La altura del componente
+    };
+  };
+};
+
+const AccordionSection: React.FC<{
+  title: string;
+  content: string;
+}> = ({ title, content }) => {
+  const [expanded, setExpanded] = useState(false);
+  const animationController = useState(new Animated.Value(0))[0];
+  const [contentHeight, setContentHeight] = useState(0);
+
+  const toggleExpand = () => {
+    if (expanded) {
+      Animated.timing(animationController, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    } else {
+      Animated.timing(animationController, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
+    }
+    setExpanded(!expanded);
+  };
+
+  const arrowRotation = animationController.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "180deg"],
+  });
+
+  // const contentHeight = animationController.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: [0, 100], // Ajusta el valor de 100 según el contenido
+  // });
+
+  const animatedHeight = animationController.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, contentHeight],
+  });
+
+  return (
+    <View>
+      <TouchableOpacity onPress={toggleExpand} style={styles.header}>
+        <Text style={styles.headerText}>{title}</Text>
+        <Animated.View style={{ transform: [{ rotate: arrowRotation }] }}>
+          <AntDesign name="down" size={20} color="white" />
+        </Animated.View>
+      </TouchableOpacity>
+      <Animated.View style={{ height: animatedHeight, overflow: "hidden" }}>
+      <View
+          style={{ position: "absolute", width: "100%" }}
+          onLayout={(event: LayoutChangeEvent) =>
+            setContentHeight(event.nativeEvent.layout.height)
+          }
+        >
+          <Text style={styles.contentText}>{content}</Text>
+        </View>
+      </Animated.View>
+    </View>
+  );
+};
 
 const AboutScreen: React.FC = () => {
   let [fontsLoaded, fontError] = useFonts({
@@ -44,62 +113,6 @@ const AboutScreen: React.FC = () => {
   }
 
   const dispatch = useDispatch<AppDispatch>();
-  const navigation = useNavigation<DrawerNavProp>();
-  const order = useSelector((state: RootState) => state.order.order);
-  // console.log(order)
-
-  useEffect(() => {
-    // const interval = setInterval(() => {
-    // dispatch(readOrderStatus(order._id));
-    Notifications.scheduleNotificationAsync({
-      content: {
-        title: "¡Tú Orden ha sido tomada!",
-        body: "Tu Orden está siendo procesada y pronto tendrás una actualización.",
-      },
-      trigger: null,
-    });
-    // }, 60000);
-
-    // return () => {
-    //   clearInterval(interval);
-    // };
-  }, []);
-
-  const fadeAnims = useRef(
-    [...Array(5)].map(() => new Animated.Value(0))
-  ).current;
-
-  useEffect(() => {
-    Animated.stagger(
-      200,
-      fadeAnims.map((fadeAnim) =>
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        })
-      )
-    ).start();
-  }, []);
-
-  // if(order.status === "pendiente"){
-  //   Notifications.scheduleNotificationAsync({
-  //     content: {
-  //       title: "¡Tú Orden ha sido tomada!",
-  //       body: "Tu Orden está siendo procesada y pronto tendrás una actualización.",
-  //     },
-  //     trigger: null,
-  //   });
-  // } else if (order.status === "confirmado"){
-  //   Notifications.scheduleNotificationAsync({
-  //     content: {
-  //       title: "¡Tu Orden ha sido confirmada!",
-  //       body: "Tu Orden ha sido confirmada y pronto será enviada.",
-  //     },
-  //     trigger: null,
-  //   });
-  // }
-  const [activeSections, setActiveSections] = useState([]);
 
   const sections = [
     {
@@ -108,49 +121,10 @@ const AboutScreen: React.FC = () => {
     },
     { title: "AVISO DE PRIVACIDAD", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent interdum, sapien nec dapibus vestibulum, justo neque eleifend enim, vel interdum libero dolor sit amet magna. Nulla facilisi. Curabitur id sapien ut erat ultrices elementum. Vivamus non metus libero. Proin sagittis mi ut felis consequat, ut dignissim sem hendrerit. In hac habitasse platea dictumst. Fusce convallis vehicula mi, a fermentum elit hendrerit ac. Nulla aliquam fringilla augue, et vulputate risus lacinia id. Etiam sit amet turpis ac ex elementum volutpat vel at turpis. Nam eget erat et quam tincidunt facilisis sit amet ac sapien. Sed vehicula posuere justo, et interdum purus tempor ac. Nam quis lorem sed ligula lacinia lacinia. Suspendisse pharetra velit sed dolor pretium, at bibendum mi vulputate" },
   ];
-  const onChange = (sections: number[]) => {
-    setActiveSections(sections);
-  };
-
-  const renderHeader = (section: any) => (
-    <View
-      style={{
-        width:"90%",
-        paddingHorizontal: 10,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginHorizontal: "auto",
-        borderBottomWidth: 1,
-        borderColor: "white",
-        marginBottom: 20,
-        paddingBottom: 10,
-      }}
-    >
-      <Text style={{ color: "white", fontSize: 16, fontFamily: "Geomanist Regular" }}>{section.title}</Text>
-      <AntDesign
-        name="down"
-        size={20}
-        color="white"
-        style={{ }}
-      />
-    </View>
-  );
-
-  const renderContent = (section: any) => (
-    <View style={{width:"90%", height: "auto", marginHorizontal: "auto", marginBottom: 15, marginTop: -5 }}>
-      <Text style={{ color: "white", fontFamily: "Geomanist Regular", textAlign:"justify", marginHorizontal: "auto" }}>{section.content}</Text>
-    </View>
-  );
-
+  
+  
   const goToHome = async () => {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "¡Has vuelto a casa!",
-        body: "Aquí va el cuerpo de la notificación.",
-      },
-      trigger: null,
-    });
+    
     dispatch(clearSelectedProduct());
     router.back();
   };
@@ -190,13 +164,13 @@ const AboutScreen: React.FC = () => {
           ]}
           source={require("@/assets/images/ABOUT_PNG.png")}
         />
-        <Accordion
-          sections={sections}
-          renderHeader={renderHeader}
-          renderContent={renderContent}
-          onChange={onChange}
-          activeSections={activeSections}
+        {sections.map((section, index) => (
+        <AccordionSection
+          key={index}
+          title={section.title}
+          content={section.content}
         />
+      ))}
       </View>
     </LinearGradient>
   );
@@ -278,6 +252,29 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "cover",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 15,
+    paddingHorizontal: 15,
+    borderBottomWidth: 1,
+    borderColor: "white",
+    width: "90%",
+    marginHorizontal: "auto",
+    marginBottom: 10
+  },
+  headerText: {
+    color: "white",
+    fontSize: 16,
+  },
+  contentText: {
+    color: "white",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    textAlign: "justify",
+    height: "auto"
   },
 });
 export default AboutScreen;
