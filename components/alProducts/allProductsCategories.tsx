@@ -96,7 +96,7 @@ const AllCategoryProducts: React.FC<AllCategoryProductsProps> = ({
                 },
               ]}
             >
-              {category.name.substring(0, 15)}
+              {item.description.substring(0, 20)}
             </Text>
           </View>
           <View

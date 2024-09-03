@@ -6,10 +6,10 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  Keyboard,
 } from "react-native";
 import { AntDesign, FontAwesome, Fontisto } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { responsiveWidth } from "react-native-responsive-dimensions";
@@ -40,8 +40,28 @@ export default function UpdateAccountScreen() {
   const navigation = useNavigation<DrawerNavProp>();
   const [buttonSpinner, setButtonSpinner] = useState(false);
   const [userData, setUserData] = useState<UserInfo>();
+  const [keyboardStatus, setKeyboardStatus] = useState(false);
   const userStore = useSelector((state: RootState) => state.user.userInfo);
   // console.log(userStore)
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardStatus(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardStatus(false);
+      }
+    );
+
+    return () => {
+      keyboardDidShowListener.remove();
+      keyboardDidHideListener.remove();
+    };
+  }, []);
 
   useEffect(() => {
     if (userStore) {
@@ -92,9 +112,7 @@ export default function UpdateAccountScreen() {
       />
       <SearchInput homeScreen={true} />
       <View style={styles.top}>
-        <Text style={[styles.topText, { marginTop: 2 }]}>
-          EDITAR PERFIL
-        </Text>
+        <Text style={[styles.topText, { marginTop: 2 }]}>EDITAR PERFIL</Text>
         <TouchableOpacity onPress={() => router.back()}>
           <AntDesign
             name="close"
@@ -113,13 +131,15 @@ export default function UpdateAccountScreen() {
             justifyContent: "center",
           }}
         >
-          <Image
-            source={require("@/assets/images/ICONOS-01.png")}
-            style={[
-              styles.signInImage,
-              { backgroundColor: "transparent", opacity: 0.67 },
-            ]}
-          />
+          {!keyboardStatus && (
+            <Image
+              source={require("@/assets/images/ICONOS-01.png")}
+              style={[
+                styles.signInImage,
+                { backgroundColor: "transparent", opacity: 0.67 },
+              ]}
+            />
+          )}
           <View style={styles.inputContainer}>
             <View>
               <TextInput
@@ -164,29 +184,29 @@ export default function UpdateAccountScreen() {
           >
             {buttonSpinner ? (
               <ActivityIndicator
-              size="small"
-              color="#016AF5"
-              style={{ marginVertical: "auto" }}
+                size="small"
+                color="#016AF5"
+                style={{ marginVertical: "auto" }}
               />
             ) : (
               <View style={styles.buttonWrapper}>
-              <Image
-                source={require("@/assets/images/BUTTON.png")}
-                style={styles.button2}
-              />
-              <Text
-                onPress={handleUpdate}
-                style={[
-                  {
-                    fontFamily: "Geomanist Regular",
-                    color: "white",
-                    fontSize: 19,
-                  },
-                ]}
-              >
-                ACTUALIZAR
-              </Text>
-            </View>
+                <Image
+                  source={require("@/assets/images/BUTTON.png")}
+                  style={styles.button2}
+                />
+                <Text
+                  onPress={handleUpdate}
+                  style={[
+                    {
+                      fontFamily: "Geomanist Regular",
+                      color: "white",
+                      fontSize: 19,
+                    },
+                  ]}
+                >
+                  ACTUALIZAR
+                </Text>
+              </View>
             )}
           </TouchableOpacity>
         </View>

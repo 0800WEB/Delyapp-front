@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   FlatList,
   Image,
-  Alert
+  Alert,
 } from "react-native";
 import { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -128,7 +128,7 @@ const MapScreen: React.FC = () => {
 
   const getReverseGeocode = async (location: LocationType): Promise<string> => {
     if (!location) {
-      return ""; 
+      return "";
     }
     try {
       const response = await fetch(
@@ -296,6 +296,8 @@ const MapScreen: React.FC = () => {
     }
   };
 
+  console.log(cartProducts)
+
   if (cart) {
     const renderProductItem = ({ item }: { item: CartProduct }) => (
       <View
@@ -447,16 +449,17 @@ const MapScreen: React.FC = () => {
                 placeholder="Dirección del pedido"
               />
             </View>
-
-            <SafeAreaView
-              style={{ borderTopRightRadius: 50, borderTopLeftRadius: 50 }}
-            >
-              <FlatList
-                data={cartProducts}
-                renderItem={renderProductItem}
-                keyExtractor={(item) => item._id}
-              />
-            </SafeAreaView>
+            {cartProducts && (
+              <SafeAreaView
+                style={{borderTopRightRadius: 50, borderTopLeftRadius: 50 }}
+              >
+                <FlatList
+                  data={cartProducts}
+                  renderItem={renderProductItem}
+                  keyExtractor={(item) => item._id}
+                />
+              </SafeAreaView>
+            )}
 
             <View
               style={{
@@ -564,39 +567,49 @@ const MapScreen: React.FC = () => {
               </TouchableOpacity>
             </View>
             <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-              alignContent: "center",
-              backgroundColor:"#C4F6F3",
-              paddingHorizontal: 20,
-              paddingVertical: 10,
-              marginTop: 5,
-              marginBottom: 12
-            }}
-          >
-            <Entypo
-              name="warning"
-              size={28}
-              color="#000024"
-              style={{ alignSelf: "center", justifyContent:"center",height:30 }}
-            />
-            <Text
               style={{
-                fontSize: 12,
-                justifyContent: "center",
-                width: "85%",
-                textAlign: "center"
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                alignContent: "center",
+                backgroundColor: "#C4F6F3",
+                paddingHorizontal: 20,
+                paddingVertical: 10,
+                marginTop: 5,
+                marginBottom: 12,
               }}
             >
-              AL REALIZAR EL PEDIDO, CONFIRMO QUE TENGO 18 AÑOS O MÁS Y ACEPTO LOS TÉRMINOS Y CONDICIONES
-            </Text>
-          </View>
+              <Entypo
+                name="warning"
+                size={28}
+                color="#000024"
+                style={{
+                  alignSelf: "center",
+                  justifyContent: "center",
+                  height: 30,
+                }}
+              />
+              <Text
+                style={{
+                  fontSize: 12,
+                  justifyContent: "center",
+                  width: "85%",
+                  textAlign: "center",
+                }}
+              >
+                AL REALIZAR EL PEDIDO, CONFIRMO QUE TENGO 18 AÑOS O MÁS Y ACEPTO
+                LOS TÉRMINOS Y CONDICIONES
+              </Text>
+            </View>
             <TouchableOpacity
               style={[
                 styles.button3,
-                { paddingLeft: -35, marginHorizontal: 32, marginTop: 15, marginBottom: 15 },
+                {
+                  paddingLeft: -35,
+                  marginHorizontal: 32,
+                  marginTop: 15,
+                  marginBottom: 15,
+                },
               ]}
               onPress={() =>
                 onCheckout({
@@ -607,22 +620,22 @@ const MapScreen: React.FC = () => {
               disabled={!destinationAddress} // Deshabilitar si destinationAddress está vacío
             >
               <View style={styles.buttonWrapper}>
-              <Image
-                source={require("@/assets/images/BUTTON.png")}
-                style={styles.button2}
-              />
-              <Text
-                style={[
-                  {
-                    fontFamily: "Geomanist Regular",
-                    color: "white",
-                    fontSize: 19,
-                  },
-                ]}
-              >
-                REALIZAR PEDIDO
-              </Text>
-            </View>
+                <Image
+                  source={require("@/assets/images/BUTTON.png")}
+                  style={styles.button2}
+                />
+                <Text
+                  style={[
+                    {
+                      fontFamily: "Geomanist Regular",
+                      color: "white",
+                      fontSize: 19,
+                    },
+                  ]}
+                >
+                  REALIZAR PEDIDO
+                </Text>
+              </View>
             </TouchableOpacity>
           </View>
         </ScrollView>
