@@ -116,7 +116,8 @@ const HomeScreen: React.FC = () => {
     >
       <Header
         openDrawer={() => navigation.dispatch(DrawerActions.openDrawer())}
-      />      
+      />
+      <SearchInput homeScreen={true} />
       {selectedProductId !== "" ? (
         <ProductDetailsScreen
           productId={selectedProductId}
@@ -124,7 +125,6 @@ const HomeScreen: React.FC = () => {
         />
       ) : (
         <ScrollView style={{ flex: 1, marginBottom: 25 }}>
-          <SearchInput homeScreen={true} />
           <Categories
             onItemSelected={(title: string) => {
               setSelectedCategory(title);

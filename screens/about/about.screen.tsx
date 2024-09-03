@@ -68,7 +68,7 @@ const AccordionSection: React.FC<{
 
   const animatedHeight = animationController.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, contentHeight],
+    outputRange: [0, contentHeight + 15],
   });
 
   return (
