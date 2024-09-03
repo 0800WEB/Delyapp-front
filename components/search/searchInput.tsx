@@ -1,13 +1,5 @@
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
-import {
-  AntDesign,
-  FontAwesome,
-} from "@expo/vector-icons";
+import { View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -41,15 +33,24 @@ export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
       alert("Por favor, introduce un producto para su búsqueda.");
       return;
     }
-    router.push("/(routes)/search")
+    router.push("/(routes)/search");
     dispatch(get_SearchItem(value));
-  }
+  };
 
   return (
     <View>
-      {!homeScreen && <View style={{ marginTop: 25 }}>
-        <View style={{marginTop: 25, backgroundColor:"#000024", height:10, width:"100%"}}></View>
-        </View>}
+      {!homeScreen && (
+        <View style={{ marginTop: 25 }}>
+          <View
+            style={{
+              marginTop: 25,
+              backgroundColor: "#000024",
+              height: 10,
+              width: "100%",
+            }}
+          ></View>
+        </View>
+      )}
       <View style={styles.filteringContainer}>
         <View style={styles.searchContainer}>
           <TextInput
@@ -69,7 +70,6 @@ export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
           </TouchableOpacity>
         </View>
       </View>
-      
     </View>
   );
 }
