@@ -158,6 +158,7 @@ const OrdersScreen: React.FC = () => {
                   width: 85,
                   borderRadius: 15,
                   alignSelf: "center",
+                  marginTop: -55
                 }}
               />
             )}
