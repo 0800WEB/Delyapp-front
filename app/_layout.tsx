@@ -31,6 +31,7 @@ import UpdateAccount from "./(routes)/update-account";
 import MapScreen from "@/screens/map-address/map.screen";
 import Order from "./(routes)/order";
 import SearchScreen from "@/screens/searchScreen/search.screen";
+import About from "./(routes)/about";
 import { StripeProvider } from '@stripe/stripe-react-native'
 
 SplashScreen.preventAutoHideAsync();
@@ -117,6 +118,7 @@ function RootLayoutNav() {
       <Stack.Screen name="(routes)/map/index" component={MapScreen}  />
       <Stack.Screen name="(routes)/order/index" component={Order}  />
       <Stack.Screen name="(routes)/search/index" component={SearchScreen} />
+      <Stack.Screen name="(routes)/about/index" component={About} />
     </Stack.Navigator>
   );
 }

@@ -31,7 +31,7 @@ const SelectSignScreen:React.FC = () => {
   const navigation = useNavigation<DrawerNavProp>();
 
   const goToAbout = async () => {
-    navigation.navigate("ABOUT_US");
+    navigation.navigate("(routes)/about/index");
   }
 
   return (

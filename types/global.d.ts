@@ -169,6 +169,7 @@ type RootStackParamList = {
   '(routes)/map/index': undefined;
   '(routes)/order/index': undefined;
   '(routes)/search/index': undefined;
+  '(routes)/about/index': undefined;
 };
 
 type DrawerNavProp = DrawerNavigationProp<RootParamList>;
