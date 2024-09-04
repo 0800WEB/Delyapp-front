@@ -195,21 +195,31 @@ const MapScreen: React.FC = () => {
   // console.log("TotalPrice: ", totalPrice);
 
   const newOrder = async () => {
-    dispatch(
-      createOrder({
-        cartId: cart._id,
-        deliveryAddress: destinationAddress,
-        paymentMethod: "stripe",
-        couponId: coupon?._id,
-      })
-    );
-    if (createOrder.fulfilled()) {
-      dispatch(clearCart());
-      dispatch(clearCoupon());
-    } else{
-      console.log("Error al crear la orden")
+    if (cartProducts.length === 0) {
+      Alert.alert("Carrito vacío", "No puedes crear una orden sin productos en el carrito.", [{ text: "OK" }]);
+      return;
     }
-    await navigation.navigate("(routes)/order/index");
+  
+    try {
+      const orderResponse = await dispatch(
+        createOrder({
+          cartId: cart._id,
+          deliveryAddress: destinationAddress,
+          paymentMethod: "stripe",
+          couponId: coupon?._id,
+        })
+      );
+  
+      if (createOrder.fulfilled.match(orderResponse)) {
+        dispatch(clearCart());
+        dispatch(clearCoupon());
+        navigation.navigate("(routes)/order/index");
+      } else {
+        console.log("Error al crear la orden");
+      }
+    } catch (error) {
+      console.error("Error al crear la orden:", error);
+    }
   };
 
   const goToHome = () => {
@@ -300,7 +310,7 @@ const MapScreen: React.FC = () => {
     }
   };
 
-  console.log(cartProducts)
+  // console.log(cartProducts)
 
   if (cart) {
     const renderProductItem = ({ item }: { item: CartProduct }) => (
