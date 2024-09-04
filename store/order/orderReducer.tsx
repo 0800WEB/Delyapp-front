@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { createOrder, readOrderStatus } from "./orderActions"; // Asegúrate de reemplazar esto con la ruta a tu acción createOrder
+import { createOrder, readOrderStatus, fetchUserOrders } from "./orderActions"; // Asegúrate de reemplazar esto con la ruta a tu acción createOrder
 
 const initialState = {
   order: {
@@ -9,6 +9,8 @@ const initialState = {
     totalPrice: 0,
     status: "",
   },
+  orders: [],
+  status: "idle",
   error: null,
   loading: false,
 };
@@ -40,6 +42,21 @@ const orderReducer = createReducer(initialState, (builder) => {
     .addCase(readOrderStatus.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as null;
+    })
+    .addCase(fetchUserOrders.pending, (state) => {
+      state.status = "loading";
+    })
+    .addCase(fetchUserOrders.fulfilled, (state, action) => {
+      const existingOrderIds = state.orders.map((order) => order._id);
+      const newOrders = action.payload.filter(
+        (order) => !existingOrderIds.includes(order._id)
+      );
+      state.orders = [...state.orders, ...newOrders];
+      state.error = null;
+    })
+    .addCase(fetchUserOrders.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message !== null ? action.error.message : null;
     });
 });
 

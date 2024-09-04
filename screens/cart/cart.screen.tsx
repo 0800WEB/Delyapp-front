@@ -148,7 +148,7 @@ const CartScreen: React.FC = () => {
             />
           )}
           <View
-            style={{ justifyContent: "space-between", alignContent: "center" }}
+            style={{ justifyContent: "space-between", alignContent: "center", width: "50%" }}
           >
             <Text
               style={{
@@ -168,9 +168,10 @@ const CartScreen: React.FC = () => {
                 fontFamily: "Geomanist Regular",
                 fontSize: 14,
                 color: "#000024",
+                width:"100%"
               }}
             >
-              {item.product.description}
+              {item.product.description.substring(0, 30)}
             </Text>
             <Text
               style={{
@@ -189,6 +190,7 @@ const CartScreen: React.FC = () => {
           style={{
             justifyContent: "center",
             alignItems: "center",
+            alignSelf: "center"
           }}
         >
           <View>

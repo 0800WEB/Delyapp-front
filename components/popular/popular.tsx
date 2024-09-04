@@ -11,8 +11,14 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
 
-export default function Popular() {
+interface Popular {
+  onProductSelected: (productId: string) => void;
+}
+
+export default function Popular({ onProductSelected }: Popular) {
   let [fontsLoaded, fontError] = useFonts({
     "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
     "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
@@ -30,31 +36,19 @@ export default function Popular() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
-  const [data, setData] = useState<fakeDataType[]>([]);
+  const topOrderedProducts = useSelector((state: RootState) => state.products.topOrderedProducts);
 
-  const fetchData = async () => {
-    try {
-      const result = await axios.get("https://fakestoreapi.com/products");
-      setData(result.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const getItem = (topOrderedProducts: Product[], index: number) => topOrderedProducts[index];
 
-  const getItem = (data: fakeDataType[], index: number) => data[index];
+  const getItemCount = (topOrderedProducts: Product[]) => (topOrderedProducts ? topOrderedProducts.length : 0);
 
-  const getItemCount = (data: fakeDataType[]) => (data ? data.length : 0);
+  const keyExtractor = (topOrderedProducts: Product) => topOrderedProducts._id;
 
-  const keyExtractor = (data: fakeDataType) => data.id.toString();
-
-  const renderItem = ({ item }: { item: fakeDataType }) => {
+  const renderItem = ({ item }: { item: Product }) => {
     return (
       <TouchableOpacity
         style={{
-          marginHorizontal: 8,
+          marginHorizontal: 5,
           height: 280,
           width: 130,
           borderColor: "#A1A1A1",
@@ -63,12 +57,13 @@ export default function Popular() {
           shadowColor: "#A1A1A1",
           justifyContent: "space-between",
         }}
+        onPress={() => onProductSelected(item.productId)}
       >
         <Image
-          source={{ uri: item.image }}
+          source={{ uri: item.images[0] }}
           style={[styles.imageStyle, { alignSelf: "center" }]}
         />
-        <View style={[styles.containerTitle, { paddingVertical: 8 }]}>
+        <View style={styles.containerTitle}>
           <Text
             style={[
               styles.titleText,
@@ -77,31 +72,30 @@ export default function Popular() {
                 fontSize: 17,
                 alignSelf: "center",
                 color: "#000024",
+                textAlign: "center"
               },
             ]}
           >
-            {item.title.substring(0, 11)}
+            {item.name.substring(0, 20)}
           </Text>
-          <View style={{ flexDirection: "row" }}>
-            {/* <Image
-              source={require("@/assets/images/ICONOS-12.png")}
-              style={styles.starStyle}
-            />             */}
-            <Text
-              style={[
-                styles.titleText,
-                {
-                  fontFamily: "Geomanist Regular",
-                  fontSize: 17,
-                  alignSelf: "center",
-                  color: "#000024",
-                  paddingVertical: 5,
-                },
-              ]}
-            >
-              {item.category.substring(0, 11)}
-            </Text>
-          </View>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Text
+            style={[
+              styles.titleText,
+              {
+                fontFamily: "Geomanist Regular",
+                fontSize: 17,
+                justifyContent: "center",
+                color: "#000024",
+                marginHorizontal: "auto",
+                textAlign: "center",
+                paddingVertical: 5,
+              },
+            ]}
+          >
+            {item.description.substring(0, 20)}
+          </Text>
         </View>
         <View
           style={{
@@ -134,7 +128,7 @@ export default function Popular() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <VirtualizedList
-        data={data}
+        data={topOrderedProducts}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         getItemCount={getItemCount}

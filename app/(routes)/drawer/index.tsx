@@ -3,6 +3,7 @@ import Home from "../home";
 import Cart from "../cart";
 import User from "../user";
 import About from "../about";
+import Orders from "../orders";
 
 const Drawer = createDrawerNavigator();
 
@@ -29,6 +30,7 @@ export default function DrawerLayoutNav() {
       />
       <Drawer.Screen name="PERFIL" component={User} options={{ drawerLabel: "PERFIL" }}/>
       <Drawer.Screen name="CARRITO" component={Cart} options={{ drawerLabel: "CARRITO" }}/>
+      <Drawer.Screen name="ORDERS" component={Orders} options={{ drawerLabel: "MIS ORDENES" }}/>
       <Drawer.Screen name="ABOUT_US" component={About} options={{ drawerLabel: "ACERCA DE" }}/>
     </Drawer.Navigator>
   );

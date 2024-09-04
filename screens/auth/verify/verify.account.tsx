@@ -95,11 +95,11 @@ export default function VerifyAccountScreen() {
   }, []);
   const dispatch = useDispatch<AppDispatch>();
   const userInfo = useSelector((state: RootState) => state.user.userInfo);
-  if (userInfo && typeof userInfo === 'object' && userInfo.hasOwnProperty('email')) {
-    console.log("UserInfo: ", userInfo.email);
-  } else {
-    console.log("userInfo is not an object with an email property");
-  }
+  // if (userInfo && typeof userInfo === 'object' && userInfo.hasOwnProperty('email')) {
+  //   console.log("UserInfo: ", userInfo.email);
+  // } else {
+  //   console.log("userInfo is not an object with an email property");
+  // }
   useEffect(() => {
     if (userInfo) {
       if (typeof userInfo === 'string') {

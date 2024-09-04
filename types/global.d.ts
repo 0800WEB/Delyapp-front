@@ -128,6 +128,20 @@ type CartProduct ={
   images: string;
 }
 
+type userOrders = {
+  __v: number;
+  _id: string;
+  coupon: string | null;
+  createdAt: string;
+  deliveryAddress: string;
+  paymentMethod: string;
+  products: Array<any>; // Reemplaza 'any' con el tipo correcto si tienes un tipo para los productos
+  status: string;
+  totalPrice: number;
+  updatedAt: string;
+  user: string;
+};
+
 type RootParamList = {
   Home: undefined;
   Details: { itemId: number };

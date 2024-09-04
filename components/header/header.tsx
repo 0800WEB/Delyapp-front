@@ -58,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
           <Text
             style={{
               color: "white",
-              fontSize: 8,
+              fontSize: 10,
               top: -38,
               right: -10,
               backgroundColor: "#00BFFF",

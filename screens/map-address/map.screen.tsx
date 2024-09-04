@@ -203,9 +203,13 @@ const MapScreen: React.FC = () => {
         couponId: coupon?._id,
       })
     );
+    if (createOrder.fulfilled()) {
+      dispatch(clearCart());
+      dispatch(clearCoupon());
+    } else{
+      console.log("Error al crear la orden")
+    }
     await navigation.navigate("(routes)/order/index");
-    dispatch(clearCart());
-    dispatch(clearCoupon());
   };
 
   const goToHome = () => {
@@ -314,7 +318,7 @@ const MapScreen: React.FC = () => {
       >
         <View style={{ flexDirection: "row" }}>
           <View
-            style={{ justifyContent: "space-between", alignContent: "center" }}
+            style={{ justifyContent: "space-between", alignContent: "center", width: "65%" }}
           >
             <Text
               style={{

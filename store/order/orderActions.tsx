@@ -58,3 +58,30 @@ export const readOrderStatus = createAsyncThunk(
     }
   }
 );
+
+export const fetchUserOrders = createAsyncThunk(
+  'order/fetchUserOrders',
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = await _retrieveData({ key: "userToken" });
+      if (!token) {
+        return rejectWithValue("No token found");
+      }
+
+      const response = await axios.get(`${SERVER_URI}/orders/my-orders`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if(response.data.success){
+        return response.data.orders;
+      } else {
+        return rejectWithValue(response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+      return rejectWithValue("Error fetching user orders");
+    }
+  }
+);

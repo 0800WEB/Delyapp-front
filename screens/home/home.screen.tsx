@@ -24,10 +24,11 @@ import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { DrawerActions } from "@react-navigation/native";
 //store
 import { AppDispatch, RootState } from "@/store/store";
-import { get_allItems } from "@/store/products/productsActions";
+import { get_TopOrderedProducts, get_allItems } from "@/store/products/productsActions";
 import { get_allCategories } from "@/store/categories/categoriesActions";
 import { getCart } from "@/store/cart/cartActions";
 import { getFavorites } from "@/store/favorites/favoritesActions";
+import { fetchUserOrders } from "@/store/order/orderActions";
 
 type DrawerNavProp = DrawerNavigationProp<RootParamList>;
 
@@ -39,23 +40,23 @@ const HomeScreen: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigation<DrawerNavProp>();
 
-  useEffect(() => {
-    const fetchData = () => {
+  useFocusEffect(
+    useCallback(() => {
       dispatch(get_allItems());
       dispatch(get_allCategories());
       dispatch(getCart());
       dispatch(getFavorites());
-    };
-
-    const interval = setInterval(fetchData, 60000);
-    fetchData();
-
-    return () => clearInterval(interval);
-  }, []);
+      dispatch(get_TopOrderedProducts());
+      dispatch(fetchUserOrders());
+  
+      // Return a cleanup function to unsubscribe if necessary
+      return () => {};
+    }, [])
+  );
 
   const products = useSelector((state: RootState) => state.products);
   const categories = useSelector((state: RootState) => state.categories);
-  const cartItems = useSelector((state: RootState) => state.cart.cart.products);
+  // const cartItems = useSelector((state: RootState) => state.cart.cart.products);
   const selectedProduct = useSelector(
     (state: RootState) => state.products.selectedProductId
   );
@@ -82,13 +83,13 @@ const HomeScreen: React.FC = () => {
             );
           }
         );
-        console.log("Cat:", selectedCategoryObj);
+        // console.log("Cat:", selectedCategoryObj);
         let selectedProducts: Product[] = [];
         if (selectedCategoryObj) {
           selectedProducts = (products.products as Product[]).filter(
             (product: Product) => product.category === selectedCategoryObj._id
           );
-          console.log(selectedProducts);
+          // console.log(selectedProducts);
           setFilteredProducts(selectedProducts);
         } else {
           console.log(
@@ -128,7 +129,7 @@ const HomeScreen: React.FC = () => {
           <Categories
             onItemSelected={(title: string) => {
               setSelectedCategory(title);
-              console.log(title);
+              // console.log(title);
             }}
             resetSelectedTitle={reset}
           />

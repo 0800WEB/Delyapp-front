@@ -37,6 +37,9 @@ export default function Highlights({selectedProductId}:HighlightsProps) {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+  
+  
+
   const handlePopular = () => {
     setPopularSelect(true);
     setFavoritesSelect(false);
@@ -68,7 +71,7 @@ export default function Highlights({selectedProductId}:HighlightsProps) {
           )}
         </TouchableOpacity>
       </View>
-      {popularSelect ? <Popular /> : <Favorites onProductSelected={handleProductSelected} />}
+      {popularSelect ? <Popular onProductSelected={handleProductSelected} /> : <Favorites onProductSelected={handleProductSelected} />}
     </SafeAreaView>
   );
 }

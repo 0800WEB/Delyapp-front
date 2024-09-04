@@ -1,7 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 import productsActions from "./productsActions";
-const { get_allItems, selectProduct, clearSelectedProduct, get_SearchItem } = productsActions;
+const { get_allItems, selectProduct, clearSelectedProduct, get_SearchItem, get_TopOrderedProducts } = productsActions;
 
 interface Product {
   __v: number;
@@ -20,6 +20,7 @@ const initialState = {
   limit: 0,
   products: [],
   searchProducts: [] ,
+  topOrderedProducts: [],
   success: false,
   totalProducts: 0,
   error: null as any,
@@ -58,6 +59,19 @@ const productsReducer = createReducer(initialState, (builder) => {
       state.error = null;
     })
     .addCase(get_SearchItem.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    })
+    .addCase(get_TopOrderedProducts.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(get_TopOrderedProducts.fulfilled, (state, action) => {
+      state.loading = false;
+      state.topOrderedProducts = action.payload;
+      state.error = null;
+    })
+    .addCase(get_TopOrderedProducts.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
     });
