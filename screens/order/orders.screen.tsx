@@ -50,7 +50,7 @@ const OrdersScreen: React.FC = () => {
   const navigation = useNavigation<DrawerNavProp>();
 
   useEffect(() => {
-    dispatch(getCart() as any);
+    dispatch(getCart());
   }, []);
 
   const orders = useSelector((state: RootState) => state.order.orders);
@@ -89,6 +89,7 @@ const OrdersScreen: React.FC = () => {
       );
     });
     await dispatch(getCart());
+    await navigation.navigate("CARRITO");
   };
 
   if (!userOrders || userOrders?.length === 0) {

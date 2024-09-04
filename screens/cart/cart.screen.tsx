@@ -9,7 +9,8 @@ import {
   FlatList,
 } from "react-native";
 import { FontAwesome5, AntDesign, FontAwesome } from "@expo/vector-icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { router } from "expo-router";
@@ -48,9 +49,11 @@ const CartScreen: React.FC = () => {
   }
   const navigation = useNavigation<DrawerNavProp>();
 
-  useEffect(() => {
-    dispatch(getCart() as any);
-  }, []);
+  const fetchCart = useCallback(() => {
+    dispatch(getCart());
+  }, [dispatch]);
+  
+  useFocusEffect(fetchCart);
 
   const cart = useSelector((state: RootState) => state.cart.cart);
   // console.log(cart)
