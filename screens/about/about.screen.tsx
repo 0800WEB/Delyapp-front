@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Animated,
   Image,
+  Linking
 } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -171,6 +172,10 @@ const AboutScreen: React.FC = () => {
           content={section.content}
         />
       ))}
+      <View style={{flexDirection: "row", marginHorizontal: "auto", marginTop: 15, gap: 15}}>
+        <TouchableOpacity onPress={() => Linking.openURL('https://www.facebook.com')}><AntDesign name="facebook-square" size={40} color="white" /></TouchableOpacity>
+        <TouchableOpacity onPress={() => Linking.openURL('https://www.facebook.com')}><AntDesign name="instagram" size={40} color="white" /></TouchableOpacity>
+      </View>
       </View>
     </LinearGradient>
   );

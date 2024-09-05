@@ -1,5 +1,5 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { SimpleLineIcons, Entypo } from "@expo/vector-icons";
+import { View, Text, Image, StyleSheet, TouchableOpacity, Linking } from "react-native";
+import { SimpleLineIcons, Entypo, AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -47,31 +47,34 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
         />
       </TouchableOpacity>
       {userData && <Text style={styles.userText}>{userData.name}</Text>}
-      <TouchableOpacity onPress={() => navigation.navigate("CARRITO")}>
-        <Entypo
-          name="shopping-cart"
-          size={30}
-          color="white"
-          style={{ alignSelf: "center", marginLeft: -5 }}
-        />
-        {cartItems.length > 0 && (
-          <Text
-            style={{
-              color: "white",
-              fontSize: 10,
-              top: -38,
-              right: -10,
-              backgroundColor: "#00BFFF",
-              paddingHorizontal: -12,
-              paddingVertical: 6,
-              borderRadius: 30,
-              textAlign: "center",
-            }}
-          >
-            {cartItems.length}
-          </Text>
-        )}
-      </TouchableOpacity>
+      <View style={{flexDirection: "row", gap: 15}}>
+      <TouchableOpacity onPress={() => Linking.openURL('https://www.facebook.com')} style={{marginLeft: -35}}><FontAwesome name="whatsapp" size={30} color="white" /></TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("CARRITO")}>
+          <Entypo
+            name="shopping-cart"
+            size={30}
+            color="white"
+            style={{ alignSelf: "center", marginLeft: -5 }}
+          />
+          {cartItems.length > 0 && (
+            <Text
+              style={{
+                color: "white",
+                fontSize: 10,
+                top: -38,
+                right: -10,
+                backgroundColor: "#00BFFF",
+                paddingHorizontal: -12,
+                paddingVertical: 6,
+                borderRadius: 30,
+                textAlign: "center",
+              }}
+            >
+              {cartItems.length}
+            </Text>
+          )}
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -83,7 +86,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     justifyContent: "space-between",
     backgroundColor: "#000024",
-    height: 60
+    height: 60,
   },
   userText: {
     fontFamily: "Cherione Regular",
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
     color: "white",
     alignSelf: "center",
     textAlign: "center",
-    marginTop: -15
+    marginTop: -15,
   },
   profilePhoto: {
     height: 30,

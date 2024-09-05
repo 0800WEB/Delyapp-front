@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   VirtualizedList,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -36,11 +36,15 @@ export default function Popular({ onProductSelected }: Popular) {
   if (!fontsLoaded && !fontError) {
     return null;
   }
-  const topOrderedProducts = useSelector((state: RootState) => state.products.topOrderedProducts);
+  const topOrderedProducts = useSelector(
+    (state: RootState) => state.products.topOrderedProducts
+  );
 
-  const getItem = (topOrderedProducts: Product[], index: number) => topOrderedProducts[index];
+  const getItem = (topOrderedProducts: Product[], index: number) =>
+    topOrderedProducts[index];
 
-  const getItemCount = (topOrderedProducts: Product[]) => (topOrderedProducts ? topOrderedProducts.length : 0);
+  const getItemCount = (topOrderedProducts: Product[]) =>
+    topOrderedProducts ? topOrderedProducts.length : 0;
 
   const keyExtractor = (topOrderedProducts: Product) => topOrderedProducts._id;
 
@@ -59,10 +63,11 @@ export default function Popular({ onProductSelected }: Popular) {
         }}
         onPress={() => onProductSelected(item.productId)}
       >
-        <Image
-          source={{ uri: item.images[0] }}
-          style={[styles.imageStyle, { alignSelf: "center" }]}
-        />
+          <Image
+            source={{ uri: item.images[0] }}
+            style={[styles.imageStyle, { alignSelf: "center" }]}
+          />
+          
         <View style={styles.containerTitle}>
           <Text
             style={[
@@ -72,7 +77,7 @@ export default function Popular({ onProductSelected }: Popular) {
                 fontSize: 17,
                 alignSelf: "center",
                 color: "#000024",
-                textAlign: "center"
+                textAlign: "center",
               },
             ]}
           >

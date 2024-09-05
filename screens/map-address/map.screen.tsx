@@ -77,7 +77,7 @@ const MapScreen: React.FC = () => {
   const [initialAddress, setInitialAddress] = useState("");
   
   //radio de la entrega en km
-  const deliveryRadius = 1;
+  const deliveryRadius = 10;
   
   const getLocationPermission = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
