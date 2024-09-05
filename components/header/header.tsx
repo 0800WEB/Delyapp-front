@@ -64,9 +64,9 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
                 top: -38,
                 right: -10,
                 backgroundColor: "#00BFFF",
-                paddingHorizontal: -12,
+                paddingHorizontal: 0,
                 paddingVertical: 6,
-                borderRadius: 30,
+                borderRadius: 15,
                 textAlign: "center",
               }}
             >
