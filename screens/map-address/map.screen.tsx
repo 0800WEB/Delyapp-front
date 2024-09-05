@@ -10,7 +10,7 @@ import {
   Image,
   Alert,
 } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
@@ -70,13 +70,15 @@ const MapScreen: React.FC = () => {
     latitude: -12.074533,
     longitude: -77.083644,
   });
-  const [destination, setDestination] = useState<LocationType>();
   const [currentLocation, setCurrentLocation] = useState<LocationType>();
+  const [destination, setDestination] = useState<LocationType>();
   const [destinationAddress, setDestinationAddress] = useState("");
-
+  const [inputAddress, setInputAddress] = useState("");
+  const [initialAddress, setInitialAddress] = useState("");
+  
   //radio de la entrega en km
-  const deliveryRadius = 10;
-
+  const deliveryRadius = 1;
+  
   const getLocationPermission = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -89,43 +91,9 @@ const MapScreen: React.FC = () => {
     };
     setCurrentLocation(current);
     setDestination(current);
+    const newDirection = await getReverseGeocode(current);
+    setInitialAddress(newDirection);
   };
-
-  const navigation = useNavigation<DrawerNavProp>();
-
-  useEffect(() => {
-    getLocationPermission();
-  }, []);
-  // console.log(currentLocation)
-  const getGeocode = async (address: string) => {
-    let response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${GOOGLE_MAPS_APIKEY}`
-    );
-    let data = await response.json();
-    return data.results[0].geometry.location;
-  };
-
-  useEffect(() => {
-    if (destinationAddress !== "") {
-      getGeocode(destinationAddress).then((location) => {
-        const newLocation = {
-          latitude: location.lat,
-          longitude: location.lng,
-        };
-        setCurrentLocation(newLocation);
-      });
-    }
-  }, [destinationAddress]);
-
-  useEffect(() => {
-    if (destination) {
-      (async () => {
-        const newDestinationAddress = await getReverseGeocode(destination);
-        setDestinationAddress(newDestinationAddress);
-      })();
-    }
-  }, [destination]);
-
   const getReverseGeocode = async (location: LocationType): Promise<string> => {
     if (!location) {
       return "";
@@ -133,15 +101,22 @@ const MapScreen: React.FC = () => {
     try {
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=${GOOGLE_MAPS_APIKEY}`
-      );
-      const data = await response.json();
-      return data.results[0].formatted_address;
-    } catch (error) {
-      console.error(error);
-      return "";
-    }
+        );
+        const data = await response.json();
+        return data.results[0].formatted_address;
+      } catch (error) {
+        console.error(error);
+        return "";
+      }
+    };
+  const getGeocode = async (address: string) => {
+    let response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${GOOGLE_MAPS_APIKEY}`
+    );
+    let data = await response.json();
+    return data.results[0].geometry.location;
   };
-
+  
   const calculateDistance = (loc1: LocationType, loc2: LocationType) => {
     if (!loc1 || !loc2) return 0;
 
@@ -159,15 +134,64 @@ const MapScreen: React.FC = () => {
 
     return R * c; // Distancia en km
   };
+  const navigation = useNavigation<DrawerNavProp>();
 
+  
   useEffect(() => {
-    if (destination) {
-      (async () => {
-        const newDestinationAddress = await getReverseGeocode(destination);
-        setDestinationAddress(newDestinationAddress);
-      })();
+    getLocationPermission();   
+  }, []);  
+    
+  useEffect(() => {
+    if (initialAddress) {
+      setInputAddress(initialAddress);
     }
-  }, [destination]);
+  }, [initialAddress]);
+  // console.log(currentLocation)
+  
+  useEffect(() => {
+    if (destinationAddress) {
+      setInputAddress(destinationAddress);
+    }
+  }, [destinationAddress]);
+  
+  useEffect(() => {
+    if (inputAddress.trim() !== "") {
+      getGeocode(inputAddress).then((location) => {
+        const newLocation = {
+          latitude: location.lat,
+          longitude: location.lng,
+        };
+        setCurrentLocation(newLocation); 
+        setDestination(newLocation);  
+      });
+    }
+  }, [inputAddress]);
+
+  // useEffect(() => {
+  //   if (destinationAddress !== "") {
+  //     getGeocode(destinationAddress).then((location) => {
+  //       const newLocation = {
+  //         latitude: location.lat,
+  //         longitude: location.lng,
+  //       };
+  //       setCurrentLocation(newLocation);
+  //       setDestination(newLocation);
+  //     });
+  //   }
+  // }, [destinationAddress]);
+
+  const handleInputAddressChange = (text: string) => {
+    setInputAddress(text); 
+  };  
+  // useEffect(() => {
+  //   if (destination) {
+  //     (async () => {
+  //       const newDestinationAddress = await getReverseGeocode(destination);
+  //       setDestinationAddress(newDestinationAddress);
+  //     })();
+  //   }
+  // }, [destination]);
+ 
 
   const applyCoupon = async () => {
     dispatch(useCoupon(couponCode));
@@ -204,7 +228,7 @@ const MapScreen: React.FC = () => {
       const orderResponse = await dispatch(
         createOrder({
           cartId: cart._id,
-          deliveryAddress: destinationAddress,
+          deliveryAddress: inputAddress,
           paymentMethod: "stripe",
           couponId: coupon?._id,
         })
@@ -240,7 +264,8 @@ const MapScreen: React.FC = () => {
     couponId?: string;
   }) => {
     try {
-      const distance = calculateDistance(origin, destination);
+      const distance = await calculateDistance(origin, destination);
+      console.log("Distancia:", distance);
 
       if (distance > deliveryRadius) {
         Alert.alert(
@@ -310,7 +335,10 @@ const MapScreen: React.FC = () => {
     }
   };
 
-  // console.log(cartProducts)
+  // console.log("Locación actual: ",currentLocation)
+  // // console.log(newDestinationAddress)
+  // console.log("Locación de destino: ",inputAddress)
+  // console.log("Locación de destino coordenadas: ",destination)
 
   if (cart) {
     const renderProductItem = ({ item }: { item: CartProduct }) => (
@@ -443,7 +471,7 @@ const MapScreen: React.FC = () => {
               )}
               <MapViewDirections
                 origin={origin}
-                destination={currentLocation}
+                destination={destination}
                 apikey={GOOGLE_MAPS_APIKEY}
                 strokeWidth={3}
                 strokeColor="#000"
@@ -458,8 +486,8 @@ const MapScreen: React.FC = () => {
             /> */}
               <TextInput
                 style={styles.inputs}
-                value={destinationAddress}
-                onChangeText={setDestinationAddress}
+                value={inputAddress}
+                onChangeText={handleInputAddressChange}
                 placeholder="Dirección del pedido"
               />
             </View>
@@ -631,7 +659,7 @@ const MapScreen: React.FC = () => {
                   ...(coupon?._id && { couponId: coupon._id }), // Solo incluye couponId si existe
                 })
               }
-              disabled={!destinationAddress} // Deshabilitar si destinationAddress está vacío
+              disabled={!inputAddress} // Deshabilitar si destinationAddress está vacío
             >
               <View style={styles.buttonWrapper}>
                 <Image
