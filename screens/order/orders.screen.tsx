@@ -272,7 +272,7 @@ const OrdersScreen: React.FC = () => {
             style={{ borderTopRightRadius: 50, borderTopLeftRadius: 50 }}
           >
             <FlatList
-              data={orders}
+              data={[...orders].reverse()}
               renderItem={renderProductItem}
               keyExtractor={(item) => item._id}
             />

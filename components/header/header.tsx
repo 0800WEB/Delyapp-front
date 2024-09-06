@@ -1,5 +1,17 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, Linking } from "react-native";
-import { SimpleLineIcons, Entypo, AntDesign, FontAwesome } from "@expo/vector-icons";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
+import {
+  SimpleLineIcons,
+  Entypo,
+  AntDesign,
+  FontAwesome,
+} from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -47,8 +59,13 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
         />
       </TouchableOpacity>
       {userData && <Text style={styles.userText}>{userData.name}</Text>}
-      <View style={{flexDirection: "row", gap: 15}}>
-      <TouchableOpacity onPress={() => Linking.openURL('https://www.facebook.com')} style={{marginLeft: -35}}><FontAwesome name="whatsapp" size={30} color="white" /></TouchableOpacity>
+      <View style={{ flexDirection: "row", gap: 15 }}>
+        <TouchableOpacity
+          onPress={() => Linking.openURL("https://www.facebook.com")}
+          style={{ marginLeft: -35 }}
+        >
+          <FontAwesome name="whatsapp" size={30} color="white" />
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("CARRITO")}>
           <Entypo
             name="shopping-cart"
@@ -57,21 +74,23 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
             style={{ alignSelf: "center", marginLeft: -5 }}
           />
           {cartItems.length > 0 && (
-            <Text
-              style={{
-                color: "white",
-                fontSize: 10,
-                top: -38,
-                right: -10,
-                backgroundColor: "#00BFFF",
-                paddingHorizontal: 0,
-                paddingVertical: 6,
-                borderRadius: 15,
-                textAlign: "center",
-              }}
-            >
-              {cartItems.length}
-            </Text>
+            <View>
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: 10,
+                  top: -38,
+                  right: -10,
+                  backgroundColor: "#00BFFF",
+                  paddingHorizontal: 0,
+                  paddingVertical: 6,
+                  borderRadius: 15,
+                  textAlign: "center",
+                }}
+              >
+                {cartItems.length}
+              </Text>
+            </View>
           )}
         </TouchableOpacity>
       </View>
