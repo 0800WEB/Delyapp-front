@@ -24,7 +24,8 @@ import { clearSelectedProduct } from "@/store/products/productsActions";
 import Header from "@/components/header/header";
 import SearchInput from "@/components/search/searchInput";
 import { DrawerActions } from "@react-navigation/native";
-
+import axios from "axios";
+import { SERVER_URI } from "@/utils/uri";
 type DrawerNavProp = DrawerNavigationProp<RootParamList>;
 
 const OrdersScreen: React.FC = () => {
@@ -81,16 +82,39 @@ const OrdersScreen: React.FC = () => {
     }
   };
 
-  const handleAddToCart = async (products: any[]) => {
-    // console.log(products);
-    products.map(async (product) => {
-      await dispatch(
-        addToCart({ productId: product.product._id, quantity: 1 })
+  const handleRepeatOrder = async (orderId: string) => {
+    try {
+      // Recuperar el token de autenticación
+      const token = await _retrieveData({ key: "userToken" });
+  
+      // Hacer la petición POST a la ruta de repeatOrder
+      const response = await axios.post(
+        `${SERVER_URI}/carts/repeat-order/${orderId}`,
+        {},  // No necesitas enviar body
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,  // Pasar el token en los headers
+          },
+        }
       );
-    });
-    await dispatch(getCart());
-    await navigation.navigate("CARRITO");
+  
+      if (response.data.success) {
+        // Actualizar el carrito (si es necesario)
+        await dispatch(getCart());
+  
+        // Navegar al carrito
+        navigation.navigate("CARRITO");
+  
+        console.log("Orden repetida con éxito:", response.data);
+      } else {
+        console.error("Error al repetir la orden:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error en el servidor al repetir la orden:", error);
+    }
   };
+
+  
 
   if (!userOrders || userOrders?.length === 0) {
     return (
@@ -187,21 +211,16 @@ const OrdersScreen: React.FC = () => {
             >
               ID PEDIDO {item._id}
             </Text>
-            {Object.entries(
-              item.products.reduce((acc, product) => {
-                acc[product.product.name] =
-                  (acc[product.product.name] || 0) + 1;
-                return acc;
-              }, {})
-            ).map(([productName, count], index) => (
-              <Text
-                style={[styles.commonText, { fontFamily: "Geomanist Regular" }]}
-                key={index}
-              >
-                {" "}
-                • {productName} x {count}
-              </Text>
-            ))}
+            {item.products.map((product, index) => (
+  <Text
+    style={[styles.commonText, { fontFamily: "Geomanist Regular" }]}
+    key={index}
+  >
+    {" "}
+    • {product.product.name} x {product.quantity}
+  </Text>
+))}
+
             <Text
               style={[
                 styles.commonText,
@@ -222,29 +241,26 @@ const OrdersScreen: React.FC = () => {
               {item.status.toUpperCase()}
             </Text>
             <TouchableOpacity
-              style={[styles.button3, { marginRight: 0, marginTop: 15 }]}
-              onPress={() => {
-                handleAddToCart(item.products);
-              }}
-            >
-              <View style={styles.buttonWrapper}>
-                <Image
-                  source={require("@/assets/images/BUTTON.png")}
-                  style={styles.button2}
-                />
-                <Text
-                  style={[
-                    {
-                      fontFamily: "Geomanist Regular",
-                      color: "white",
-                      fontSize: 17,
-                    },
-                  ]}
-                >
-                  VOLVER A PEDIR
-                </Text>
-              </View>
-            </TouchableOpacity>
+  style={[styles.button3, { marginRight: 0, marginTop: 15 }]}
+  onPress={() => {
+    handleRepeatOrder(item._id);  // Pasar el ID de la orden
+  }}
+>
+  <View style={styles.buttonWrapper}>
+    <Image source={require("@/assets/images/BUTTON.png")} style={styles.button2} />
+    <Text
+      style={[
+        {
+          fontFamily: "Geomanist Regular",
+          color: "white",
+          fontSize: 17,
+        },
+      ]}
+    >
+      VOLVER A PEDIR
+    </Text>
+  </View>
+</TouchableOpacity>
           </View>
         </View>
       </View>
