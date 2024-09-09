@@ -26,6 +26,7 @@ import SearchInput from "@/components/search/searchInput";
 import { DrawerActions } from "@react-navigation/native";
 import axios from "axios";
 import { SERVER_URI } from "@/utils/uri";
+import { Route, Link, Routes, useLocation } from 'react-router-dom';
 type DrawerNavProp = DrawerNavigationProp<RootParamList>;
 
 const OrdersScreen: React.FC = () => {
@@ -49,11 +50,14 @@ const OrdersScreen: React.FC = () => {
   }
   //   const [renderedImages, setRenderedImages] = useState([]);
   const navigation = useNavigation<DrawerNavProp>();
-
+  console.log(navigation)
   useEffect(() => {
     dispatch(getCart());
   }, []);
-
+  useEffect(()=>{
+    console.log(router)
+    console.log("cambia")
+  })
   const orders = useSelector((state: RootState) => state.order.orders);
   const userOrders = JSON.parse(JSON.stringify(orders));
 //   console.log("User Orders: ", userOrders);
@@ -288,7 +292,7 @@ const OrdersScreen: React.FC = () => {
             style={{ borderTopRightRadius: 50, borderTopLeftRadius: 50 }}
           >
             <FlatList
-              data={[...orders].reverse()}
+              data={[...orders]/* .reverse() */}
               renderItem={renderProductItem}
               keyExtractor={(item) => item._id}
             />

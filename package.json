@@ -20,7 +20,6 @@
     "@react-native-community/checkbox": "^0.5.17",
     "@react-native-community/datetimepicker": "^8.2.0",
     "@react-native-community/geolocation": "^3.3.0",
-    "@react-native-community/picker": "^1.8.1",
     "@react-native-picker/picker": "^2.7.7",
     "@react-navigation/drawer": "^6.7.2",
     "@react-navigation/native": "^6.1.17",
