@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "client",
+    "name": "Dringo",
     "slug": "client",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,7 +21,16 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.mrain00.client"
+      "package": "com.mrain00.client",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCxp4-dyjYWfEkugeZFkE8MOEHtvyQG17s"
+        }
+      }
     },
     "web": {
       "bundler": "metro",
