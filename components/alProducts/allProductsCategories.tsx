@@ -24,18 +24,11 @@ const AllCategoryProducts: React.FC<AllCategoryProductsProps> = ({
   onProductSelected,
   homeScreen,
 }) => {
-  let [fontsLoaded, fontError] = useFonts({
-    "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
-    "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
-    "Cherione Light": require("../../assets/fonts/Cherione Light.ttf"),
-    "Cherione Regular": require("../../assets/fonts/Cherione.otf"),
-    "Geomanist Regular": require("../../assets/fonts/Geomanist-Regular.otf"),
-    "Geomanist Bold": require("../../assets/fonts/Geomanist-Bold.otf"),
-    "Geomanist Light": require("../../assets/fonts/Geomanist-Light.otf"),
+  let [fontsLoaded, fontError] = useFonts({    
+    "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
     "Geomanist Medium": require("../../assets/fonts/Geomanist-Medium.otf"),
-    "Geomanist Thin": require("../../assets/fonts/Geomanist-Thin.otf"),
-    "Geomanist ExtraLight": require("../../assets/fonts/Geomanist-ExtraLight.otf"),
-    "Geomanist Ultra": require("../../assets/fonts/Geomanist-Ultra.otf"),
     ...FontAwesome.font,
   });
   if (!fontsLoaded && !fontError) {
@@ -137,7 +130,7 @@ export const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 15,
-    fontFamily: "Geomanist Medium",
+    fontFamily: "Aristotelica Pro Text Extralight",
     fontSize: 18,
     color: "#A1A1A1",
   },
@@ -172,13 +165,14 @@ export const styles = StyleSheet.create({
   },
   titleText: {
     fontFamily: "Geomanist Medium",
+    // fontWeight: "bold",
     fontSize: 17,
     alignSelf: "center",
     textAlign: "center",
     color: "#000024",
   },
   description: {
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Cdn Extralight",
     fontSize: 17,
     justifyContent: "center",
     color: "#000024",

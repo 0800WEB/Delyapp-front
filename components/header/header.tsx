@@ -32,6 +32,7 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
   const [fontsLoaded, fontError] = useFonts({
     "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
     "Cherione Regular": require("../../assets/fonts/Cherione.otf"),
+    "Geomanist Regular": require("../../assets/fonts/Geomanist-Regular.otf"),
   });
   const navigation = useNavigation<DrawerNavProp>();
 
@@ -50,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
 
   return (
     <View style={styles.headerStyle}>
-      <TouchableOpacity onPress={openDrawer}>
+      <TouchableOpacity onPress={openDrawer} style={{zIndex: 2}}>
         <SimpleLineIcons
           name="menu"
           size={30}
@@ -58,7 +59,7 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
           style={{ alignSelf: "center" }}
         />
       </TouchableOpacity>
-      {userData && <Text style={styles.userText}>{userData.name}</Text>}
+      {userData && <Text style={styles.userText}>{userData.name.toUpperCase()}</Text>}
       <View style={{ flexDirection: "row", gap: 15 }}>
         <TouchableOpacity
           onPress={() => Linking.openURL("https://www.facebook.com")}
@@ -110,7 +111,7 @@ const styles = StyleSheet.create({
     height: 60,
   },
   userText: {
-    fontFamily: "Cherione Regular",
+    fontFamily: "Geomanist Regular",
     fontSize: 15,
     color: "white",
     width: "100%",
