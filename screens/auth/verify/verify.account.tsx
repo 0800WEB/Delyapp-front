@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import {
   AntDesign,
@@ -57,7 +57,7 @@ export default function VerifyAccountScreen() {
     return null;
   }
   const [code, setCode] = useState(new Array(4).fill(""));
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const inputs = useRef<any>([...Array(4)].map(() => React.createRef()));
 
@@ -76,13 +76,13 @@ export default function VerifyAccountScreen() {
   };
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
+      "keyboardDidShow",
       () => {
         setKeyboardStatus(true);
       }
     );
     const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
+      "keyboardDidHide",
       () => {
         setKeyboardStatus(false);
       }
@@ -102,7 +102,7 @@ export default function VerifyAccountScreen() {
   // }
   useEffect(() => {
     if (userInfo) {
-      if (typeof userInfo === 'string') {
+      if (typeof userInfo === "string") {
         const correo = JSON.parse(userInfo);
         setEmail(correo.email);
       } else if (userInfo.email) {
@@ -111,17 +111,15 @@ export default function VerifyAccountScreen() {
     }
   }, [userInfo]);
 
-  
   const handleSumbit = async () => {
     const otp = code.join("");
     dispatch(verify_code({ email, code: otp }));
   };
   console.log("Email: ", email);
-  
+
   const handleResend = async () => {
     dispatch(re_verify_code({ email }));
-  }
-
+  };
 
   return (
     <LinearGradient
@@ -148,24 +146,28 @@ export default function VerifyAccountScreen() {
             />
           ))}
         </View>
-        <TouchableOpacity style={{marginTop: 15}} onPress={handleSumbit}>
-        <View style={styles.buttonWrapper}>
-            <Image
-              source={require("@/assets/images/BUTTON.png")}
-              style={styles.button2}
-              />
+        <TouchableOpacity style={{ marginTop: 15 }} onPress={handleSumbit}>
+          <LinearGradient
+            colors={["#016AF5", "#08E6E7"]}
+            style={{ margin: "auto", borderRadius: 25 }}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+          >
             <Text
               style={[
                 {
                   fontFamily: "Geomanist Regular",
+                  textAlign: "center",
                   color: "white",
                   fontSize: 19,
+                  paddingVertical: 3,
+                  paddingHorizontal: 20,
                 },
               ]}
             >
               VERIFICAR
             </Text>
-          </View>
+          </LinearGradient>
         </TouchableOpacity>
         <View style={styles.loginLink}>
           <Text style={[styles.subText, { fontFamily: "Geomanist Regular" }]}>
@@ -179,13 +181,6 @@ export default function VerifyAccountScreen() {
             </Text>
           </TouchableOpacity>
         </View>
-        {!keyboardStatus && (
-        <Image
-          source={require("@/assets/images/ICONOS-43.png")}
-          style={{ position: "absolute", left: 0, bottom: 0 }}
-          resizeMode="contain"
-        />
-      )}
       </View>
     </LinearGradient>
   );
@@ -211,7 +206,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#949494",
     borderBottomWidth: 1,
     color: "white",
-    backgroundColor: "#000024"
+    backgroundColor: "#000024",
   },
   container: {
     flex: 1,

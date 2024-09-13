@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   FlatList,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome5, AntDesign, FontAwesome } from "@expo/vector-icons";
 import React, { useEffect, useCallback } from "react";
 import { useFocusEffect } from "@react-navigation/native";
@@ -52,7 +53,7 @@ const CartScreen: React.FC = () => {
   const fetchCart = useCallback(() => {
     dispatch(getCart());
   }, [dispatch]);
-  
+
   useFocusEffect(fetchCart);
 
   const cart = useSelector((state: RootState) => state.cart.cart);
@@ -127,119 +128,59 @@ const CartScreen: React.FC = () => {
 
   if (cart) {
     const renderProductItem = ({ item }: { item: CartProduct }) => (
-      <View
-        style={{
-          flexDirection: "row",
-          marginHorizontal: "auto",
-          marginVertical: 15,
-          justifyContent: "space-between",
-          paddingVertical: 10,
-          width: "90%",
-          borderBottomColor: "#A1A1A1",
-          borderBottomWidth: 0.5,
-        }}
-      >
-        <View style={{ flexDirection: "row" }}>
+      <View style={styles.cardContainer}>
+        <View style={styles.imageContainer1}>
           {item.product.images && (
             <Image
               source={{ uri: item.product.images[0] }}
-              style={{
-                aspectRatio: 1,
-                width: 85,
-                borderRadius: 15,
-              }}
+              style={styles.imageContainer}
             />
           )}
-          <View
-            style={{ justifyContent: "space-between", alignContent: "center", width: "50%" }}
-          >
-            <Text
-              style={{
-                textAlign: "left",
-                marginHorizontal: 15,
-                fontFamily: "Geomanist Medium",
-                fontSize: 17,
-                color: "#000024",
-              }}
-            >
-              {item.product.name}
-            </Text>
-            <Text
-              style={{
-                textAlign: "left",
-                marginHorizontal: 15,
-                fontFamily: "Geomanist Regular",
-                fontSize: 14,
-                color: "#000024",
-                width:"100%"
-              }}
-            >
-              {item.product.description.substring(0, 30)}
-            </Text>
-            <Text
-              style={{
-                textAlign: "left",
-                fontFamily: "Geomanist Medium",
-                fontSize: 17,
-                color: "#000024",
-                marginHorizontal: 15,
-              }}
-            >
-              ${Number(item.product?.price?.toString()).toFixed(2)}
-            </Text>
-          </View>
         </View>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            alignSelf: "center"
-          }}
-        >
-          <View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingVertical: 10,
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => handleDiscount(item.product._id)}
-              >
-                <FontAwesome5
-                  name={item.quantity == 1 ? "trash-alt" : "minus"}
-                  color="#000024"
-                  size={20}
-                />
-              </TouchableOpacity>
-              <Text
-                style={{
-                  textAlign: "left",
-                  fontFamily: "Geomanist Regular",
-                  fontSize: 38,
-                  color: "#000024",
-                  paddingHorizontal: 17,
-                }}
-              >
-                {item.quantity?.toString()}
-              </Text>
-              <TouchableOpacity onPress={() => handleAdd(item.product._id)}>
-                <FontAwesome5 name="plus" color="#000024" size={20} />
-              </TouchableOpacity>
-            </View>
+        <View style={styles.textContainer}>
+          <Text style={styles.nameText}>
+            {item.product.name.substring(0, 35)}
+          </Text>
+          <Text style={styles.descriptionText}>
+            {item.product.description.substring(0, 30)}
+          </Text>
+          <Text style={styles.priceText}>
+            ${Number(item.product?.price?.toString()).toFixed(2)}
+          </Text>
+        </View>
+        <View style={styles.cartQuantityContainer}>
+          <View style={styles.quantitySection}>
+            <TouchableOpacity onPress={() => handleDiscount(item.product._id)}>
+              <FontAwesome5
+                name={item.quantity == 1 ? "trash-alt" : "minus"}
+                color="#000024"
+                size={20}
+              />
+            </TouchableOpacity>
             <Text
               style={{
-                fontSize: 11,
-                textAlign: "center",
-                fontFamily: "Geomanist Medium",
-                marginTop: -12,
+                textAlign: "left",
+                fontFamily: "Geomanist Regular",
+                fontSize: 32,
+                color: "#000024",
+                paddingHorizontal: 17,
               }}
             >
-              CANTIDAD
+              {item.quantity?.toString()}
             </Text>
+            <TouchableOpacity onPress={() => handleAdd(item.product._id)}>
+              <FontAwesome5 name="plus" color="#000024" size={20} />
+            </TouchableOpacity>
           </View>
+          <Text
+            style={{
+              fontSize: 11,
+              textAlign: "center",
+              fontFamily: "Geomanist Medium",
+            }}
+          >
+            CANTIDAD
+          </Text>
         </View>
       </View>
     );
@@ -287,7 +228,7 @@ const CartScreen: React.FC = () => {
             style={{
               margin: 10,
               marginHorizontal: "auto",
-              width: "90%",
+              width: "93%",
               borderTopWidth: 0.4,
               borderBottomWidth: 0.4,
               borderColor: "#A1A1A1",
@@ -308,30 +249,28 @@ const CartScreen: React.FC = () => {
               )}
             </View>
           </View>
-          <TouchableOpacity
-            style={[
-              styles.button3,
-              { paddingLeft: -35, marginHorizontal: 32, marginTop: 15 },
-            ]}
-            onPress={goToMapScreen}
-          >
-            <View style={styles.buttonWrapper}>
-              <Image
-                source={require("@/assets/images/BUTTON.png")}
-                style={styles.button2}
-              />
+          <TouchableOpacity onPress={goToMapScreen}>
+            <LinearGradient
+              colors={["#016AF5", "#08E6E7"]}
+              style={{ margin: "auto", borderRadius: 25 }}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+            >
               <Text
                 style={[
                   {
                     fontFamily: "Geomanist Regular",
+                    textAlign: "center",
                     color: "white",
                     fontSize: 19,
+                    paddingVertical: 3,
+                    paddingHorizontal: 20,
                   },
                 ]}
               >
                 COMPLETAR PEDIDO
               </Text>
-            </View>
+            </LinearGradient>
           </TouchableOpacity>
         </ScrollView>
       </View>
@@ -342,17 +281,6 @@ const CartScreen: React.FC = () => {
 export default CartScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  notFoundContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  notFoundText: {
-    textAlign: "center",
-  },
   scrollView: {
     marginBottom: 10,
   },
@@ -369,48 +297,62 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#000024",
   },
-  closeIcon: {
-    height: 40,
-    aspectRatio: 1,
-  },
-  favoriteButton: {
-    marginVertical: 10,
-    alignItems: "flex-end",
-    marginHorizontal: 10,
-  },
-  favoriteIcon: {
-    marginHorizontal: 10,
-  },
-  imageContainer: {
-    alignSelf: "center",
-    aspectRatio: 1,
-    height: 250,
-    marginVertical: 5,
-  },
-  middleSection: {
+  cardContainer: {
     flexDirection: "row",
-    marginHorizontal: 15,
-    justifyContent: "space-between",
+    marginHorizontal: "auto",
     marginVertical: 10,
+    paddingVertical: 10,
+    justifyContent: "space-between",
+    width: "93%",
+    minHeight: 150,
+    maxHeight: 180,
     borderBottomColor: "#A1A1A1",
-    borderBottomWidth: 0.8,
-    paddingVertical: 5,
+    borderBottomWidth: 0.5,
   },
-  priceNameContainer: {
+  imageContainer1: {
+    alignItems: "center",
+    maxWidth: "20%",
     justifyContent: "center",
   },
-  commonText: {
-    fontFamily: "Geomanist Medium",
-    fontSize: 18,
-    color: "#A1A1A1",
+  imageContainer: {
+    aspectRatio: 1,
+    minWidth: "100%",
+    maxWidth: "100%",
+    borderRadius: 15,
+  },
+  textContainer: {
+    justifyContent: "space-between",
+    alignContent: "center",
+    width: "58%",
+    minHeight: 145,
+    maxHeight: 175,
+    marginLeft: "2%",
   },
   nameText: {
+    textAlign: "left",
     fontFamily: "Geomanist Medium",
-    fontSize: 15,
-    color: "#A1A1A1",
+    fontSize: 17,
+    color: "#000024",
+    width: "100%",
   },
-  addToCartContainer: {
+  descriptionText: {
+    textAlign: "left",
+    fontFamily: "Geomanist Regular",
+    fontSize: 14,
+    color: "#000024",
+    width: "100%",
+  },
+  priceText: {
+    textAlign: "left",
+    fontFamily: "Geomanist Medium",
+    fontSize: 16,
+    color: "#000024",
+  },
+  cartQuantityContainer: {
+    justifyContent: "center",
     alignItems: "center",
+    alignSelf: "center",
+    width: "20%",
   },
   addToCartText: {
     backgroundColor: "#A1A1A1",
@@ -424,8 +366,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  quantityIcon: {
-    alignSelf: "center",
+  quantitySection: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   quantityText: {
     fontSize: 20,

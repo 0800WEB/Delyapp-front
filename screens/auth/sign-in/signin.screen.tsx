@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import {
   AntDesign,
@@ -61,13 +61,13 @@ export default function SignInScreen() {
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
+      "keyboardDidShow",
       () => {
         setKeyboardStatus(true);
       }
     );
     const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
+      "keyboardDidHide",
       () => {
         setKeyboardStatus(false);
       }
@@ -97,104 +97,97 @@ export default function SignInScreen() {
   };
 
   return (
-    <View
-      style={{ flex: 1}}
-    >
-    <LinearGradient
-      colors={["#F9F6F7", "#F9F6F7"]}
-      style={{ flex: 1, paddingTop: 30 }}
-    >
-      <Text style={styles.topText}>LOGEO</Text>
-      <View
-        style={{
-          backgroundColor: "#F9F6F7",
-          flex: 1,
-          alignContent: "center",
-          marginTop: 50,
-          // justifyContent: "center",
-        }}
+    <View style={{ flex: 1 }}>
+      <LinearGradient
+        colors={["#F9F6F7", "#F9F6F7"]}
+        style={{ flex: 1, paddingTop: 30 }}
       >
-        <Image
-          source={require("@/assets/images/ICONOS-01.png")}
-          style={[styles.signInImage, { transform: [{ scale: 0.4 }] }]}
-        />
-        <View style={styles.inputContainer}>
-          <View>
-            <TextInput
-              style={[styles.input, {}]}
-              keyboardType="default"
-              value={userInfo.email}
-              placeholder="Nombre de Usuario"
-              onChangeText={(value) =>
-                setUserInfo({ ...userInfo, email: value })
-              }
-            />
-          </View>
-          <View>
-            <TextInput
-              style={[styles.input, { paddingTop: 0, paddingLeft: 35 }]}
-              keyboardType="default"
-              value={userInfo.password}
-              secureTextEntry={!isPasswordVisible}
-              placeholder="••••••••••"
-              onChangeText={(value) =>
-                setUserInfo({ ...userInfo, password: value })
-              }
-            />
-            <TouchableOpacity
-              style={styles.visibleIcon}
-              onPress={() => setPasswordVisible(!isPasswordVisible)}
-            >
-              {isPasswordVisible ? (
-                <Ionicons name="eye-off-outline" size={23} color={"#A1A1A1"} />
-              ) : (
-                <Ionicons name="eye-outline" size={23} color={"#A1A1A1"} />
-              )}
-            </TouchableOpacity>
-          </View>
-        </View>
-        <TouchableOpacity
-          style={[
-            styles.button3,
-            { paddingLeft: -35, marginHorizontal: 32, marginTop: 30 },
-          ]}
+        <Text style={styles.topText}>INICIAR SESIÓN</Text>
+        <View
+          style={{
+            backgroundColor: "#F9F6F7",
+            flex: 1,
+            alignContent: "center",
+            marginTop: 50,
+            // justifyContent: "center",
+          }}
         >
-          {buttonSpinner ? (
-            <ActivityIndicator
-              size="small"
-              color="#000024"
-              style={{ marginVertical: "auto" }}
-            />
-          ) : (
-            <View style={styles.buttonWrapper}>
-              <Image
-                source={require("@/assets/images/BUTTON.png")}
-                style={styles.button2}
+          <Image
+            source={require("@/assets/images/ICONOS-01.png")}
+            style={[styles.signInImage, { transform: [{ scale: 0.4 }] }]}
+          />
+          <View style={styles.inputContainer}>
+            <View>
+              <TextInput
+                style={[styles.input, {}]}
+                keyboardType="default"
+                value={userInfo.email}
+                placeholder="Nombre de Usuario"
+                onChangeText={(value) =>
+                  setUserInfo({ ...userInfo, email: value })
+                }
               />
+            </View>
+            <View>
+              <TextInput
+                style={[styles.input, { paddingTop: 0, paddingLeft: 35 }]}
+                keyboardType="default"
+                value={userInfo.password}
+                secureTextEntry={!isPasswordVisible}
+                placeholder="••••••••••"
+                onChangeText={(value) =>
+                  setUserInfo({ ...userInfo, password: value })
+                }
+              />
+              <TouchableOpacity
+                style={styles.visibleIcon}
+                onPress={() => setPasswordVisible(!isPasswordVisible)}
+              >
+                {isPasswordVisible ? (
+                  <Ionicons
+                    name="eye-off-outline"
+                    size={23}
+                    color={"#A1A1A1"}
+                  />
+                ) : (
+                  <Ionicons name="eye-outline" size={23} color={"#A1A1A1"} />
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
+          <TouchableOpacity style={{ marginTop: 30 }} onPress={handleSignIn}>
+            {buttonSpinner ? (
+              <ActivityIndicator
+                size="small"
+                color="#000024"
+                style={{ marginVertical: "auto" }}
+              />
+            ) : (
+              <LinearGradient
+              colors={["#016AF5", "#08E6E7"]}
+              style={{ margin: "auto", borderRadius: 25 }}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+            >
               <Text
-                onPress={handleSignIn}
                 style={[
                   {
                     fontFamily: "Geomanist Regular",
+                    textAlign: "center",
                     color: "white",
                     fontSize: 19,
+                    paddingVertical: 3,
+                    paddingHorizontal: 20,
                   },
                 ]}
               >
                 INGRESAR
               </Text>
-            </View>
-          )}
-        </TouchableOpacity>
-      </View>
+            </LinearGradient>
+            )}
+          </TouchableOpacity>
+        </View>
       </LinearGradient>
-      {!keyboardStatus && (
-        <Image
-          source={require("@/assets/images/ICONOS-44.png")}
-          style={{ position: "absolute", left: 0, bottom: 0 }}
-          resizeMode="contain"
-        />
-      )}
     </View>
   );
 }
@@ -223,7 +216,7 @@ export const styles = StyleSheet.create({
     alignContent: "center",
     fontFamily: "Geomanist Regular",
     backgroundColor: "white",
-    color: "#A1A1A1",
+    color: "#000024",
   },
   button: {
     height: 45,
@@ -249,7 +242,7 @@ export const styles = StyleSheet.create({
     borderBottomColor: "#949494",
     borderBottomWidth: 1,
     color: "white",
-    backgroundColor: "#000024"
+    backgroundColor: "#000024",
   },
   buttonText: {
     color: "white",

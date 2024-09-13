@@ -53,7 +53,7 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
       <TouchableOpacity onPress={openDrawer}>
         <SimpleLineIcons
           name="menu"
-          size={28}
+          size={30}
           color="white"
           style={{ alignSelf: "center" }}
         />
@@ -64,12 +64,12 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
           onPress={() => Linking.openURL("https://www.facebook.com")}
           style={{ marginLeft: -35 }}
         >
-          <FontAwesome name="whatsapp" size={30} color="white" />
+          <FontAwesome name="whatsapp" size={34} color="white" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("CARRITO")}>
           <Entypo
             name="shopping-cart"
-            size={30}
+            size={33}
             color="white"
             style={{ alignSelf: "center", marginLeft: -5 }}
           />
@@ -79,13 +79,15 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
                 style={{
                   color: "white",
                   fontSize: 10,
-                  top: -38,
-                  right: -10,
+                  top: -44,
+                  right: -13,
                   backgroundColor: "#00BFFF",
                   paddingHorizontal: 0,
                   paddingVertical: 6,
                   borderRadius: 15,
                   textAlign: "center",
+                  position: "absolute",
+                  width: 30,
                 }}
               >
                 {cartItems.length}
@@ -109,11 +111,12 @@ const styles = StyleSheet.create({
   },
   userText: {
     fontFamily: "Cherione Regular",
-    fontSize: 18,
+    fontSize: 15,
     color: "white",
+    width: "100%",
     alignSelf: "center",
     textAlign: "center",
-    marginTop: -15,
+    position: "absolute",
   },
   profilePhoto: {
     height: 30,

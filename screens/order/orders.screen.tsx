@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   FlatList,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome5, AntDesign, FontAwesome } from "@expo/vector-icons";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -26,7 +27,7 @@ import SearchInput from "@/components/search/searchInput";
 import { DrawerActions } from "@react-navigation/native";
 import axios from "axios";
 import { SERVER_URI } from "@/utils/uri";
-import { Route, Link, Routes, useLocation } from 'react-router-dom';
+import { Route, Link, Routes, useLocation } from "react-router-dom";
 type DrawerNavProp = DrawerNavigationProp<RootParamList>;
 
 const OrdersScreen: React.FC = () => {
@@ -50,17 +51,17 @@ const OrdersScreen: React.FC = () => {
   }
   //   const [renderedImages, setRenderedImages] = useState([]);
   const navigation = useNavigation<DrawerNavProp>();
-  console.log(navigation)
+  console.log(navigation);
   useEffect(() => {
     dispatch(getCart());
   }, []);
-  useEffect(()=>{
-    console.log(router)
-    console.log("cambia")
-  })
+  useEffect(() => {
+    console.log(router);
+    console.log("cambia");
+  });
   const orders = useSelector((state: RootState) => state.order.orders);
   const userOrders = JSON.parse(JSON.stringify(orders));
-//   console.log("User Orders: ", userOrders);
+  //   console.log("User Orders: ", userOrders);
 
   const goToHome = () => {
     if (dispatch) {
@@ -90,25 +91,25 @@ const OrdersScreen: React.FC = () => {
     try {
       // Recuperar el token de autenticación
       const token = await _retrieveData({ key: "userToken" });
-  
+
       // Hacer la petición POST a la ruta de repeatOrder
       const response = await axios.post(
         `${SERVER_URI}/carts/repeat-order/${orderId}`,
-        {},  // No necesitas enviar body
+        {}, // No necesitas enviar body
         {
           headers: {
-            Authorization: `Bearer ${token}`,  // Pasar el token en los headers
+            Authorization: `Bearer ${token}`, // Pasar el token en los headers
           },
         }
       );
-  
+
       if (response.data.success) {
         // Actualizar el carrito (si es necesario)
         await dispatch(getCart());
-  
+
         // Navegar al carrito
         navigation.navigate("CARRITO");
-  
+
         console.log("Orden repetida con éxito:", response.data);
       } else {
         console.error("Error al repetir la orden:", response.data.message);
@@ -117,8 +118,6 @@ const OrdersScreen: React.FC = () => {
       console.error("Error en el servidor al repetir la orden:", error);
     }
   };
-
-  
 
   if (!userOrders || userOrders?.length === 0) {
     return (
@@ -187,7 +186,7 @@ const OrdersScreen: React.FC = () => {
                   width: 85,
                   borderRadius: 15,
                   alignSelf: "center",
-                  marginTop: -55
+                  marginTop: -55,
                 }}
               />
             )}
@@ -216,14 +215,14 @@ const OrdersScreen: React.FC = () => {
               ID PEDIDO {item._id}
             </Text>
             {item.products.map((product, index) => (
-  <Text
-    style={[styles.commonText, { fontFamily: "Geomanist Regular" }]}
-    key={index}
-  >
-    {" "}
-    • {product.product.name} x {product.quantity}
-  </Text>
-))}
+              <Text
+                style={[styles.commonText, { fontFamily: "Geomanist Regular" }]}
+                key={index}
+              >
+                {" "}
+                • {product.product.name} x {product.quantity}
+              </Text>
+            ))}
 
             <Text
               style={[
@@ -245,26 +244,33 @@ const OrdersScreen: React.FC = () => {
               {item.status.toUpperCase()}
             </Text>
             <TouchableOpacity
-  style={[styles.button3, { marginRight: 0, marginTop: 15 }]}
-  onPress={() => {
-    handleRepeatOrder(item._id);  // Pasar el ID de la orden
-  }}
->
-  <View style={styles.buttonWrapper}>
-    <Image source={require("@/assets/images/BUTTON.png")} style={styles.button2} />
-    <Text
-      style={[
-        {
-          fontFamily: "Geomanist Regular",
-          color: "white",
-          fontSize: 17,
-        },
-      ]}
-    >
-      VOLVER A PEDIR
-    </Text>
-  </View>
-</TouchableOpacity>
+            style={{marginVertical: 5}}
+              onPress={() => {
+                handleRepeatOrder(item._id); // Pasar el ID de la orden
+              }}
+            >
+              <LinearGradient
+                colors={["#016AF5", "#08E6E7"]}
+                style={{ margin: "auto", borderRadius: 25 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              >
+                <Text
+                  style={[
+                    {
+                      fontFamily: "Geomanist Regular",
+                      textAlign: "center",
+                      color: "white",
+                      fontSize: 17,
+                      paddingVertical: 3,
+                      paddingHorizontal: 20,
+                    },
+                  ]}
+                >
+                  VOLVER A PEDIR
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -292,7 +298,7 @@ const OrdersScreen: React.FC = () => {
             style={{ borderTopRightRadius: 50, borderTopLeftRadius: 50 }}
           >
             <FlatList
-              data={[...orders]/* .reverse() */}
+              data={[...orders] /* .reverse() */}
               renderItem={renderProductItem}
               keyExtractor={(item) => item._id}
             />

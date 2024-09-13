@@ -53,44 +53,50 @@ const SelectSignScreen:React.FC = () => {
         />
         <View style={[styles.innerContainer, { top: 0 }]}>
           <TouchableOpacity onPress={() => router.push("/(routes)/sign-up")}>
-            <View style={styles.buttonWrapper}>
-              <Image
-                source={require("@/assets/images/BUTTON.png")}
-                style={styles.button}
-              />
+          <LinearGradient
+              colors={["#016AF5", "#08E6E7"]}
+              style={{ margin: "auto", borderRadius: 25 }}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+            >
               <Text
                 style={[
-                  styles.buttonText,
                   {
                     fontFamily: "Geomanist Regular",
+                    textAlign: "center",
                     color: "white",
                     fontSize: 19,
+                    paddingVertical: 3,
+                    paddingHorizontal: 20,
                   },
                 ]}
               >
-                REGÍSTRATE
+               REGÍSTRATE
               </Text>
-            </View>
+            </LinearGradient>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => router.push("/(routes)/sign-in")}>
-            <View style={styles.buttonWrapper}>
-              <Image
-                source={require("@/assets/images/BUTTON.png")}
-                style={styles.button}
-              />
+          <LinearGradient
+              colors={["#016AF5", "#08E6E7"]}
+              style={{ margin: "auto", borderRadius: 25 }}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+            >
               <Text
                 style={[
-                  styles.buttonText,
                   {
                     fontFamily: "Geomanist Regular",
+                    textAlign: "center",
                     color: "white",
                     fontSize: 19,
+                    paddingVertical: 3,
+                    paddingHorizontal: 35,
                   },
                 ]}
               >
                 INGRESA
               </Text>
-            </View>
+            </LinearGradient>
           </TouchableOpacity>
           <TouchableOpacity onPress={goToAbout}>
             <View style={styles.buttonWrapper}>

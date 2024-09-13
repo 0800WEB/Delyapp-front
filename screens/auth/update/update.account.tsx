@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Keyboard,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign, FontAwesome, Fontisto } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { router } from "expo-router";
@@ -131,15 +132,6 @@ export default function UpdateAccountScreen() {
             justifyContent: "center",
           }}
         >
-          {!keyboardStatus && (
-            <Image
-              source={require("@/assets/images/ICONOS-01.png")}
-              style={[
-                styles.signInImage,
-                { backgroundColor: "transparent", opacity: 0.67 },
-              ]}
-            />
-          )}
           <View style={styles.inputContainer}>
             <View>
               <TextInput
@@ -176,37 +168,35 @@ export default function UpdateAccountScreen() {
               />
             </View>
           </View>
-          <TouchableOpacity
-            style={[
-              styles.button3,
-              { paddingLeft: -35, marginHorizontal: 32, marginTop: 20 },
-            ]}
-          >
+          <TouchableOpacity onPress={handleUpdate} style={{marginTop: 15}}>
             {buttonSpinner ? (
               <ActivityIndicator
                 size="small"
-                color="#016AF5"
+                color="#000024"
                 style={{ marginVertical: "auto" }}
               />
             ) : (
-              <View style={styles.buttonWrapper}>
-                <Image
-                  source={require("@/assets/images/BUTTON.png")}
-                  style={styles.button2}
-                />
+              <LinearGradient
+                colors={["#016AF5", "#08E6E7"]}
+                style={{ margin: "auto", borderRadius: 25 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              >
                 <Text
-                  onPress={handleUpdate}
                   style={[
                     {
                       fontFamily: "Geomanist Regular",
+                      textAlign: "center",
                       color: "white",
                       fontSize: 19,
+                      paddingVertical: 3,
+                      paddingHorizontal: 20,
                     },
                   ]}
                 >
                   ACTUALIZAR
                 </Text>
-              </View>
+              </LinearGradient>
             )}
           </TouchableOpacity>
         </View>

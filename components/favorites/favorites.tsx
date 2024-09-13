@@ -49,81 +49,47 @@ export default function Favorites({ onProductSelected }: Favorites) {
 
   const renderItem = ({ item }: { item: Product }) => {
     return (
-      <TouchableOpacity
-        style={{
-          marginHorizontal: 5,
-          height: 280,
-          width: 130,
-          borderColor: "#A1A1A1",
-          borderWidth: 0.3,
-          borderRadius: 15,
-          shadowColor: "#A1A1A1",
-          justifyContent: "space-between",
-        }}
-        onPress={() => onProductSelected(item._id)}
-      >
-        <Image
-          source={{ uri: item.images[0] }}
-          style={[styles.imageStyle, { alignSelf: "center" }]}
-        />
-        <View style={styles.containerTitle}>
-          <Text
-            style={[
-              styles.titleText,
-              {
-                fontFamily: "Geomanist Medium",
-                fontSize: 17,
-                alignSelf: "center",
-                color: "#000024",
-              },
-            ]}
-          >
-            {item.name.substring(0, 11)}
-          </Text>
-        </View>
-        <View style={{ flexDirection: "row" }}>
-          <Text
-            style={[
-              styles.titleText,
-              {
-                fontFamily: "Geomanist Regular",
-                fontSize: 17,
-                justifyContent: "center",
-                color: "#000024",
-                marginHorizontal: "auto",
-                textAlign: "center",
-                paddingVertical: 5,
-              },
-            ]}
-          >
-            {item.description}
-          </Text>
-        </View>
-        <View
-          style={{
-            backgroundColor: "#000024",
-            borderBottomLeftRadius: 15,
-            borderBottomRightRadius: 15,
-            alignItems: "center",
-          }}
+      <View style={styles.cardContainer}>
+        <TouchableOpacity
+          style={[styles.card]}
+          onPress={() => onProductSelected(item._id)}
         >
-          <View style={{ flexDirection: "row" }}>
-            <Text
-              style={[
-                styles.titleText,
-                {
-                  paddingVertical: 13,
-                  fontFamily: "Geomanist Medium",
-                  color: "white",
-                  fontSize: 15,
-                },
-              ]}
-            >
-              ${item.price} MXN
-            </Text>
+          <Image
+            source={{ uri: item.images[0] }}
+            style={[styles.imageStyle, { alignSelf: "center" }]}
+          />
+          <View style={styles.containerTitle}>
+            <Text style={[styles.titleText]}>{item.name.substring(0, 11)}</Text>
           </View>
-        </View>
-      </TouchableOpacity>
+          <View style={styles.containerTitle}>
+            <Text style={[styles.description]}>{item.description}</Text>
+          </View>
+          <View
+            style={{
+              backgroundColor: "#000024",
+              borderBottomLeftRadius: 10,
+              borderBottomRightRadius: 10,
+              alignItems: "center",
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <Text
+                style={[
+                  styles.titleText,
+                  {
+                    paddingVertical: 13,
+                    fontFamily: "Geomanist Medium",
+                    color: "white",
+                    fontSize: 15,
+                  },
+                ]}
+              >
+                ${item.price} MXN
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
     );
   };
 
@@ -147,12 +113,11 @@ export default function Favorites({ onProductSelected }: Favorites) {
 
 export const styles = StyleSheet.create({
   imageStyle: {
-    height: 130,
+    height: 150,
     aspectRatio: 1,
-    marginBottom: 5,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    borderWidth: 0.15,
+    marginBottom: 3,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
     borderColor: "#A1A1A1",
   },
   topText: {
@@ -168,7 +133,7 @@ export const styles = StyleSheet.create({
   containerTitle: {
     justifyContent: "space-between",
     alignItems: "center",
-    width: 130,
+    width: "95%",
     alignSelf: "center",
   },
   categoryText: {
@@ -182,9 +147,37 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
     marginRight: 5,
   },
+  card: {
+    maxHeight: "100%",
+    height: "100%",
+    width: "100%",
+    shadowColor: "#A1A1A1",
+    justifyContent: "space-between",
+  },
+  cardContainer: {
+    minHeight: 300,
+    maxHeight: 350,
+    minWidth: 150,
+    maxWidth: 185,
+    marginHorizontal: 8,
+    borderColor: "#A1A1A1",
+    borderWidth: 0.3,
+    borderRadius: 10,
+  },
   titleText: {
     fontFamily: "Geomanist Medium",
-    fontSize: 14,
+    fontSize: 17,
+    alignSelf: "center",
+    textAlign: "center",
     color: "#000024",
+  },
+  description: {
+    fontFamily: "Geomanist Regular",
+    fontSize: 17,
+    justifyContent: "center",
+    color: "#000024",
+    marginHorizontal: "auto",
+    textAlign: "center",
+    paddingVertical: 5,
   },
 });

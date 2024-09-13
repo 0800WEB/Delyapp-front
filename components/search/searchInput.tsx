@@ -107,7 +107,7 @@ export const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    color: "#A1A1A1",
+    color: "#000024",
     paddingVertical: 0,
     width: "90%",
     height: 30,

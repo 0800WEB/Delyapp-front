@@ -357,9 +357,9 @@ export default function SignUpScreen() {
         </View>
         <TouchableOpacity
           style={[
-            styles.button3,
-            { paddingLeft: -35, marginHorizontal: 32, marginTop: 20 },
+            {marginTop: 20 }
           ]}
+          onPress={handleSignIn}
         >
           {buttonSpinner ? (
             <ActivityIndicator
@@ -368,34 +368,30 @@ export default function SignUpScreen() {
               style={{ marginVertical: "auto" }}
             />
           ) : (
-            <View style={styles.buttonWrapper}>
-              <Image
-                source={require("@/assets/images/BUTTON.png")}
-                style={styles.button2}
-              />
-              <Text
-                onPress={handleSignIn}
-                style={[
-                  {
-                    fontFamily: "Geomanist Regular",
-                    color: "white",
-                    fontSize: 19,
-                  },
-                ]}
-              >
-                REGISTRARSE
-              </Text>
-            </View>
+            <LinearGradient
+            colors={["#016AF5", "#08E6E7"]}
+            style={{ margin: "auto", borderRadius: 25 }}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+          >
+            <Text
+              style={[
+                {
+                  fontFamily: "Geomanist Regular",
+                  textAlign: "center",
+                  color: "white",
+                  fontSize: 19,
+                  paddingVertical: 3,
+                  paddingHorizontal: 20,
+                },
+              ]}
+            >
+              REGISTRARSE
+            </Text>
+          </LinearGradient>
           )}
         </TouchableOpacity>
-      </ScrollView>
-      {!keyboardStatus && (
-        <Image
-          source={require("@/assets/images/ICONOS-42.png")}
-          style={{ position: "absolute", zIndex: 1, left: 0, bottom: 0 }}
-          resizeMode="contain"
-        />
-      )}
+      </ScrollView>     
     </LinearGradient>
   );
 }
@@ -468,7 +464,7 @@ export const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     textAlign: "center",
-    marginTop: 9,
+    marginTop: 5,
     fontSize: 16,
     fontFamily: "Geomanist Regular",
   },
