@@ -31,17 +31,17 @@ type DrawerNavProp = DrawerNavigationProp<RootParamList>;
 
 const CartScreen: React.FC = () => {
   let [fontsLoaded, fontError] = useFonts({
-    "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
-    "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
-    "Cherione Light": require("../../assets/fonts/Cherione Light.ttf"),
-    "Cherione Regular": require("../../assets/fonts/Cherione.otf"),
-    "Geomanist Regular": require("../../assets/fonts/Geomanist-Regular.otf"),
-    "Geomanist Bold": require("../../assets/fonts/Geomanist-Bold.otf"),
-    "Geomanist Light": require("../../assets/fonts/Geomanist-Light.otf"),
-    "Geomanist Medium": require("../../assets/fonts/Geomanist-Medium.otf"),
-    "Geomanist Thin": require("../../assets/fonts/Geomanist-Thin.otf"),
-    "Geomanist ExtraLight": require("../../assets/fonts/Geomanist-ExtraLight.otf"),
-    "Geomanist Ultra": require("../../assets/fonts/Geomanist-Ultra.otf"),
+    "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
+    "Aristotelica Pro Display Bold": require("../../assets/fonts/Aristotelica Pro Display Bold.otf"),
+    "Aristotelica Pro Display Demibold": require("../../assets/fonts/Aristotelica Pro Display Demibold.otf"),
+    "Aristotelica Pro Display Hairline": require("../../assets/fonts/Aristotelica Pro Display Hairline.otf"),
+    "Aristotelica Pro Display Regular": require("../../assets/fonts/Aristotelica Pro Display Regular.otf"),
+    "Aristotelica Pro Display Thin": require("../../assets/fonts/Aristotelica Pro Display Thin.otf"),
+    "Aristotelica Pro Display Ft": require("../../assets/fonts/AristotelicaProDisp-Ft.otf"),
+    "Aristotelica Pro Display Hv": require("../../assets/fonts/AristotelicaProDisp-Hv.otf"),
+    "Aristotelica Pro Display Lt": require("../../assets/fonts/AristotelicaProDisp-Lt.otf"),
     ...FontAwesome.font,
   });
   const dispatch = useDispatch<AppDispatch>();
@@ -115,7 +115,7 @@ const CartScreen: React.FC = () => {
             alignContent: "center",
             alignSelf: "center",
             textAlign: "center",
-            fontFamily: "Geomanist Regular",
+            fontFamily: "Aristotelica Pro Display Bold",
             fontSize: 20,
             color: "#A1A1A1",
           }}
@@ -176,7 +176,7 @@ const CartScreen: React.FC = () => {
             style={{
               fontSize: 11,
               textAlign: "center",
-              fontFamily: "Geomanist Medium",
+              fontFamily: "Aristotelica Pro Display Demibold",
             }}
           >
             CANTIDAD
@@ -259,10 +259,10 @@ const CartScreen: React.FC = () => {
               <Text
                 style={[
                   {
-                    fontFamily: "Geomanist Regular",
+                    fontFamily: "Aristotelica Pro Display Regular",
                     textAlign: "center",
                     color: "white",
-                    fontSize: 19,
+                    fontSize: 17,
                     paddingVertical: 3,
                     paddingHorizontal: 20,
                   },
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   topText: {
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     fontSize: 15,
     color: "#000024",
   },
@@ -304,8 +304,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     justifyContent: "space-between",
     width: "93%",
-    minHeight: 150,
-    maxHeight: 180,
+    minHeight: 120,
+    maxHeight: "auto",
     borderBottomColor: "#A1A1A1",
     borderBottomWidth: 0.5,
   },
@@ -324,27 +324,27 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignContent: "center",
     width: "58%",
-    minHeight: 145,
-    maxHeight: 175,
+    height: "auto",
     marginLeft: "2%",
+    gap: 5,
   },
   nameText: {
     textAlign: "left",
-    fontFamily: "Geomanist Medium",
+    fontFamily: "Aristotelica Pro Display Bold",
     fontSize: 17,
     color: "#000024",
     width: "100%",
   },
   descriptionText: {
     textAlign: "left",
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Lt",
     fontSize: 14,
     color: "#000024",
-    width: "100%",
+    width: "93%",
   },
   priceText: {
     textAlign: "left",
-    fontFamily: "Geomanist Medium",
+    fontFamily: "Aristotelica Pro Display Demibold",
     fontSize: 16,
     color: "#000024",
   },
@@ -378,12 +378,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     fontSize: 17,
     justifyContent: "space-evenly",
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
   },
   cartTotal: {
     textAlign: "center",
     fontSize: 18,
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Demibold",
     marginVertical: 10,
     color: "#A1A1A1",
   },
@@ -405,7 +405,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.8,
     paddingLeft: 35,
     fontSize: 16,
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     backgroundColor: "white",
     color: "#A1A1A1",
   },

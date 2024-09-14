@@ -19,17 +19,18 @@ interface Favorites {
 
 export default function Favorites({ onProductSelected }: Favorites) {
   let [fontsLoaded, fontError] = useFonts({
-    "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
-    "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
-    "Cherione Light": require("../../assets/fonts/Cherione Light.ttf"),
-    "Cherione Regular": require("../../assets/fonts/Cherione.otf"),
-    "Geomanist Regular": require("../../assets/fonts/Geomanist-Regular.otf"),
-    "Geomanist Bold": require("../../assets/fonts/Geomanist-Bold.otf"),
-    "Geomanist Light": require("../../assets/fonts/Geomanist-Light.otf"),
-    "Geomanist Medium": require("../../assets/fonts/Geomanist-Medium.otf"),
-    "Geomanist Thin": require("../../assets/fonts/Geomanist-Thin.otf"),
-    "Geomanist ExtraLight": require("../../assets/fonts/Geomanist-ExtraLight.otf"),
-    "Geomanist Ultra": require("../../assets/fonts/Geomanist-Ultra.otf"),
+    "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
+    "Aristotelica Pro Display Bold": require("../../assets/fonts/Aristotelica Pro Display Bold.otf"),
+    "Aristotelica Pro Display Demibold": require("../../assets/fonts/Aristotelica Pro Display Demibold.otf"),
+    "Aristotelica Pro Display Hairline": require("../../assets/fonts/Aristotelica Pro Display Hairline.otf"),
+    "Aristotelica Pro Display Regular": require("../../assets/fonts/Aristotelica Pro Display Regular.otf"),
+    "Aristotelica Pro Display Thin": require("../../assets/fonts/Aristotelica Pro Display Thin.otf"),
+    "Aristotelica Pro Display Ft": require("../../assets/fonts/AristotelicaProDisp-Ft.otf"),
+    "Aristotelica Pro Display Hv": require("../../assets/fonts/AristotelicaProDisp-Hv.otf"),
+    "Aristotelica Pro Display Lt": require("../../assets/fonts/AristotelicaProDisp-Lt.otf"),
+    ...FontAwesome.font,
     ...FontAwesome.font,
   });
   if (!fontsLoaded && !fontError) {
@@ -78,7 +79,7 @@ export default function Favorites({ onProductSelected }: Favorites) {
                   styles.titleText,
                   {
                     paddingVertical: 13,
-                    fontFamily: "Geomanist Medium",
+                    fontFamily: "Aristotelica Pro Display Bold",
                     color: "white",
                     fontSize: 15,
                   },
@@ -125,7 +126,7 @@ export const styles = StyleSheet.create({
     paddingTop: 8,
     paddingBottom: 8,
     paddingLeft: 15,
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     borderBottomColor: "#A1A1A1",
     borderBottomWidth: 0.8,
     color: "#A1A1A1",
@@ -137,7 +138,7 @@ export const styles = StyleSheet.create({
     alignSelf: "center",
   },
   categoryText: {
-    fontFamily: "Geomanist Medium",
+    fontFamily: "Aristotelica Pro Display Regular",
     fontSize: 14,
     color: "#A1A1A1",
   },
@@ -165,14 +166,14 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
   },
   titleText: {
-    fontFamily: "Geomanist Medium",
+    fontFamily: "Aristotelica Pro Display Bold",
     fontSize: 17,
     alignSelf: "center",
     textAlign: "center",
     color: "#000024",
   },
   description: {
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Lt",
     fontSize: 17,
     justifyContent: "center",
     color: "#000024",

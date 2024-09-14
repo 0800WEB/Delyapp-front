@@ -41,17 +41,17 @@ type LocationType = { latitude: number; longitude: number } | undefined;
 
 const MapScreen: React.FC = () => {
   let [fontsLoaded, fontError] = useFonts({
-    "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
-    "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
-    "Cherione Light": require("../../assets/fonts/Cherione Light.ttf"),
-    "Cherione Regular": require("../../assets/fonts/Cherione.otf"),
-    "Geomanist Regular": require("../../assets/fonts/Geomanist-Regular.otf"),
-    "Geomanist Bold": require("../../assets/fonts/Geomanist-Bold.otf"),
-    "Geomanist Light": require("../../assets/fonts/Geomanist-Light.otf"),
-    "Geomanist Medium": require("../../assets/fonts/Geomanist-Medium.otf"),
-    "Geomanist Thin": require("../../assets/fonts/Geomanist-Thin.otf"),
-    "Geomanist ExtraLight": require("../../assets/fonts/Geomanist-ExtraLight.otf"),
-    "Geomanist Ultra": require("../../assets/fonts/Geomanist-Ultra.otf"),
+    "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
+    "Aristotelica Pro Display Bold": require("../../assets/fonts/Aristotelica Pro Display Bold.otf"),
+    "Aristotelica Pro Display Demibold": require("../../assets/fonts/Aristotelica Pro Display Demibold.otf"),
+    "Aristotelica Pro Display Hairline": require("../../assets/fonts/Aristotelica Pro Display Hairline.otf"),
+    "Aristotelica Pro Display Regular": require("../../assets/fonts/Aristotelica Pro Display Regular.otf"),
+    "Aristotelica Pro Display Thin": require("../../assets/fonts/Aristotelica Pro Display Thin.otf"),
+    "Aristotelica Pro Display Ft": require("../../assets/fonts/AristotelicaProDisp-Ft.otf"),
+    "Aristotelica Pro Display Hv": require("../../assets/fonts/AristotelicaProDisp-Hv.otf"),
+    "Aristotelica Pro Display Lt": require("../../assets/fonts/AristotelicaProDisp-Lt.otf"),
     ...FontAwesome.font,
   });
   if (!fontsLoaded && !fontError) {
@@ -380,7 +380,7 @@ const MapScreen: React.FC = () => {
             <Text
               style={{
                 marginHorizontal: 10,
-                fontFamily: "Geomanist Regular",
+                fontFamily: "Aristotelica Pro Display Lt",
                 fontSize: 15,
                 color: "#000024",
               }}
@@ -546,7 +546,7 @@ const MapScreen: React.FC = () => {
                     textAlign: "center",
                     alignContent: "center",
                     color: "white",
-                    fontFamily: "Geomanist Regular",
+                    fontFamily: "Aristotelica Pro Display Regular",
                     fontSize: 15,
                   }}
                 >
@@ -583,6 +583,7 @@ const MapScreen: React.FC = () => {
                   justifyContent: "center",
                   width: "85%",
                   textAlign: "center",
+                  fontFamily: "Aristotelica Pro Display Regular",
                 }}
               >
                 AL REALIZAR EL PEDIDO, CONFIRMO QUE TENGO 18 AÑOS O MÁS Y ACEPTO
@@ -611,10 +612,10 @@ const MapScreen: React.FC = () => {
                 <Text
                   style={[
                     {
-                      fontFamily: "Geomanist Regular",
+                      fontFamily: "Aristotelica Pro Display Regular",
                       textAlign: "center",
                       color: "white",
-                      fontSize: 19,
+                      fontSize: 17,
                       paddingVertical: 3,
                       paddingHorizontal: 20,
                     },
@@ -641,7 +642,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   topText: {
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     fontSize: 15,
     color: "#000024",
   },
@@ -653,7 +654,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#000024",
     fontSize: 15,
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
   },
   cardContainer: {
     flexDirection: "row",
@@ -678,16 +679,17 @@ const styles = StyleSheet.create({
   cardTitle: {
     textAlign: "left",
     marginLeft: 10,
-    fontFamily: "Geomanist Medium",
+    fontFamily: "Aristotelica Pro Display Bold",
     fontSize: 17,
     color: "#000024",
   },
   cardDescription: {
     textAlign: "left",
     marginLeft: 10,
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Lt",
     fontSize: 14,
     color: "#000024",
+    width: "93%",
   },
   cardPriceContainer: {
     justifyContent: "center",
@@ -697,7 +699,7 @@ const styles = StyleSheet.create({
   },
   cardPrice: {
     textAlign: "center",
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Demibold",
     fontSize: 17,
     color: "#000024",
     justifyContent: "center",
@@ -705,7 +707,7 @@ const styles = StyleSheet.create({
   cartTotal: {
     textAlign: "center",
     fontSize: 18,
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Demibold",
     marginVertical: 10,
     color: "#A1A1A1",
   },
@@ -713,7 +715,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 18,
     fontWeight: "regular",
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     marginVertical: 5,
     color: "#A1A1A1",
   },

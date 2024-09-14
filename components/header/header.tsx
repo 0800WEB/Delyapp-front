@@ -30,9 +30,17 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
   const [userData, setUserData] = useState<UserInfo | null>(null);
   const [fontsLoaded, fontError] = useFonts({
-    "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
-    "Cherione Regular": require("../../assets/fonts/Cherione.otf"),
-    "Geomanist Regular": require("../../assets/fonts/Geomanist-Regular.otf"),
+    "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
+    "Aristotelica Pro Display Bold": require("../../assets/fonts/Aristotelica Pro Display Bold.otf"),
+    "Aristotelica Pro Display Demibold": require("../../assets/fonts/Aristotelica Pro Display Demibold.otf"),
+    "Aristotelica Pro Display Hairline": require("../../assets/fonts/Aristotelica Pro Display Hairline.otf"),
+    "Aristotelica Pro Display Regular": require("../../assets/fonts/Aristotelica Pro Display Regular.otf"),
+    "Aristotelica Pro Display Thin": require("../../assets/fonts/Aristotelica Pro Display Thin.otf"),
+    "Aristotelica Pro Display Ft": require("../../assets/fonts/AristotelicaProDisp-Ft.otf"),
+    "Aristotelica Pro Display Hv": require("../../assets/fonts/AristotelicaProDisp-Hv.otf"),
+    "Aristotelica Pro Display Lt": require("../../assets/fonts/AristotelicaProDisp-Lt.otf"),
   });
   const navigation = useNavigation<DrawerNavProp>();
 
@@ -89,6 +97,7 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
                   textAlign: "center",
                   position: "absolute",
                   width: 30,
+                  fontFamily: "Aristotelica Pro Display Regular",
                 }}
               >
                 {cartItems.length}
@@ -111,7 +120,7 @@ const styles = StyleSheet.create({
     height: 60,
   },
   userText: {
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     fontSize: 15,
     color: "white",
     width: "100%",

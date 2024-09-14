@@ -10,17 +10,17 @@ import { AppDispatch } from "@/store/store";
 export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
   const [value, setValue] = useState("");
   let [fontsLoaded, fontError] = useFonts({
-    "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
-    "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
-    "Cherione Light": require("../../assets/fonts/Cherione Light.ttf"),
-    "Cherione Regular": require("../../assets/fonts/Cherione.otf"),
-    "Geomanist Regular": require("../../assets/fonts/Geomanist-Regular.otf"),
-    "Geomanist Bold": require("../../assets/fonts/Geomanist-Bold.otf"),
-    "Geomanist Light": require("../../assets/fonts/Geomanist-Light.otf"),
-    "Geomanist Medium": require("../../assets/fonts/Geomanist-Medium.otf"),
-    "Geomanist Thin": require("../../assets/fonts/Geomanist-Thin.otf"),
-    "Geomanist ExtraLight": require("../../assets/fonts/Geomanist-ExtraLight.otf"),
-    "Geomanist Ultra": require("../../assets/fonts/Geomanist-Ultra.otf"),
+    "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
+    "Aristotelica Pro Display Bold": require("../../assets/fonts/Aristotelica Pro Display Bold.otf"),
+    "Aristotelica Pro Display Demibold": require("../../assets/fonts/Aristotelica Pro Display Demibold.otf"),
+    "Aristotelica Pro Display Hairline": require("../../assets/fonts/Aristotelica Pro Display Hairline.otf"),
+    "Aristotelica Pro Display Regular": require("../../assets/fonts/Aristotelica Pro Display Regular.otf"),
+    "Aristotelica Pro Display Thin": require("../../assets/fonts/Aristotelica Pro Display Thin.otf"),
+    "Aristotelica Pro Display Ft": require("../../assets/fonts/AristotelicaProDisp-Ft.otf"),
+    "Aristotelica Pro Display Hv": require("../../assets/fonts/AristotelicaProDisp-Hv.otf"),
+    "Aristotelica Pro Display Lt": require("../../assets/fonts/AristotelicaProDisp-Lt.otf"),
     ...FontAwesome.font,
   });
   if (!fontsLoaded && !fontError) {
@@ -56,7 +56,7 @@ export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
           <TextInput
             style={[
               styles.input,
-              { fontFamily: "Geomanist Regular", marginLeft: 5 },
+              { fontFamily: "Aristotelica Pro Display Regular", marginLeft: 5 },
             ]}
             placeholder="Buscar Producto"
             value={value}
@@ -88,7 +88,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "white",
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     borderRadius: 50,
     height: 40,
     paddingHorizontal: 10,

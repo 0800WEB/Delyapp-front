@@ -32,17 +32,17 @@ type DrawerNavProp = DrawerNavigationProp<RootParamList>;
 
 const OrdersScreen: React.FC = () => {
   let [fontsLoaded, fontError] = useFonts({
-    "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
-    "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
-    "Cherione Light": require("../../assets/fonts/Cherione Light.ttf"),
-    "Cherione Regular": require("../../assets/fonts/Cherione.otf"),
-    "Geomanist Regular": require("../../assets/fonts/Geomanist-Regular.otf"),
-    "Geomanist Bold": require("../../assets/fonts/Geomanist-Bold.otf"),
-    "Geomanist Light": require("../../assets/fonts/Geomanist-Light.otf"),
-    "Geomanist Medium": require("../../assets/fonts/Geomanist-Medium.otf"),
-    "Geomanist Thin": require("../../assets/fonts/Geomanist-Thin.otf"),
-    "Geomanist ExtraLight": require("../../assets/fonts/Geomanist-ExtraLight.otf"),
-    "Geomanist Ultra": require("../../assets/fonts/Geomanist-Ultra.otf"),
+    "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
+    "Aristotelica Pro Display Bold": require("../../assets/fonts/Aristotelica Pro Display Bold.otf"),
+    "Aristotelica Pro Display Demibold": require("../../assets/fonts/Aristotelica Pro Display Demibold.otf"),
+    "Aristotelica Pro Display Hairline": require("../../assets/fonts/Aristotelica Pro Display Hairline.otf"),
+    "Aristotelica Pro Display Regular": require("../../assets/fonts/Aristotelica Pro Display Regular.otf"),
+    "Aristotelica Pro Display Thin": require("../../assets/fonts/Aristotelica Pro Display Thin.otf"),
+    "Aristotelica Pro Display Ft": require("../../assets/fonts/AristotelicaProDisp-Ft.otf"),
+    "Aristotelica Pro Display Hv": require("../../assets/fonts/AristotelicaProDisp-Hv.otf"),
+    "Aristotelica Pro Display Lt": require("../../assets/fonts/AristotelicaProDisp-Lt.otf"),
     ...FontAwesome.font,
   });
   const dispatch = useDispatch<AppDispatch>();
@@ -150,7 +150,7 @@ const OrdersScreen: React.FC = () => {
             alignContent: "center",
             alignSelf: "center",
             textAlign: "center",
-            fontFamily: "Geomanist Regular",
+            fontFamily: "Aristotelica Pro Display Bold",
             fontSize: 20,
             color: "#A1A1A1",
           }}
@@ -201,7 +201,7 @@ const OrdersScreen: React.FC = () => {
             <Text
               style={[
                 styles.commonText,
-                { fontFamily: "Geomanist Regular", fontSize: 15 },
+                { fontFamily: "Aristotelica Pro Display Regular", fontSize: 15 },
               ]}
             >
               {item.products.length} ARTÍCULOS
@@ -209,14 +209,14 @@ const OrdersScreen: React.FC = () => {
             <Text
               style={[
                 styles.commonText,
-                { fontFamily: "Geomanist Medium", fontSize: 15 },
+                { fontFamily: "Aristotelica Pro Display Bold", fontSize: 15 },
               ]}
             >
               ID PEDIDO {item._id}
             </Text>
             {item.products.map((product, index) => (
               <Text
-                style={[styles.commonText, { fontFamily: "Geomanist Regular" }]}
+                style={[styles.commonText, { fontFamily: "Aristotelica Pro Display Regular" }]}
                 key={index}
               >
                 {" "}
@@ -227,7 +227,7 @@ const OrdersScreen: React.FC = () => {
             <Text
               style={[
                 styles.commonText,
-                { fontFamily: "Geomanist Medium", fontSize: 15 },
+                { fontFamily: "Aristotelica Pro Display Bold", fontSize: 15 },
               ]}
             >
               ${item.totalPrice} MXN
@@ -235,7 +235,7 @@ const OrdersScreen: React.FC = () => {
             <Text
               style={[
                 styles.commonText,
-                { fontFamily: "Geomanist Regular", fontSize: 15 },
+                { fontFamily: "Aristotelica Pro Display Regular", fontSize: 15 },
               ]}
             >
               {item.updatedAt.substring(0, 10)}
@@ -258,7 +258,7 @@ const OrdersScreen: React.FC = () => {
                 <Text
                   style={[
                     {
-                      fontFamily: "Geomanist Regular",
+                      fontFamily: "Aristotelica Pro Display Regular",
                       textAlign: "center",
                       color: "white",
                       fontSize: 17,
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   topText: {
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     fontSize: 15,
     color: "#000024",
   },
@@ -337,6 +337,7 @@ const styles = StyleSheet.create({
   },
   commonText: {
     color: "#A1A1A1",
+    fontFamily: "Aristotelica Pro Display Demibold",
   },
   buttonWrapper: {
     display: "flex",

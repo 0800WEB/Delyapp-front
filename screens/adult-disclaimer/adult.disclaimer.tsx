@@ -1,5 +1,6 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity, Platform } from "react-native";
 import { useFonts } from "expo-font";
+import { FontAwesome } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -8,17 +9,18 @@ const isIOS = Platform.OS === 'ios';
 
 export default function AdultDisclaimerScreen() {
   let [fontsLoaded, fontError] = useFonts({
-    "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
-    "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
-    "Cherione Light": require("../../assets/fonts/Cherione Light.ttf"),
-    "Cherione Regular": require("../../assets/fonts/Cherione.otf"),
-    "Geomanist Regular": require("../../assets/fonts/Geomanist-Regular.otf"),
-    "Geomanist Bold": require("../../assets/fonts/Geomanist-Bold.otf"),
-    "Geomanist Light": require("../../assets/fonts/Geomanist-Light.otf"),
-    "Geomanist Medium": require("../../assets/fonts/Geomanist-Medium.otf"),
-    "Geomanist Thin": require("../../assets/fonts/Geomanist-Thin.otf"),
-    "Geomanist ExtraLight": require("../../assets/fonts/Geomanist-ExtraLight.otf"),
-    "Geomanist Ultra": require("../../assets/fonts/Geomanist-Ultra.otf"),
+    "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
+    "Aristotelica Pro Display Bold": require("../../assets/fonts/Aristotelica Pro Display Bold.otf"),
+    "Aristotelica Pro Display Demibold": require("../../assets/fonts/Aristotelica Pro Display Demibold.otf"),
+    "Aristotelica Pro Display Hairline": require("../../assets/fonts/Aristotelica Pro Display Hairline.otf"),
+    "Aristotelica Pro Display Regular": require("../../assets/fonts/Aristotelica Pro Display Regular.otf"),
+    "Aristotelica Pro Display Thin": require("../../assets/fonts/Aristotelica Pro Display Thin.otf"),
+    "Aristotelica Pro Display Ft": require("../../assets/fonts/AristotelicaProDisp-Ft.otf"),
+    "Aristotelica Pro Display Hv": require("../../assets/fonts/AristotelicaProDisp-Hv.otf"),
+    "Aristotelica Pro Display Lt": require("../../assets/fonts/AristotelicaProDisp-Lt.otf"),
+    ...FontAwesome.font,
   });
   
   const [selectedOption, setSelectedOption] = useState<"first" | "second" | "">("");
@@ -53,7 +55,7 @@ export default function AdultDisclaimerScreen() {
         <Text style={styles.centeredText}>
           <Text
             style={{
-              fontFamily: "Geomanist Light",
+              fontFamily: "Aristotelica Pro Display Regular",
               color: "#fff",
               fontSize: 14,
             }}
@@ -63,7 +65,7 @@ export default function AdultDisclaimerScreen() {
           <Text> </Text>
           <Text
             style={{
-              fontFamily: "Geomanist Light",
+              fontFamily: "Aristotelica Pro Display Extralight",
               color: "#fff",
               fontSize: 15,
               lineHeight: 20,
@@ -90,7 +92,7 @@ export default function AdultDisclaimerScreen() {
             />
             <Text
               style={{
-                fontFamily: "Geomanist Light",
+                fontFamily: "Aristotelica Pro Display Extralight",
                 color: "#fff",
                 fontSize: 14,
                 textAlign: "left",
@@ -113,7 +115,7 @@ export default function AdultDisclaimerScreen() {
             />
             <Text
               style={{
-                fontFamily: "Geomanist Light",
+                fontFamily: "Aristotelica Pro Display Extralight",
                 color: "#fff",
                 fontSize: 14,
                 textAlign: "left",

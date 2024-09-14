@@ -28,7 +28,14 @@ const AllCategoryProducts: React.FC<AllCategoryProductsProps> = ({
     "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
     "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
     "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
-    "Geomanist Medium": require("../../assets/fonts/Geomanist-Medium.otf"),
+    "Aristotelica Pro Display Bold": require("../../assets/fonts/Aristotelica Pro Display Bold.otf"),
+    "Aristotelica Pro Display Demibold": require("../../assets/fonts/Aristotelica Pro Display Demibold.otf"),
+    "Aristotelica Pro Display Hairline": require("../../assets/fonts/Aristotelica Pro Display Hairline.otf"),
+    "Aristotelica Pro Display Regular": require("../../assets/fonts/Aristotelica Pro Display Regular.otf"),
+    "Aristotelica Pro Display Thin": require("../../assets/fonts/Aristotelica Pro Display Thin.otf"),
+    "Aristotelica Pro Display Ft": require("../../assets/fonts/AristotelicaProDisp-Ft.otf"),
+    "Aristotelica Pro Display Hv": require("../../assets/fonts/AristotelicaProDisp-Hv.otf"),
+    "Aristotelica Pro Display Lt": require("../../assets/fonts/AristotelicaProDisp-Lt.otf"),
     ...FontAwesome.font,
   });
   if (!fontsLoaded && !fontError) {
@@ -71,7 +78,7 @@ const AllCategoryProducts: React.FC<AllCategoryProductsProps> = ({
                   styles.titleText,
                   {
                     paddingVertical: 13,
-                    fontFamily: "Geomanist Medium",
+                    fontFamily: "Aristotelica Pro Display Bold",
                     color: "white",
                     fontSize: 15,
                   },
@@ -130,7 +137,7 @@ export const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 15,
-    fontFamily: "Aristotelica Pro Text Extralight",
+    fontFamily: "Aristotelica Pro Display Regular",
     fontSize: 18,
     color: "#A1A1A1",
   },
@@ -164,7 +171,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
   },
   titleText: {
-    fontFamily: "Geomanist Medium",
+    fontFamily: "Aristotelica Pro Display Bold",
     // fontWeight: "bold",
     fontSize: 17,
     alignSelf: "center",
@@ -172,7 +179,7 @@ export const styles = StyleSheet.create({
     color: "#000024",
   },
   description: {
-    fontFamily: "Aristotelica Pro Cdn Extralight",
+    fontFamily: "Aristotelica Pro Display Lt",
     fontSize: 17,
     justifyContent: "center",
     color: "#000024",

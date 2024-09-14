@@ -31,9 +31,17 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
   setProductId,
 }) => {
   let [fontsLoaded, fontError] = useFonts({
-    "Cherione Regular": require("../../assets/fonts/Cherione.otf"),
-    "Geomanist Regular": require("../../assets/fonts/Geomanist-Regular.otf"),
-    "Geomanist Medium": require("../../assets/fonts/Geomanist-Medium.otf"),
+    "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
+    "Aristotelica Pro Display Bold": require("../../assets/fonts/Aristotelica Pro Display Bold.otf"),
+    "Aristotelica Pro Display Demibold": require("../../assets/fonts/Aristotelica Pro Display Demibold.otf"),
+    "Aristotelica Pro Display Hairline": require("../../assets/fonts/Aristotelica Pro Display Hairline.otf"),
+    "Aristotelica Pro Display Regular": require("../../assets/fonts/Aristotelica Pro Display Regular.otf"),
+    "Aristotelica Pro Display Thin": require("../../assets/fonts/Aristotelica Pro Display Thin.otf"),
+    "Aristotelica Pro Display Ft": require("../../assets/fonts/AristotelicaProDisp-Ft.otf"),
+    "Aristotelica Pro Display Hv": require("../../assets/fonts/AristotelicaProDisp-Hv.otf"),
+    "Aristotelica Pro Display Lt": require("../../assets/fonts/AristotelicaProDisp-Lt.otf"),
     ...FontAwesome.font,
   });
 
@@ -244,11 +252,11 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
           />
         </View>
         <View style={styles.middleSection}>
-          <View style={{ justifyContent: "center" }}>
+          <View style={{ justifyContent: "center", width: "68%"}}>
             <Text
               style={[
                 styles.commonText,
-                { color: "#000024", fontFamily: "Geomanist Medium" },
+                { color: "#000024", fontFamily: "Aristotelica Pro Display Bold" },
               ]}
             >
               ${Number(product.price).toFixed(2)} MXN
@@ -261,7 +269,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
               shadowRadius: 50,
               shadowOpacity: 15,
               shadowOffset: { width: 0, height: 4 },
-              elevation: 1,
+              width: "30%",
               // borderColor: "#A1A1A1",
               // borderWidth: 0.8,
               // borderRadius: 4
@@ -349,6 +357,8 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
                 fontSize: 12,
                 justifyContent: "flex-start",
                 width: "85%",
+                fontFamily: "Aristotelica Pro Display Regular",
+                textAlign: "center"
               }}
             >
               Al momento de la entrega se solicitará una identificación oficial
@@ -394,7 +404,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   topText: {
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     fontSize: 15,
     color: "#000024",
   },
@@ -419,26 +429,27 @@ const styles = StyleSheet.create({
   },
   middleSection: {
     flexDirection: "row",
-    marginHorizontal: 15,
+    marginHorizontal: "auto",
     justifyContent: "space-between",
     marginVertical: 15,
     borderBottomColor: "#A1A1A1",
     borderBottomWidth: 0.3,
     paddingTop: 5,
     paddingBottom: 15,
+    width: "95%",
   },
   priceNameContainer: {
     justifyContent: "center",
   },
   commonText: {
-    fontFamily: "Cherione Bold",
+    fontFamily: "Aristotelica Pro Display Regular",
     fontSize: 18,
   },
   nameText: {
-    fontFamily: "Geomanist Medium",
-    fontSize: 14,
+    fontFamily: "Aristotelica Pro Display Demibold",
+    fontSize: 16,
     color: "#000024",
-    width: "60%",
+    width: "100%",
     lineHeight: 18,
   },
   addToCartContainer: {
@@ -467,6 +478,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: "#A1A1A1",
     justifyContent: "space-evenly",
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
   },
 });
