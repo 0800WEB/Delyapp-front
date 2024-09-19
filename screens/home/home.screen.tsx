@@ -86,7 +86,7 @@ const HomeScreen: React.FC = () => {
         // console.log("Cat:", selectedCategoryObj);
         let selectedProducts: Product[] = [];
         if (selectedCategoryObj) {
-          selectedProducts = (products.products as Product[]).filter(
+          selectedProducts = (products.products as Product[])?.filter(
             (product: Product) => product.category === selectedCategoryObj._id
           );
           // console.log(selectedProducts);
