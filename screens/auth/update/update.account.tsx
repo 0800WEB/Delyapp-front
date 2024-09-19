@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Keyboard,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign, FontAwesome, Fontisto } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { router } from "expo-router";
@@ -24,17 +25,17 @@ import { DrawerActions } from "@react-navigation/native";
 
 export default function UpdateAccountScreen() {
   let [fontsLoaded, fontError] = useFonts({
-    "Cherione Bold": require("../../../assets/fonts/Cherione Bold.ttf"),
-    "Cherione Normal": require("../../../assets/fonts/Cherione Normal.ttf"),
-    "Cherione Light": require("../../../assets/fonts/Cherione Light.ttf"),
-    "Cherione Regular": require("../../../assets/fonts/Cherione.otf"),
-    "Geomanist Regular": require("../../../assets/fonts/Geomanist-Regular.otf"),
-    "Geomanist Bold": require("../../../assets/fonts/Geomanist-Bold.otf"),
-    "Geomanist Light": require("../../../assets/fonts/Geomanist-Light.otf"),
-    "Geomanist Medium": require("../../../assets/fonts/Geomanist-Medium.otf"),
-    "Geomanist Thin": require("../../../assets/fonts/Geomanist-Thin.otf"),
-    "Geomanist ExtraLight": require("../../../assets/fonts/Geomanist-ExtraLight.otf"),
-    "Geomanist Ultra": require("../../../assets/fonts/Geomanist-Ultra.otf"),
+    "Aristotelica Pro Cdn Extralight": require("../../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
+    "Aristotelica Pro Display Bold": require("../../../assets/fonts/Aristotelica Pro Display Bold.otf"),
+    "Aristotelica Pro Display Demibold": require("../../../assets/fonts/Aristotelica Pro Display Demibold.otf"),
+    "Aristotelica Pro Display Hairline": require("../../../assets/fonts/Aristotelica Pro Display Hairline.otf"),
+    "Aristotelica Pro Display Regular": require("../../../assets/fonts/Aristotelica Pro Display Regular.otf"),
+    "Aristotelica Pro Display Thin": require("../../../assets/fonts/Aristotelica Pro Display Thin.otf"),
+    "Aristotelica Pro Display Ft": require("../../../assets/fonts/AristotelicaProDisp-Ft.otf"),
+    "Aristotelica Pro Display Hv": require("../../../assets/fonts/AristotelicaProDisp-Hv.otf"),
+    "Aristotelica Pro Display Lt": require("../../../assets/fonts/AristotelicaProDisp-Lt.otf"),
     ...FontAwesome.font,
   });
   const navigation = useNavigation<DrawerNavProp>();
@@ -131,15 +132,6 @@ export default function UpdateAccountScreen() {
             justifyContent: "center",
           }}
         >
-          {!keyboardStatus && (
-            <Image
-              source={require("@/assets/images/ICONOS-01.png")}
-              style={[
-                styles.signInImage,
-                { backgroundColor: "transparent", opacity: 0.67 },
-              ]}
-            />
-          )}
           <View style={styles.inputContainer}>
             <View>
               <TextInput
@@ -176,37 +168,35 @@ export default function UpdateAccountScreen() {
               />
             </View>
           </View>
-          <TouchableOpacity
-            style={[
-              styles.button3,
-              { paddingLeft: -35, marginHorizontal: 32, marginTop: 20 },
-            ]}
-          >
+          <TouchableOpacity onPress={handleUpdate} style={{marginTop: 15}}>
             {buttonSpinner ? (
               <ActivityIndicator
                 size="small"
-                color="#016AF5"
+                color="#000024"
                 style={{ marginVertical: "auto" }}
               />
             ) : (
-              <View style={styles.buttonWrapper}>
-                <Image
-                  source={require("@/assets/images/BUTTON.png")}
-                  style={styles.button2}
-                />
+              <LinearGradient
+                colors={["#016AF5", "#08E6E7"]}
+                style={{ margin: "auto", borderRadius: 25 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              >
                 <Text
-                  onPress={handleUpdate}
                   style={[
                     {
-                      fontFamily: "Geomanist Regular",
+                      fontFamily: "Aristotelica Pro Display Regular",
+                      textAlign: "center",
                       color: "white",
-                      fontSize: 19,
+                      fontSize: 17,
+                      paddingVertical: 3,
+                      paddingHorizontal: 20,
                     },
                   ]}
                 >
                   ACTUALIZAR
                 </Text>
-              </View>
+              </LinearGradient>
             )}
           </TouchableOpacity>
         </View>
@@ -228,7 +218,7 @@ export const styles = StyleSheet.create({
   checkboxText: {
     color: "#A1A1A1",
     fontSize: 12,
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
   },
   imageContainer: {
     position: "absolute",
@@ -251,7 +241,7 @@ export const styles = StyleSheet.create({
     borderWidth: 0.4,
     fontSize: 16,
     alignContent: "center",
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     backgroundColor: "white",
     color: "#000024",
     textAlign: "center",
@@ -333,7 +323,7 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   topText: {
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     fontSize: 15,
     color: "#000024",
   },

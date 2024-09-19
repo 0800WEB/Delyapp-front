@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import {
   AntDesign,
@@ -40,24 +40,24 @@ import { AppDispatch, RootState } from "../../../store/store";
 
 export default function VerifyAccountScreen() {
   let [fontsLoaded, fontError] = useFonts({
-    "Cherione Bold": require("../../../assets/fonts/Cherione Bold.ttf"),
-    "Cherione Normal": require("../../../assets/fonts/Cherione Normal.ttf"),
-    "Cherione Light": require("../../../assets/fonts/Cherione Light.ttf"),
-    "Cherione Regular": require("../../../assets/fonts/Cherione.otf"),
-    "Geomanist Regular": require("../../../assets/fonts/Geomanist-Regular.otf"),
-    "Geomanist Bold": require("../../../assets/fonts/Geomanist-Bold.otf"),
-    "Geomanist Light": require("../../../assets/fonts/Geomanist-Light.otf"),
-    "Geomanist Medium": require("../../../assets/fonts/Geomanist-Medium.otf"),
-    "Geomanist Thin": require("../../../assets/fonts/Geomanist-Thin.otf"),
-    "Geomanist ExtraLight": require("../../../assets/fonts/Geomanist-ExtraLight.otf"),
-    "Geomanist Ultra": require("../../../assets/fonts/Geomanist-Ultra.otf"),
+    "Aristotelica Pro Cdn Extralight": require("../../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
+    "Aristotelica Pro Display Bold": require("../../../assets/fonts/Aristotelica Pro Display Bold.otf"),
+    "Aristotelica Pro Display Demibold": require("../../../assets/fonts/Aristotelica Pro Display Demibold.otf"),
+    "Aristotelica Pro Display Hairline": require("../../../assets/fonts/Aristotelica Pro Display Hairline.otf"),
+    "Aristotelica Pro Display Regular": require("../../../assets/fonts/Aristotelica Pro Display Regular.otf"),
+    "Aristotelica Pro Display Thin": require("../../../assets/fonts/Aristotelica Pro Display Thin.otf"),
+    "Aristotelica Pro Display Ft": require("../../../assets/fonts/AristotelicaProDisp-Ft.otf"),
+    "Aristotelica Pro Display Hv": require("../../../assets/fonts/AristotelicaProDisp-Hv.otf"),
+    "Aristotelica Pro Display Lt": require("../../../assets/fonts/AristotelicaProDisp-Lt.otf"),
     ...FontAwesome.font,
   });
   if (!fontsLoaded && !fontError) {
     return null;
   }
   const [code, setCode] = useState(new Array(4).fill(""));
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [keyboardStatus, setKeyboardStatus] = useState(false);
   const inputs = useRef<any>([...Array(4)].map(() => React.createRef()));
 
@@ -76,13 +76,13 @@ export default function VerifyAccountScreen() {
   };
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
+      "keyboardDidShow",
       () => {
         setKeyboardStatus(true);
       }
     );
     const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
+      "keyboardDidHide",
       () => {
         setKeyboardStatus(false);
       }
@@ -102,7 +102,7 @@ export default function VerifyAccountScreen() {
   // }
   useEffect(() => {
     if (userInfo) {
-      if (typeof userInfo === 'string') {
+      if (typeof userInfo === "string") {
         const correo = JSON.parse(userInfo);
         setEmail(correo.email);
       } else if (userInfo.email) {
@@ -111,17 +111,15 @@ export default function VerifyAccountScreen() {
     }
   }, [userInfo]);
 
-  
   const handleSumbit = async () => {
     const otp = code.join("");
     dispatch(verify_code({ email, code: otp }));
   };
   console.log("Email: ", email);
-  
+
   const handleResend = async () => {
     dispatch(re_verify_code({ email }));
-  }
-
+  };
 
   return (
     <LinearGradient
@@ -148,44 +146,41 @@ export default function VerifyAccountScreen() {
             />
           ))}
         </View>
-        <TouchableOpacity style={{marginTop: 15}} onPress={handleSumbit}>
-        <View style={styles.buttonWrapper}>
-            <Image
-              source={require("@/assets/images/BUTTON.png")}
-              style={styles.button2}
-              />
+        <TouchableOpacity style={{ marginTop: 15 }} onPress={handleSumbit}>
+          <LinearGradient
+            colors={["#016AF5", "#08E6E7"]}
+            style={{ margin: "auto", borderRadius: 25 }}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+          >
             <Text
               style={[
                 {
-                  fontFamily: "Geomanist Regular",
+                  fontFamily: "Aristotelica Pro Display Regular",
+                  textAlign: "center",
                   color: "white",
-                  fontSize: 19,
+                  fontSize: 17,
+                  paddingVertical: 3,
+                  paddingHorizontal: 20,
                 },
               ]}
             >
               VERIFICAR
             </Text>
-          </View>
+          </LinearGradient>
         </TouchableOpacity>
         <View style={styles.loginLink}>
-          <Text style={[styles.subText, { fontFamily: "Geomanist Regular" }]}>
+          <Text style={[styles.subText, { fontFamily: "Aristotelica Pro Display Lt" }]}>
             No me llega el código.
           </Text>
           <TouchableOpacity onPress={handleResend}>
             <Text
-              style={[styles.loginText, { fontFamily: "Geomanist Regular" }]}
+              style={[styles.loginText, { fontFamily: "Aristotelica Pro Display Lt" }]}
             >
               Reenviar
             </Text>
           </TouchableOpacity>
         </View>
-        {!keyboardStatus && (
-        <Image
-          source={require("@/assets/images/ICONOS-43.png")}
-          style={{ position: "absolute", left: 0, bottom: 0 }}
-          resizeMode="contain"
-        />
-      )}
       </View>
     </LinearGradient>
   );
@@ -211,7 +206,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "#949494",
     borderBottomWidth: 1,
     color: "white",
-    backgroundColor: "#000024"
+    backgroundColor: "#000024",
   },
   container: {
     flex: 1,

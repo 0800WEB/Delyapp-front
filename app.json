@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "Dringo",
-    "slug": "client",
-    "version": "1.0.0",
+    "slug": "drintest",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -48,7 +48,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "f9f5193c-88b6-4639-bada-6eed87d85b91"
+        "projectId": "de4784a8-ba4b-4e67-bd6a-10dd41ae67f8"
       }
     }
   }

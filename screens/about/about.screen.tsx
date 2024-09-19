@@ -36,6 +36,15 @@ const AccordionSection: React.FC<{
   title: string;
   content: string;
 }> = ({ title, content }) => {
+  let [fontsLoaded, fontError] = useFonts({    
+    "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
+    ...FontAwesome.font,
+  });
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
   const [expanded, setExpanded] = useState(false);
   const animationController = useState(new Animated.Value(0))[0];
   const [contentHeight, setContentHeight] = useState(0);
@@ -95,18 +104,10 @@ const AccordionSection: React.FC<{
 };
 
 const AboutScreen: React.FC = () => {
-  let [fontsLoaded, fontError] = useFonts({
-    "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
-    "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
-    "Cherione Light": require("../../assets/fonts/Cherione Light.ttf"),
-    "Cherione Regular": require("../../assets/fonts/Cherione.otf"),
-    "Geomanist Regular": require("../../assets/fonts/Geomanist-Regular.otf"),
-    "Geomanist Bold": require("../../assets/fonts/Geomanist-Bold.otf"),
-    "Geomanist Light": require("../../assets/fonts/Geomanist-Light.otf"),
-    "Geomanist Medium": require("../../assets/fonts/Geomanist-Medium.otf"),
-    "Geomanist Thin": require("../../assets/fonts/Geomanist-Thin.otf"),
-    "Geomanist ExtraLight": require("../../assets/fonts/Geomanist-ExtraLight.otf"),
-    "Geomanist Ultra": require("../../assets/fonts/Geomanist-Ultra.otf"),
+  let [fontsLoaded, fontError] = useFonts({    
+    "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
     ...FontAwesome.font,
   });
   if (!fontsLoaded && !fontError) {
@@ -193,7 +194,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   topText: {
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Extralight",
     fontSize: 15,
     color: "white",
     textAlign: "left",
@@ -268,18 +269,20 @@ const styles = StyleSheet.create({
     borderColor: "white",
     width: "90%",
     marginHorizontal: "auto",
-    marginBottom: 10
+    marginBottom: 10,
   },
   headerText: {
     color: "white",
     fontSize: 16,
+    fontFamily: "Aristotelica Pro Display Extralight",
   },
   contentText: {
     color: "white",
     paddingHorizontal: 15,
     paddingVertical: 10,
     textAlign: "justify",
-    height: "auto"
+    height: "auto",
+    fontFamily: "Aristotelica Pro Text Extralight",
   },
 });
 export default AboutScreen;

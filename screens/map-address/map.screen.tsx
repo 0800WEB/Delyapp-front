@@ -41,17 +41,17 @@ type LocationType = { latitude: number; longitude: number } | undefined;
 
 const MapScreen: React.FC = () => {
   let [fontsLoaded, fontError] = useFonts({
-    "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
-    "Cherione Normal": require("../../assets/fonts/Cherione Normal.ttf"),
-    "Cherione Light": require("../../assets/fonts/Cherione Light.ttf"),
-    "Cherione Regular": require("../../assets/fonts/Cherione.otf"),
-    "Geomanist Regular": require("../../assets/fonts/Geomanist-Regular.otf"),
-    "Geomanist Bold": require("../../assets/fonts/Geomanist-Bold.otf"),
-    "Geomanist Light": require("../../assets/fonts/Geomanist-Light.otf"),
-    "Geomanist Medium": require("../../assets/fonts/Geomanist-Medium.otf"),
-    "Geomanist Thin": require("../../assets/fonts/Geomanist-Thin.otf"),
-    "Geomanist ExtraLight": require("../../assets/fonts/Geomanist-ExtraLight.otf"),
-    "Geomanist Ultra": require("../../assets/fonts/Geomanist-Ultra.otf"),
+    "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
+    "Aristotelica Pro Display Bold": require("../../assets/fonts/Aristotelica Pro Display Bold.otf"),
+    "Aristotelica Pro Display Demibold": require("../../assets/fonts/Aristotelica Pro Display Demibold.otf"),
+    "Aristotelica Pro Display Hairline": require("../../assets/fonts/Aristotelica Pro Display Hairline.otf"),
+    "Aristotelica Pro Display Regular": require("../../assets/fonts/Aristotelica Pro Display Regular.otf"),
+    "Aristotelica Pro Display Thin": require("../../assets/fonts/Aristotelica Pro Display Thin.otf"),
+    "Aristotelica Pro Display Ft": require("../../assets/fonts/AristotelicaProDisp-Ft.otf"),
+    "Aristotelica Pro Display Hv": require("../../assets/fonts/AristotelicaProDisp-Hv.otf"),
+    "Aristotelica Pro Display Lt": require("../../assets/fonts/AristotelicaProDisp-Lt.otf"),
     ...FontAwesome.font,
   });
   if (!fontsLoaded && !fontError) {
@@ -75,10 +75,10 @@ const MapScreen: React.FC = () => {
   const [destinationAddress, setDestinationAddress] = useState("");
   const [inputAddress, setInputAddress] = useState("");
   const [initialAddress, setInitialAddress] = useState("");
-  
+
   //radio de la entrega en km
   const deliveryRadius = 10;
-  
+
   const getLocationPermission = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -101,14 +101,14 @@ const MapScreen: React.FC = () => {
     try {
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=${GOOGLE_MAPS_APIKEY}`
-        );
-        const data = await response.json();
-        return data.results[0].formatted_address;
-      } catch (error) {
-        console.error(error);
-        return "";
-      }
-    };
+      );
+      const data = await response.json();
+      return data.results[0].formatted_address;
+    } catch (error) {
+      console.error(error);
+      return "";
+    }
+  };
   const getGeocode = async (address: string) => {
     let response = await fetch(
       `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${GOOGLE_MAPS_APIKEY}`
@@ -116,7 +116,7 @@ const MapScreen: React.FC = () => {
     let data = await response.json();
     return data.results[0].geometry.location;
   };
-  
+
   const calculateDistance = (loc1: LocationType, loc2: LocationType) => {
     if (!loc1 || !loc2) return 0;
 
@@ -136,24 +136,23 @@ const MapScreen: React.FC = () => {
   };
   const navigation = useNavigation<DrawerNavProp>();
 
-  
   useEffect(() => {
-    getLocationPermission();   
-  }, []);  
-    
+    getLocationPermission();
+  }, []);
+
   useEffect(() => {
     if (initialAddress) {
       setInputAddress(initialAddress);
     }
   }, [initialAddress]);
   // console.log(currentLocation)
-  
+
   useEffect(() => {
     if (destinationAddress) {
       setInputAddress(destinationAddress);
     }
   }, [destinationAddress]);
-  
+
   useEffect(() => {
     if (inputAddress.trim() !== "") {
       getGeocode(inputAddress).then((location) => {
@@ -161,8 +160,8 @@ const MapScreen: React.FC = () => {
           latitude: location.lat,
           longitude: location.lng,
         };
-        setCurrentLocation(newLocation); 
-        setDestination(newLocation);  
+        setCurrentLocation(newLocation);
+        setDestination(newLocation);
       });
     }
   }, [inputAddress]);
@@ -181,8 +180,8 @@ const MapScreen: React.FC = () => {
   // }, [destinationAddress]);
 
   const handleInputAddressChange = (text: string) => {
-    setInputAddress(text); 
-  };  
+    setInputAddress(text);
+  };
   // useEffect(() => {
   //   if (destination) {
   //     (async () => {
@@ -191,7 +190,6 @@ const MapScreen: React.FC = () => {
   //     })();
   //   }
   // }, [destination]);
- 
 
   const applyCoupon = async () => {
     dispatch(useCoupon(couponCode));
@@ -220,10 +218,14 @@ const MapScreen: React.FC = () => {
 
   const newOrder = async () => {
     if (cartProducts.length === 0) {
-      Alert.alert("Carrito vacío", "No puedes crear una orden sin productos en el carrito.", [{ text: "OK" }]);
+      Alert.alert(
+        "Carrito vacío",
+        "No puedes crear una orden sin productos en el carrito.",
+        [{ text: "OK" }]
+      );
       return;
     }
-  
+
     try {
       const orderResponse = await dispatch(
         createOrder({
@@ -233,7 +235,7 @@ const MapScreen: React.FC = () => {
           couponId: coupon?._id,
         })
       );
-  
+
       if (createOrder.fulfilled.match(orderResponse)) {
         dispatch(clearCart());
         dispatch(clearCoupon());
@@ -342,65 +344,15 @@ const MapScreen: React.FC = () => {
 
   if (cart) {
     const renderProductItem = ({ item }: { item: CartProduct }) => (
-      <View
-        style={{
-          flexDirection: "row",
-          marginHorizontal: 10,
-          marginVertical: 15,
-          justifyContent: "space-between",
-          paddingBottom: 15,
-          // width: "90%",
-          borderBottomColor: "#A1A1A1",
-          borderBottomWidth: 0.5,
-        }}
-      >
-        <View style={{ flexDirection: "row" }}>
-          <View
-            style={{ justifyContent: "space-between", alignContent: "center", width: "65%" }}
-          >
-            <Text
-              style={{
-                textAlign: "left",
-                marginHorizontal: 15,
-                fontFamily: "Geomanist Medium",
-                fontSize: 17,
-                color: "#000024",
-              }}
-            >
-              {item.product.name}
-            </Text>
-            <Text
-              style={{
-                textAlign: "left",
-                marginHorizontal: 15,
-                fontFamily: "Geomanist Regular",
-                fontSize: 14,
-                color: "#000024",
-              }}
-            >
-              {item.product.description}
-            </Text>
-          </View>
+      <View style={styles.cardContainer}>
+        <View style={styles.cardTexts}>
+          <Text style={styles.cardTitle}>{item.product.name}</Text>
+          <Text style={styles.cardDescription}>{item.product.description}</Text>
         </View>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <View>
-            <Text
-              style={{
-                textAlign: "left",
-                fontFamily: "Geomanist Regular",
-                fontSize: 17,
-                color: "#000024",
-                marginHorizontal: 15,
-              }}
-            >
-              ${Number(item.product?.price?.toString()).toFixed(2)} MXN
-            </Text>
-          </View>
+        <View style={styles.cardPriceContainer}>
+          <Text style={styles.cardPrice}>
+            ${Number(item.product?.price?.toString()).toFixed(2)} MXN
+          </Text>
         </View>
       </View>
     );
@@ -428,7 +380,7 @@ const MapScreen: React.FC = () => {
             <Text
               style={{
                 marginHorizontal: 10,
-                fontFamily: "Geomanist Regular",
+                fontFamily: "Aristotelica Pro Display Lt",
                 fontSize: 15,
                 color: "#000024",
               }}
@@ -477,13 +429,7 @@ const MapScreen: React.FC = () => {
                 strokeColor="#000"
               />
             </MapView>
-            <View style={{ marginHorizontal: 10 }}>
-              {/* <TextInput
-              style={styles.inputs}
-              value={originAddress}
-              onChangeText={setOriginAddress}
-              placeholder="Dirección de la tienda"
-            /> */}
+            <View style={{ marginHorizontal: "auto", width: "95%" }}>
               <TextInput
                 style={styles.inputs}
                 value={inputAddress}
@@ -493,7 +439,7 @@ const MapScreen: React.FC = () => {
             </View>
             {cartProducts && (
               <SafeAreaView
-                style={{borderTopRightRadius: 50, borderTopLeftRadius: 50 }}
+                style={{ borderTopRightRadius: 50, borderTopLeftRadius: 50 }}
               >
                 <FlatList
                   data={cartProducts}
@@ -600,7 +546,7 @@ const MapScreen: React.FC = () => {
                     textAlign: "center",
                     alignContent: "center",
                     color: "white",
-                    fontFamily: "Geomanist Regular",
+                    fontFamily: "Aristotelica Pro Display Regular",
                     fontSize: 15,
                   }}
                 >
@@ -637,6 +583,7 @@ const MapScreen: React.FC = () => {
                   justifyContent: "center",
                   width: "85%",
                   textAlign: "center",
+                  fontFamily: "Aristotelica Pro Display Regular",
                 }}
               >
                 AL REALIZAR EL PEDIDO, CONFIRMO QUE TENGO 18 AÑOS O MÁS Y ACEPTO
@@ -644,15 +591,10 @@ const MapScreen: React.FC = () => {
               </Text>
             </View>
             <TouchableOpacity
-              style={[
-                styles.button3,
-                {
-                  paddingLeft: -35,
-                  marginHorizontal: 32,
-                  marginTop: 15,
-                  marginBottom: 15,
-                },
-              ]}
+              style={{
+                marginTop: 15,
+                marginBottom: 15,
+              }}
               onPress={() =>
                 onCheckout({
                   cartId: cart._id,
@@ -661,23 +603,27 @@ const MapScreen: React.FC = () => {
               }
               disabled={!inputAddress} // Deshabilitar si destinationAddress está vacío
             >
-              <View style={styles.buttonWrapper}>
-                <Image
-                  source={require("@/assets/images/BUTTON.png")}
-                  style={styles.button2}
-                />
+              <LinearGradient
+                colors={["#016AF5", "#08E6E7"]}
+                style={{ margin: "auto", borderRadius: 25 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              >
                 <Text
                   style={[
                     {
-                      fontFamily: "Geomanist Regular",
+                      fontFamily: "Aristotelica Pro Display Regular",
+                      textAlign: "center",
                       color: "white",
-                      fontSize: 19,
+                      fontSize: 17,
+                      paddingVertical: 20,
+                      paddingHorizontal: 20,
                     },
                   ]}
                 >
                   REALIZAR PEDIDO
                 </Text>
-              </View>
+              </LinearGradient>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -696,13 +642,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   topText: {
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     fontSize: 15,
     color: "#000024",
-  },
-  closeIcon: {
-    height: 40,
-    aspectRatio: 1,
   },
   inputs: {
     marginBottom: 10,
@@ -712,12 +654,60 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#000024",
     fontSize: 15,
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
+  },
+  cardContainer: {
+    flexDirection: "row",
+    marginHorizontal: "auto",
+    marginVertical: 15,
+    paddingBottom: 15,
+    alignItems: "center",
+    alignContent: "center",
+    maxWidth: "95%",
+    borderBottomColor: "#A1A1A1",
+    borderBottomWidth: 0.5,
+  },
+  cardTexts: {
+    justifyContent: "space-between",
+    alignContent: "center",
+    marginVertical: "auto",
+    width: "65%",
+    height: "auto",
+    paddingVertical: 5,
+    gap: 5,
+  },
+  cardTitle: {
+    textAlign: "left",
+    marginLeft: 10,
+    fontFamily: "Aristotelica Pro Display Bold",
+    fontSize: 17,
+    color: "#000024",
+  },
+  cardDescription: {
+    textAlign: "left",
+    marginLeft: 10,
+    fontFamily: "Aristotelica Pro Display Lt",
+    fontSize: 14,
+    color: "#000024",
+    width: "93%",
+  },
+  cardPriceContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 12,
+    width: "35%",
+  },
+  cardPrice: {
+    textAlign: "center",
+    fontFamily: "Aristotelica Pro Display Demibold",
+    fontSize: 17,
+    color: "#000024",
+    justifyContent: "center",
   },
   cartTotal: {
     textAlign: "center",
     fontSize: 18,
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Demibold",
     marginVertical: 10,
     color: "#A1A1A1",
   },
@@ -725,14 +715,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 18,
     fontWeight: "regular",
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     marginVertical: 5,
     color: "#A1A1A1",
   },
   input: {
     width: "60%",
     height: 40,
-    // marginLeft: 16,
     borderRadius: 25,
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,

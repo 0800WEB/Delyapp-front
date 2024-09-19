@@ -30,8 +30,17 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
   const [userData, setUserData] = useState<UserInfo | null>(null);
   const [fontsLoaded, fontError] = useFonts({
-    "Cherione Bold": require("../../assets/fonts/Cherione Bold.ttf"),
-    "Cherione Regular": require("../../assets/fonts/Cherione.otf"),
+    "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
+    "Aristotelica Pro Display Bold": require("../../assets/fonts/Aristotelica Pro Display Bold.otf"),
+    "Aristotelica Pro Display Demibold": require("../../assets/fonts/Aristotelica Pro Display Demibold.otf"),
+    "Aristotelica Pro Display Hairline": require("../../assets/fonts/Aristotelica Pro Display Hairline.otf"),
+    "Aristotelica Pro Display Regular": require("../../assets/fonts/Aristotelica Pro Display Regular.otf"),
+    "Aristotelica Pro Display Thin": require("../../assets/fonts/Aristotelica Pro Display Thin.otf"),
+    "Aristotelica Pro Display Ft": require("../../assets/fonts/AristotelicaProDisp-Ft.otf"),
+    "Aristotelica Pro Display Hv": require("../../assets/fonts/AristotelicaProDisp-Hv.otf"),
+    "Aristotelica Pro Display Lt": require("../../assets/fonts/AristotelicaProDisp-Lt.otf"),
   });
   const navigation = useNavigation<DrawerNavProp>();
 
@@ -50,42 +59,52 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
 
   return (
     <View style={styles.headerStyle}>
-      <TouchableOpacity onPress={openDrawer}>
+      <TouchableOpacity onPress={openDrawer} style={{zIndex: 2}}>
         <SimpleLineIcons
           name="menu"
-          size={28}
+          size={30}
           color="white"
           style={{ alignSelf: "center" }}
         />
       </TouchableOpacity>
-      {userData && <Text style={styles.userText}>{userData.name}</Text>}
+      {userData && <Text style={styles.userText}>{userData.name.toUpperCase()}</Text>}
       <View style={{ flexDirection: "row", gap: 15 }}>
         <TouchableOpacity
           onPress={() => Linking.openURL("https://www.facebook.com")}
           style={{ marginLeft: -35 }}
         >
-          <FontAwesome name="whatsapp" size={30} color="white" />
+          <FontAwesome name="whatsapp" size={34} color="white" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("CARRITO")}>
           <Entypo
             name="shopping-cart"
-            size={30}
+            size={33}
             color="white"
             style={{ alignSelf: "center", marginLeft: -5 }}
           />
           {cartItems.length > 0 && (
-            <View>
+            <View style={{
+              borderRadius: 15,
+              backgroundColor: "#00BFFF",
+              display: "flex",
+              justifyContent:"center",
+              alignItems:"center",
+              width: 20,
+              height: 20,
+              position: "absolute",
+                  top: -10,
+                  right: -10,
+            }}>
               <Text
                 style={{
                   color: "white",
                   fontSize: 10,
-                  top: -38,
-                  right: -10,
-                  backgroundColor: "#00BFFF",
+                  
                   paddingHorizontal: 0,
                   paddingVertical: 6,
                   borderRadius: 15,
                   textAlign: "center",
+                  fontFamily: "Aristotelica Pro Display Regular",
                 }}
               >
                 {cartItems.length}
@@ -108,12 +127,13 @@ const styles = StyleSheet.create({
     height: 60,
   },
   userText: {
-    fontFamily: "Cherione Regular",
-    fontSize: 18,
+    fontFamily: "Aristotelica Pro Display Regular",
+    fontSize: 15,
     color: "white",
+    width: "100%",
     alignSelf: "center",
     textAlign: "center",
-    marginTop: -15,
+    position: "absolute",
   },
   profilePhoto: {
     height: 30,

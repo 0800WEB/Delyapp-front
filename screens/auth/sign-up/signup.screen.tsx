@@ -25,17 +25,17 @@ import { AppDispatch } from "../../../store/store";
 
 export default function SignUpScreen() {
   let [fontsLoaded, fontError] = useFonts({
-    "Cherione Bold": require("../../../assets/fonts/Cherione Bold.ttf"),
-    "Cherione Normal": require("../../../assets/fonts/Cherione Normal.ttf"),
-    "Cherione Light": require("../../../assets/fonts/Cherione Light.ttf"),
-    "Cherione Regular": require("../../../assets/fonts/Cherione.otf"),
-    "Geomanist Regular": require("../../../assets/fonts/Geomanist-Regular.otf"),
-    "Geomanist Bold": require("../../../assets/fonts/Geomanist-Bold.otf"),
-    "Geomanist Light": require("../../../assets/fonts/Geomanist-Light.otf"),
-    "Geomanist Medium": require("../../../assets/fonts/Geomanist-Medium.otf"),
-    "Geomanist Thin": require("../../../assets/fonts/Geomanist-Thin.otf"),
-    "Geomanist ExtraLight": require("../../../assets/fonts/Geomanist-ExtraLight.otf"),
-    "Geomanist Ultra": require("../../../assets/fonts/Geomanist-Ultra.otf"),
+    "Aristotelica Pro Cdn Extralight": require("../../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
+    "Aristotelica Pro Display Bold": require("../../../assets/fonts/Aristotelica Pro Display Bold.otf"),
+    "Aristotelica Pro Display Demibold": require("../../../assets/fonts/Aristotelica Pro Display Demibold.otf"),
+    "Aristotelica Pro Display Hairline": require("../../../assets/fonts/Aristotelica Pro Display Hairline.otf"),
+    "Aristotelica Pro Display Regular": require("../../../assets/fonts/Aristotelica Pro Display Regular.otf"),
+    "Aristotelica Pro Display Thin": require("../../../assets/fonts/Aristotelica Pro Display Thin.otf"),
+    "Aristotelica Pro Display Ft": require("../../../assets/fonts/AristotelicaProDisp-Ft.otf"),
+    "Aristotelica Pro Display Hv": require("../../../assets/fonts/AristotelicaProDisp-Hv.otf"),
+    "Aristotelica Pro Display Lt": require("../../../assets/fonts/AristotelicaProDisp-Lt.otf"),
     ...FontAwesome.font,
   });
   const [isPasswordVisible, setPasswordVisible] = useState(false);
@@ -321,7 +321,7 @@ export default function SignUpScreen() {
               />
               <Text
                 style={{
-                  fontFamily: "Geomanist Light",
+                  fontFamily: "Aristotelica Pro Display Lt",
                   color: "#000024",
                   fontSize: 14,
                   textAlign: "left",
@@ -343,7 +343,7 @@ export default function SignUpScreen() {
               />
               <Text
                 style={{
-                  fontFamily: "Geomanist Light",
+                  fontFamily: "Aristotelica Pro Display Lt",
                   color: "#000024",
                   fontSize: 14,
                   textAlign: "left",
@@ -357,9 +357,9 @@ export default function SignUpScreen() {
         </View>
         <TouchableOpacity
           style={[
-            styles.button3,
-            { paddingLeft: -35, marginHorizontal: 32, marginTop: 20 },
+            {marginTop: 20 }
           ]}
+          onPress={handleSignIn}
         >
           {buttonSpinner ? (
             <ActivityIndicator
@@ -368,34 +368,30 @@ export default function SignUpScreen() {
               style={{ marginVertical: "auto" }}
             />
           ) : (
-            <View style={styles.buttonWrapper}>
-              <Image
-                source={require("@/assets/images/BUTTON.png")}
-                style={styles.button2}
-              />
-              <Text
-                onPress={handleSignIn}
-                style={[
-                  {
-                    fontFamily: "Geomanist Regular",
-                    color: "white",
-                    fontSize: 19,
-                  },
-                ]}
-              >
-                REGISTRARSE
-              </Text>
-            </View>
+            <LinearGradient
+            colors={["#016AF5", "#08E6E7"]}
+            style={{ margin: "auto", borderRadius: 25 }}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+          >
+            <Text
+              style={[
+                {
+                  fontFamily: "Aristotelica Pro Display Regular",
+                  textAlign: "center",
+                  color: "white",
+                  fontSize: 17,
+                  paddingVertical: 20,
+                  paddingHorizontal: 20,
+                },
+              ]}
+            >
+              REGISTRARSE
+            </Text>
+          </LinearGradient>
           )}
         </TouchableOpacity>
-      </ScrollView>
-      {!keyboardStatus && (
-        <Image
-          source={require("@/assets/images/ICONOS-42.png")}
-          style={{ position: "absolute", zIndex: 1, left: 0, bottom: 0 }}
-          resizeMode="contain"
-        />
-      )}
+      </ScrollView>     
     </LinearGradient>
   );
 }
@@ -413,7 +409,7 @@ export const styles = StyleSheet.create({
   checkboxText: {
     color: "#A1A1A1",
     fontSize: 12,
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
   },
   imageContainer: {
     position: "absolute",
@@ -435,7 +431,7 @@ export const styles = StyleSheet.create({
     borderWidth: 0.4,
     fontSize: 16,
     alignContent: "center",
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     backgroundColor: "white",
     color: "#000024",
     textAlign: "center",
@@ -459,7 +455,7 @@ export const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 8,
     paddingLeft: 15,
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     borderBottomColor: "#949494",
     borderBottomWidth: 1,
     color: "white",
@@ -468,9 +464,9 @@ export const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     textAlign: "center",
-    marginTop: 9,
+    marginTop: 5,
     fontSize: 16,
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
   },
   welcomeButtonStyle: {
     flex: 1,

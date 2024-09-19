@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
-  Keyboard
+  Keyboard,
 } from "react-native";
 import {
   AntDesign,
@@ -29,19 +29,22 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function SignInScreen() {
   let [fontsLoaded, fontError] = useFonts({
-    "Cherione Bold": require("../../../assets/fonts/Cherione Bold.ttf"),
-    "Cherione Normal": require("../../../assets/fonts/Cherione Normal.ttf"),
-    "Cherione Light": require("../../../assets/fonts/Cherione Light.ttf"),
-    "Cherione Regular": require("../../../assets/fonts/Cherione.otf"),
-    "Geomanist Regular": require("../../../assets/fonts/Geomanist-Regular.otf"),
-    "Geomanist Bold": require("../../../assets/fonts/Geomanist-Bold.otf"),
-    "Geomanist Light": require("../../../assets/fonts/Geomanist-Light.otf"),
-    "Geomanist Medium": require("../../../assets/fonts/Geomanist-Medium.otf"),
-    "Geomanist Thin": require("../../../assets/fonts/Geomanist-Thin.otf"),
-    "Geomanist ExtraLight": require("../../../assets/fonts/Geomanist-ExtraLight.otf"),
-    "Geomanist Ultra": require("../../../assets/fonts/Geomanist-Ultra.otf"),
+    "Aristotelica Pro Cdn Extralight": require("../../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
+    "Aristotelica Pro Display Extralight": require("../../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
+    "Aristotelica Pro Text Extralight": require("../../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
+    "Aristotelica Pro Display Bold": require("../../../assets/fonts/Aristotelica Pro Display Bold.otf"),
+    "Aristotelica Pro Display Demibold": require("../../../assets/fonts/Aristotelica Pro Display Demibold.otf"),
+    "Aristotelica Pro Display Hairline": require("../../../assets/fonts/Aristotelica Pro Display Hairline.otf"),
+    "Aristotelica Pro Display Regular": require("../../../assets/fonts/Aristotelica Pro Display Regular.otf"),
+    "Aristotelica Pro Display Thin": require("../../../assets/fonts/Aristotelica Pro Display Thin.otf"),
+    "Aristotelica Pro Display Ft": require("../../../assets/fonts/AristotelicaProDisp-Ft.otf"),
+    "Aristotelica Pro Display Hv": require("../../../assets/fonts/AristotelicaProDisp-Hv.otf"),
+    "Aristotelica Pro Display Lt": require("../../../assets/fonts/AristotelicaProDisp-Lt.otf"),
     ...FontAwesome.font,
   });
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [buttonSpinner, setButtonSpinner] = useState(false);
   const [keyboardStatus, setKeyboardStatus] = useState(false);
@@ -55,19 +58,16 @@ export default function SignInScreen() {
   // const authState = useSelector((state: RootState) => state);
   // console.log(authState)
 
-  if (!fontsLoaded && !fontError) {
-    return null;
-  }
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
+      "keyboardDidShow",
       () => {
         setKeyboardStatus(true);
       }
     );
     const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
+      "keyboardDidHide",
       () => {
         setKeyboardStatus(false);
       }
@@ -82,7 +82,7 @@ export default function SignInScreen() {
   const handleSignIn = async () => {
     setButtonSpinner(true);
     const action = await dispatch(
-      sign_in({ email: userInfo.email, password: userInfo.password })
+      sign_in({ email: userInfo.email.toLowerCase(), password: userInfo.password })
     );
     if (sign_in.fulfilled.match(action)) {
       setButtonSpinner(false);
@@ -97,104 +97,97 @@ export default function SignInScreen() {
   };
 
   return (
-    <View
-      style={{ flex: 1}}
-    >
-    <LinearGradient
-      colors={["#F9F6F7", "#F9F6F7"]}
-      style={{ flex: 1, paddingTop: 30 }}
-    >
-      <Text style={styles.topText}>LOGEO</Text>
-      <View
-        style={{
-          backgroundColor: "#F9F6F7",
-          flex: 1,
-          alignContent: "center",
-          marginTop: 50,
-          // justifyContent: "center",
-        }}
+    <View style={{ flex: 1 }}>
+      <LinearGradient
+        colors={["#F9F6F7", "#F9F6F7"]}
+        style={{ flex: 1, paddingTop: 30 }}
       >
-        <Image
-          source={require("@/assets/images/ICONOS-01.png")}
-          style={[styles.signInImage, { transform: [{ scale: 0.4 }] }]}
-        />
-        <View style={styles.inputContainer}>
-          <View>
-            <TextInput
-              style={[styles.input, {}]}
-              keyboardType="default"
-              value={userInfo.email}
-              placeholder="Nombre de Usuario"
-              onChangeText={(value) =>
-                setUserInfo({ ...userInfo, email: value })
-              }
-            />
-          </View>
-          <View>
-            <TextInput
-              style={[styles.input, { paddingTop: 0, paddingLeft: 35 }]}
-              keyboardType="default"
-              value={userInfo.password}
-              secureTextEntry={!isPasswordVisible}
-              placeholder="••••••••••"
-              onChangeText={(value) =>
-                setUserInfo({ ...userInfo, password: value })
-              }
-            />
-            <TouchableOpacity
-              style={styles.visibleIcon}
-              onPress={() => setPasswordVisible(!isPasswordVisible)}
-            >
-              {isPasswordVisible ? (
-                <Ionicons name="eye-off-outline" size={23} color={"#A1A1A1"} />
-              ) : (
-                <Ionicons name="eye-outline" size={23} color={"#A1A1A1"} />
-              )}
-            </TouchableOpacity>
-          </View>
-        </View>
-        <TouchableOpacity
-          style={[
-            styles.button3,
-            { paddingLeft: -35, marginHorizontal: 32, marginTop: 30 },
-          ]}
+        <Text style={styles.topText}>INICIAR SESIÓN</Text>
+        <View
+          style={{
+            backgroundColor: "#F9F6F7",
+            flex: 1,
+            alignContent: "center",
+            marginTop: 50,
+            // justifyContent: "center",
+          }}
         >
-          {buttonSpinner ? (
-            <ActivityIndicator
-              size="small"
-              color="#000024"
-              style={{ marginVertical: "auto" }}
-            />
-          ) : (
-            <View style={styles.buttonWrapper}>
-              <Image
-                source={require("@/assets/images/BUTTON.png")}
-                style={styles.button2}
+          <Image
+            source={require("@/assets/images/ICONOS-01.png")}
+            style={[styles.signInImage, { transform: [{ scale: 0.4 }] }]}
+          />
+          <View style={styles.inputContainer}>
+            <View>
+              <TextInput
+                style={[styles.input, {}]}
+                keyboardType="default"
+                value={userInfo.email}
+                placeholder="Nombre de Usuario"
+                onChangeText={(value) =>
+                  setUserInfo({ ...userInfo, email: value })
+                }
               />
+            </View>
+            <View>
+              <TextInput
+                style={[styles.input, { paddingTop: 0, paddingLeft: 35 }]}
+                keyboardType="default"
+                value={userInfo.password}
+                secureTextEntry={!isPasswordVisible}
+                placeholder="••••••••••"
+                onChangeText={(value) =>
+                  setUserInfo({ ...userInfo, password: value })
+                }
+              />
+              <TouchableOpacity
+                style={styles.visibleIcon}
+                onPress={() => setPasswordVisible(!isPasswordVisible)}
+              >
+                {isPasswordVisible ? (
+                  <Ionicons
+                    name="eye-off-outline"
+                    size={23}
+                    color={"#A1A1A1"}
+                  />
+                ) : (
+                  <Ionicons name="eye-outline" size={23} color={"#A1A1A1"} />
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
+          <TouchableOpacity style={{ marginTop: 30 }} onPress={handleSignIn}>
+            {buttonSpinner ? (
+              <ActivityIndicator
+                size="small"
+                color="#000024"
+                style={{ marginVertical: "auto" }}
+              />
+            ) : (
+              <LinearGradient
+              colors={["#016AF5", "#08E6E7"]}
+              style={{ margin: "auto", borderRadius: 25 }}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+            >
               <Text
-                onPress={handleSignIn}
                 style={[
                   {
-                    fontFamily: "Geomanist Regular",
+                    fontFamily: "Aristotelica Pro Display Regular",
+                    textAlign: "center",
                     color: "white",
-                    fontSize: 19,
+                    fontSize: 17,
+                    paddingVertical: 20,
+                    paddingHorizontal: 20,
                   },
                 ]}
               >
                 INGRESAR
               </Text>
-            </View>
-          )}
-        </TouchableOpacity>
-      </View>
+            </LinearGradient>
+            )}
+          </TouchableOpacity>
+        </View>
       </LinearGradient>
-      {!keyboardStatus && (
-        <Image
-          source={require("@/assets/images/ICONOS-44.png")}
-          style={{ position: "absolute", left: 0, bottom: 0 }}
-          resizeMode="contain"
-        />
-      )}
     </View>
   );
 }
@@ -221,9 +214,9 @@ export const styles = StyleSheet.create({
     paddingLeft: 35,
     fontSize: 16,
     alignContent: "center",
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     backgroundColor: "white",
-    color: "#A1A1A1",
+    color: "#000024",
   },
   button: {
     height: 45,
@@ -245,18 +238,18 @@ export const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 8,
     paddingLeft: 15,
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
     borderBottomColor: "#949494",
     borderBottomWidth: 1,
     color: "white",
-    backgroundColor: "#000024"
+    backgroundColor: "#000024",
   },
   buttonText: {
     color: "white",
     textAlign: "left",
     marginTop: 11,
     fontSize: 16,
-    fontFamily: "Geomanist Regular",
+    fontFamily: "Aristotelica Pro Display Regular",
   },
   welcomeButtonStyle: {
     flex: 1,
