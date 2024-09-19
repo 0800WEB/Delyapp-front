@@ -616,7 +616,7 @@ const MapScreen: React.FC = () => {
                       textAlign: "center",
                       color: "white",
                       fontSize: 17,
-                      paddingVertical: 3,
+                      paddingVertical: 20,
                       paddingHorizontal: 20,
                     },
                   ]}

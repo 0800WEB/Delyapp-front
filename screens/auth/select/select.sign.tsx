@@ -66,8 +66,8 @@ const SelectSignScreen:React.FC = () => {
                     textAlign: "center",
                     color: "white",
                     fontSize: 17,
-                    paddingVertical: 3,
-                    paddingHorizontal: 20,
+                    paddingVertical: 20,
+                    width: 135,
                   },
                 ]}
               >
@@ -89,8 +89,8 @@ const SelectSignScreen:React.FC = () => {
                     textAlign: "center",
                     color: "white",
                     fontSize: 17,
-                    paddingVertical: 3,
-                    paddingHorizontal: 35,
+                    paddingVertical: 20,
+                    width: 135,
                   },
                 ]}
               >

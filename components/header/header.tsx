@@ -83,20 +83,27 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
             style={{ alignSelf: "center", marginLeft: -5 }}
           />
           {cartItems.length > 0 && (
-            <View>
+            <View style={{
+              borderRadius: 15,
+              backgroundColor: "#00BFFF",
+              display: "flex",
+              justifyContent:"center",
+              alignItems:"center",
+              width: 20,
+              height: 20,
+              position: "absolute",
+                  top: -10,
+                  right: -10,
+            }}>
               <Text
                 style={{
                   color: "white",
                   fontSize: 10,
-                  top: -44,
-                  right: -13,
-                  backgroundColor: "#00BFFF",
+                  
                   paddingHorizontal: 0,
                   paddingVertical: 6,
                   borderRadius: 15,
                   textAlign: "center",
-                  position: "absolute",
-                  width: 30,
                   fontFamily: "Aristotelica Pro Display Regular",
                 }}
               >

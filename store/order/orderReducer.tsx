@@ -51,7 +51,7 @@ const orderReducer = createReducer(initialState, (builder) => {
       const newOrders = action.payload.filter(
         (order) => !existingOrderIds.includes(order._id)
       );
-      state.orders = [...state.orders, ...newOrders];
+      state.orders = action.payload;
       state.error = null;
     })
     .addCase(fetchUserOrders.rejected, (state, action) => {

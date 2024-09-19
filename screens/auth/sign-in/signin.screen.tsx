@@ -82,7 +82,7 @@ export default function SignInScreen() {
   const handleSignIn = async () => {
     setButtonSpinner(true);
     const action = await dispatch(
-      sign_in({ email: userInfo.email, password: userInfo.password })
+      sign_in({ email: userInfo.email.toLowerCase(), password: userInfo.password })
     );
     if (sign_in.fulfilled.match(action)) {
       setButtonSpinner(false);
@@ -176,7 +176,7 @@ export default function SignInScreen() {
                     textAlign: "center",
                     color: "white",
                     fontSize: 17,
-                    paddingVertical: 3,
+                    paddingVertical: 20,
                     paddingHorizontal: 20,
                   },
                 ]}
