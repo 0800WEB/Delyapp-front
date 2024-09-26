@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Keyboard,
+  Platform
 } from "react-native";
 import {
   AntDesign,
@@ -28,6 +29,8 @@ import { AppDispatch, RootState } from "@/store/store";
 import { useNavigation } from "@react-navigation/native";
 
 export default function SignInScreen() {
+  const isIOS = Platform.OS === 'ios';
+
   let [fontsLoaded, fontError] = useFonts({
     "Aristotelica Pro Cdn Extralight": require("../../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
     "Aristotelica Pro Display Extralight": require("../../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
@@ -123,6 +126,7 @@ export default function SignInScreen() {
                 keyboardType="default"
                 value={userInfo.email}
                 placeholder="Nombre de Usuario"
+                placeholderTextColor={"#999"}
                 onChangeText={(value) =>
                   setUserInfo({ ...userInfo, email: value })
                 }
@@ -135,6 +139,7 @@ export default function SignInScreen() {
                 value={userInfo.password}
                 secureTextEntry={!isPasswordVisible}
                 placeholder="••••••••••"
+                placeholderTextColor={"#999"}
                 onChangeText={(value) =>
                   setUserInfo({ ...userInfo, password: value })
                 }

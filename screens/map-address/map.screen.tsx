@@ -435,6 +435,7 @@ const MapScreen: React.FC = () => {
                 value={inputAddress}
                 onChangeText={handleInputAddressChange}
                 placeholder="Dirección del pedido"
+                placeholderTextColor={"#999"}
               />
             </View>
             {cartProducts && (
@@ -528,6 +529,7 @@ const MapScreen: React.FC = () => {
                 value={couponCode}
                 placeholder="Escribe aquí tu cupón"
                 onChangeText={setCouponCode}
+                placeholderTextColor={"#999"}
               />
               <TouchableOpacity
                 style={{

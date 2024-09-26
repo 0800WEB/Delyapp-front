@@ -54,7 +54,8 @@ const AllCategoryProducts: React.FC<AllCategoryProductsProps> = ({
         >
           <Image
             source={{ uri: item.images[0] }}
-            style={[styles.imageStyle, { alignSelf: "center" }]}
+            resizeMode={'cover'}
+            style={[styles.imageStyle, { flex:1 }]}
           />
           <View style={styles.containerTitle}>
             <Text style={[styles.titleText]}>{item.name.substring(0, 35)}</Text>
@@ -125,8 +126,8 @@ export default AllCategoryProducts;
 
 export const styles = StyleSheet.create({
   imageStyle: {
-    height: 150,
-    aspectRatio: 1,
+    maxHeight: 150,   
+    minHeight: 150,   
     marginBottom: 3,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -164,7 +165,7 @@ export const styles = StyleSheet.create({
     minHeight: 300,
     maxHeight: 350,
     minWidth: 150,
-    maxWidth: 185,
+    width: 185,
     marginHorizontal: 8,
     borderColor: "#A1A1A1",
     borderWidth: 0.3,

@@ -1,4 +1,4 @@
-import { View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TextInput, TouchableOpacity, Platform } from "react-native";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { router } from "expo-router";
@@ -8,6 +8,9 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 
 export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
+
+  const isIOS = Platform.OS === 'ios';
+
   const [value, setValue] = useState("");
   let [fontsLoaded, fontError] = useFonts({
     "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
@@ -61,6 +64,7 @@ export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
             placeholder="Buscar Producto"
             value={value}
             onChangeText={(text) => setValue(text)}
+            placeholderTextColor={"#999"}
           />
           <TouchableOpacity
             style={styles.searchIconContainer}

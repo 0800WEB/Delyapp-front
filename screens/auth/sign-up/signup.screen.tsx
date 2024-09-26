@@ -231,6 +231,7 @@ export default function SignUpScreen() {
               keyboardType="default"
               value={userInfo.name}
               placeholder="Nombre"
+              placeholderTextColor={"#999"}
               onChangeText={(value) =>
                 setUserInfo({ ...userInfo, name: value })
               }
@@ -242,6 +243,7 @@ export default function SignUpScreen() {
               keyboardType="email-address"
               value={userInfo.email}
               placeholder="Correo Electrónico"
+              placeholderTextColor={"#999"}
               onChangeText={(value) =>
                 setUserInfo({ ...userInfo, email: value })
               }
@@ -250,6 +252,7 @@ export default function SignUpScreen() {
           <View>
             <TextInput
               style={[styles.input, {}]}
+              placeholderTextColor={"#999"}
               keyboardType="number-pad"
               value={userInfo.phone}
               placeholder="Teléfono"
@@ -285,6 +288,7 @@ export default function SignUpScreen() {
               defaultValue=""
               placeholder="••••••••••"
               onChangeText={handlePasswordValidation}
+              placeholderTextColor={"#999"}
             />
             <TouchableOpacity
               style={styles.visibleIcon}

@@ -143,6 +143,7 @@ export default function VerifyAccountScreen() {
               value={code[index]}
               ref={inputs.current[index]}
               autoFocus={index === 0}
+              placeholderTextColor={"#999"}
             />
           ))}
         </View>
