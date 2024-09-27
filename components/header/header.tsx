@@ -67,7 +67,7 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
           style={{ alignSelf: "center" }}
         />
       </TouchableOpacity>
-      {userData && <Text style={styles.userText}>{userData.name.toUpperCase()}</Text>}
+      {/* {userData && <Text style={styles.userText}>{userData.name.toUpperCase()}</Text>} */}
       <View style={{ flexDirection: "row", gap: 15 }}>
         <TouchableOpacity
           onPress={() => Linking.openURL("https://www.facebook.com")}
@@ -98,10 +98,9 @@ const Header: React.FC<HeaderProps> = ({ openDrawer }) => {
               <Text
                 style={{
                   color: "white",
-                  fontSize: 10,
+                  fontSize: 15,
                   
-                  paddingHorizontal: 0,
-                  paddingVertical: 6,
+                  
                   borderRadius: 15,
                   textAlign: "center",
                   fontFamily: "Aristotelica Pro Display Regular",

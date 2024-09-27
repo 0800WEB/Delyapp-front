@@ -6,7 +6,7 @@ import {
   Animated,
   Image,
   Linking,
-  ScrollView 
+  ScrollView,
 } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -21,13 +21,12 @@ import * as Notifications from "expo-notifications";
 import { clearSelectedProduct } from "@/store/products/productsActions";
 import { router } from "expo-router";
 
-
 type LayoutChangeEvent = {
   nativeEvent: {
     layout: {
-      x: number;      // La posición x del componente
-      y: number;      // La posición y del componente
-      width: number;  // El ancho del componente
+      x: number; // La posición x del componente
+      y: number; // La posición y del componente
+      width: number; // El ancho del componente
       height: number; // La altura del componente
     };
   };
@@ -36,46 +35,44 @@ type LayoutChangeEvent = {
 const AccordionSection: React.FC<{
   title: string;
   content: string;
-}> = ({ title, content }) => {
-  let [fontsLoaded, fontError] = useFonts({    
+  expanded: boolean;
+  toggleExpand: () => void;
+}> = ({ title, content, expanded, toggleExpand }) => {
+  let [fontsLoaded, fontError] = useFonts({
     "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
     "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
     "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
     ...FontAwesome.font,
   });
+
   if (!fontsLoaded && !fontError) {
     return null;
   }
-  const [expanded, setExpanded] = useState(false);
-  const animationController = useState(new Animated.Value(0))[0];
-  const [contentHeight, setContentHeight] = useState(0);
 
-  const toggleExpand = () => {
+  const animationController = useRef(new Animated.Value(0)).current;
+  const [contentHeight, setContentHeight] = useState(0);
+  const [selectedValue, setSelectedValue] = useState<string>("opcion1");
+
+  useEffect(() => {
     if (expanded) {
-      Animated.timing(animationController, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
-    } else {
       Animated.timing(animationController, {
         toValue: 1,
         duration: 300,
         useNativeDriver: false,
       }).start();
+    } else {
+      Animated.timing(animationController, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false,
+      }).start();
     }
-    setExpanded(!expanded);
-  };
+  }, [expanded]);
 
   const arrowRotation = animationController.interpolate({
     inputRange: [0, 1],
     outputRange: ["0deg", "180deg"],
   });
-
-  // const contentHeight = animationController.interpolate({
-  //   inputRange: [0, 1],
-  //   outputRange: [0, 100], // Ajusta el valor de 100 según el contenido
-  // });
 
   const animatedHeight = animationController.interpolate({
     inputRange: [0, 1],
@@ -90,22 +87,24 @@ const AccordionSection: React.FC<{
           <AntDesign name="down" size={20} color="white" />
         </Animated.View>
       </TouchableOpacity>
-      <Animated.ScrollView style={{ minHeight: animatedHeight, overflow: "hidden" }}>
-      <View
-          style={{ position: "absolute", width: "100%" }}
+      <Animated.View style={{ height: animatedHeight, overflow: "hidden" }}>
+        <ScrollView
+          style={{ maxHeight: 300 }} // Ajusta el valor de 300 según sea necesario
           onLayout={(event: LayoutChangeEvent) =>
             setContentHeight(event.nativeEvent.layout.height)
           }
         >
-          <Text style={styles.contentText}>{content}</Text>
-        </View>
-      </Animated.ScrollView>
+          <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+            <Text style={styles.contentText}>{content}</Text>
+          </View>
+        </ScrollView>
+      </Animated.View>
     </View>
   );
 };
 
 const AboutScreen: React.FC = () => {
-  let [fontsLoaded, fontError] = useFonts({    
+  let [fontsLoaded, fontError] = useFonts({
     "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
     "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
     "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
@@ -120,7 +119,7 @@ const AboutScreen: React.FC = () => {
   const sections = [
     {
       title: "TERMINOS Y CONDICIONES",
-      content:`Términos y Condiciones de Uso de Dringo
+      content: `Términos y Condiciones de Uso de Dringo
 Última actualización: [Fecha]
 Bienvenido a Dringo (en adelante, "la App"). Al descargar, acceder o utilizar la App, aceptas cumplir y estar sujeto a los siguientes términos y condiciones. Si no estás de acuerdo con estos términos, no debes utilizar la App.
 1. Uso de la App
@@ -159,16 +158,21 @@ Estos términos se regirán e interpretarán de acuerdo con las leyes de México
 Si tienes alguna pregunta o inquietud sobre estos términos, puedes contactarnos a través de [desarrollo@dringo.com.mx].
 `,
     },
-    { title: "AVISO DE PRIVACIDAD", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent interdum, sapien nec dapibus vestibulum, justo neque eleifend enim, vel interdum libero dolor sit amet magna. Nulla facilisi. Curabitur id sapien ut erat ultrices elementum. Vivamus non metus libero. Proin sagittis mi ut felis consequat, ut dignissim sem hendrerit. In hac habitasse platea dictumst. Fusce convallis vehicula mi, a fermentum elit hendrerit ac. Nulla aliquam fringilla augue, et vulputate risus lacinia id. Etiam sit amet turpis ac ex elementum volutpat vel at turpis. Nam eget erat et quam tincidunt facilisis sit amet ac sapien. Sed vehicula posuere justo, et interdum purus tempor ac. Nam quis lorem sed ligula lacinia lacinia. Suspendisse pharetra velit sed dolor pretium, at bibendum mi vulputate" },
+    {
+      title: "AVISO DE PRIVACIDAD",
+      content:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent interdum, sapien nec dapibus vestibulum, justo neque eleifend enim, vel interdum libero dolor sit amet magna. Nulla facilisi. Curabitur id sapien ut erat ultrices elementum. Vivamus non metus libero. Proin sagittis mi ut felis consequat, ut dignissim sem hendrerit. In hac habitasse platea dictumst. Fusce convallis vehicula mi, a fermentum elit hendrerit ac. Nulla aliquam fringilla augue, et vulputate risus lacinia id. Etiam sit amet turpis ac ex elementum volutpat vel at turpis. Nam eget erat et quam tincidunt facilisis sit amet ac sapien. Sed vehicula posuere justo, et interdum purus tempor ac. Nam quis lorem sed ligula lacinia lacinia. Suspendisse pharetra velit sed dolor pretium, at bibendum mi vulputate",
+    },
   ];
-  
-  
+
   const goToHome = async () => {
-    
     dispatch(clearSelectedProduct());
     router.back();
   };
-
+  const [expandedSection, setExpandedSection] = useState<number | null>(null);
+  const toggleExpand = (index: number) => {
+    setExpandedSection(expandedSection === index ? null : index);
+  };
   return (
     <LinearGradient
       colors={["#000026", "#000026"]}
@@ -205,16 +209,33 @@ Si tienes alguna pregunta o inquietud sobre estos términos, puedes contactarnos
           source={require("@/assets/images/ABOUT_PNG.png")}
         />
         {sections.map((section, index) => (
-        <AccordionSection
-          key={index}
-          title={section.title}
-          content={section.content}
-        />
-      ))}
-      <View style={{flexDirection: "row", marginHorizontal: "auto", marginTop: 15, gap: 15}}>
-        <TouchableOpacity onPress={() => Linking.openURL('https://www.facebook.com')}><AntDesign name="facebook-square" size={40} color="white" /></TouchableOpacity>
-        <TouchableOpacity onPress={() => Linking.openURL('https://www.facebook.com')}><AntDesign name="instagram" size={40} color="white" /></TouchableOpacity>
-      </View>
+          <AccordionSection
+            key={index}
+            title={section.title}
+            content={section.content}
+            expanded={expandedSection === index}
+            toggleExpand={() => toggleExpand(index)}
+          />
+        ))}
+        <View
+          style={{
+            flexDirection: "row",
+            marginHorizontal: "auto",
+            marginTop: 15,
+            gap: 15,
+          }}
+        >
+          <TouchableOpacity
+            onPress={() => Linking.openURL("https://www.facebook.com")}
+          >
+            <AntDesign name="facebook-square" size={40} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => Linking.openURL("https://www.facebook.com")}
+          >
+            <AntDesign name="instagram" size={40} color="white" />
+          </TouchableOpacity>
+        </View>
       </View>
     </LinearGradient>
   );
@@ -255,7 +276,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
     marginVertical: "auto",
-    marginTop: -70
+    marginTop: -70,
     // justifyContent:"space-between",
   },
   radioButton: {
@@ -306,7 +327,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: "white",
     width: "90%",
-    marginHorizontal: "auto",
+    alignSelf: "center",
     marginBottom: 10,
   },
   headerText: {
@@ -316,11 +337,10 @@ const styles = StyleSheet.create({
   },
   contentText: {
     color: "white",
-    paddingHorizontal: 15,
-    paddingVertical: 10,
     textAlign: "justify",
-    height: "auto",
     fontFamily: "Aristotelica Pro Text Extralight",
+    paddingLeft: 25,
+    paddingRight: 25,
   },
 });
 export default AboutScreen;

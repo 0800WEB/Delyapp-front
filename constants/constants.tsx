@@ -32,57 +32,57 @@ export const categorySliderData: categorySliderDataType[] = [
     {
         id: 1,
         image: require("@/assets/images/ICONOS-56.png"),
-        image2: require("@/assets/images/ICONOS-64.png"),
+        image2: require("@/assets/images/PROMOCIONES.png"),
         title: "Promociones"
     },
     {
         id: 2,
         image: require("@/assets/images/ICONOS-57.png"),
-        image2: require("@/assets/images/ICONOS-65.png"),
+        image2: require("@/assets/images/CERVEZA.png"),
         title: "Cerveza"
     },
     {
         id: 3,
         image: require("@/assets/images/ICONOS-58.png"),
-        image2: require("@/assets/images/ICONOS-66.png"),
+        image2: require("@/assets/images/VINOS-LICORES.png"),
         title: "Vinos y Licores"
     },
     {
         id: 4,
         image: require("@/assets/images/ICONOS-59.png"),
-        image2: require("@/assets/images/ICONOS-67.png"),
+        image2: require("@/assets/images/REFRESCO-AGUA.png"),
         title: "Refresco y Agua"
     },
     {
         id: 5,
         image: require("@/assets/images/ICONOS-60.png"),
-        image2: require("@/assets/images/ICONOS-68.png"),
+        image2: require("@/assets/images/PAQUETES.png"),
         title: "Paquetes"
     },
     {
         id: 6,
         image: require("@/assets/images/ICONOS-61.png"),
-        image2: require("@/assets/images/ICONOS-69.png"),
+        image2: require("@/assets/images/SNACKS.png"),
         title: "Snacks"
     },
     {
         id: 7,
         image: require("@/assets/images/ICONOS-62.png"),
-        image2: require("@/assets/images/ICONOS-70.png"),
+        image2: require("@/assets/images/PA-LA-CRUDA.png"),
         title: "Pa' la Cruda"
     },
     {
         id: 8,
         image: require("@/assets/images/ICONOS-63.png"),
-        image2: require("@/assets/images/ICONOS-71.png"),
+        image2: require("@/assets/images/ENTRETENIMIENTO.png"),
         title: "Entretenimiento"
     },
-    {
-        id: 9,
-        image: require("@/assets/images/ICONOS-78.png"),
-        image2: require("@/assets/images/ICONOS-79.png"),
-        title: "Cocteleria"
-    },
+    // {
+    //     id: 9,
+    //     image: require("@/assets/images/ICONOS-78.png"),
+    //     image2: require("@/assets/images/ICONOS-79.png"),
+    //     title: "Cocteleria"
+    // },
 ];
 
 

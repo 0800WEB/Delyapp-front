@@ -65,6 +65,7 @@ export default function SearchInput({ homeScreen }: { homeScreen?: boolean }) {
             value={value}
             onChangeText={(text) => setValue(text)}
             placeholderTextColor={"#999"}
+            onSubmitEditing={handleSearch}
           />
           <TouchableOpacity
             style={styles.searchIconContainer}
