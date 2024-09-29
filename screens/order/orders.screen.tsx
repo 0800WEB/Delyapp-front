@@ -130,7 +130,7 @@ const OrdersScreen: React.FC = () => {
         />
         <SearchInput homeScreen={true} />
         <View style={styles.top}>
-          <Text style={[styles.topText, { marginTop: 2 }]}>MIS ÓRDENES</Text>
+          <Text style={[styles.topText, { marginTop: 2 }]}>MIS PEDIDOS</Text>
           <TouchableOpacity onPress={() => goToHome()}>
             <AntDesign
               name="close"
@@ -153,7 +153,7 @@ const OrdersScreen: React.FC = () => {
             color: "#A1A1A1",
           }}
         >
-          AÚN NO TIENES ÓRDENES
+          AÚN NO TIENES PEDIDOS
         </Text>
       </View>
     );
@@ -171,9 +171,10 @@ const OrdersScreen: React.FC = () => {
           width: "90%",
           borderBottomColor: "#A1A1A1",
           borderBottomWidth: 0.5,
+          padding: 10,
         }}
       >
-        <View style={{ flexDirection: "row" }}>
+        <View style={{ flexDirection: "row", gap: 10 }}>
           {item.products[0] &&
             item.products[0].product.images &&
             item.products[0].product.images.length > 0 && (
@@ -181,8 +182,8 @@ const OrdersScreen: React.FC = () => {
                 source={{ uri: item.products[0].product.images[0] }}
                 style={{
                   aspectRatio: 1,
-                  width: 85,
-                  borderRadius: 15,
+                  width: "18%",
+
                   alignSelf: "center",
                   marginTop: -55,
                 }}
@@ -192,14 +193,17 @@ const OrdersScreen: React.FC = () => {
             style={{
               justifyContent: "space-between",
               alignContent: "center",
-              width: "65%",
+              width: "80%",
               marginLeft: 5,
             }}
           >
             <Text
               style={[
                 styles.commonText,
-                { fontFamily: "Aristotelica Pro Display Regular", fontSize: 15 },
+                {
+                  fontFamily: "Aristotelica Pro Display Regular",
+                  fontSize: 15,
+                },
               ]}
             >
               {item.products.length} ARTÍCULOS
@@ -214,7 +218,10 @@ const OrdersScreen: React.FC = () => {
             </Text>
             {item.products.map((product, index) => (
               <Text
-                style={[styles.commonText, { fontFamily: "Aristotelica Pro Display Regular" }]}
+                style={[
+                  styles.commonText,
+                  { fontFamily: "Aristotelica Pro Display Regular" },
+                ]}
                 key={index}
               >
                 {" "}
@@ -233,7 +240,10 @@ const OrdersScreen: React.FC = () => {
             <Text
               style={[
                 styles.commonText,
-                { fontFamily: "Aristotelica Pro Display Regular", fontSize: 15 },
+                {
+                  fontFamily: "Aristotelica Pro Display Regular",
+                  fontSize: 15,
+                },
               ]}
             >
               {item.updatedAt.substring(0, 10)}
@@ -242,14 +252,19 @@ const OrdersScreen: React.FC = () => {
               {item.status.toUpperCase()}
             </Text>
             <TouchableOpacity
-            style={{marginVertical: 5}}
+              style={{
+                marginVertical: 5,
+                display: "flex",
+                alignItems: "flex-end",
+                borderRadius: 60,
+              }}
               onPress={() => {
                 handleRepeatOrder(item._id); // Pasar el ID de la orden
               }}
             >
               <LinearGradient
                 colors={["#016AF5", "#08E6E7"]}
-                style={{ margin: "auto", borderRadius: 25 }}
+                style={{borderRadius: 55}}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
               >
@@ -260,8 +275,10 @@ const OrdersScreen: React.FC = () => {
                       textAlign: "center",
                       color: "white",
                       fontSize: 17,
-                      paddingVertical: 20,
+                      paddingVertical: 5,
                       paddingHorizontal: 20,
+                      
+
                     },
                   ]}
                 >
@@ -281,7 +298,7 @@ const OrdersScreen: React.FC = () => {
         />
         <SearchInput homeScreen={true} />
         <View style={styles.top}>
-          <Text style={[styles.topText, { marginTop: 2 }]}>MIS ÓRDENES</Text>
+          <Text style={[styles.topText, { marginTop: 2 }]}>MIS PEDIDOS</Text>
           <TouchableOpacity onPress={() => goToHome()}>
             <AntDesign
               name="close"
@@ -296,7 +313,7 @@ const OrdersScreen: React.FC = () => {
             style={{ borderTopRightRadius: 50, borderTopLeftRadius: 50 }}
           >
             <FlatList
-              data={[...orders]/* .reverse() */}
+              data={[...orders] /* .reverse() */}
               renderItem={renderProductItem}
               keyExtractor={(item) => item._id}
             />

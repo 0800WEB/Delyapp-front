@@ -11,29 +11,33 @@ import About from "../about";
 import Orders from "../orders";
 import { useFonts } from "expo-font";
 import { FontAwesome } from "@expo/vector-icons";
-import { Image, View } from "react-native";
+import { Image, View, Platform } from "react-native";
 
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
+  const isIOS = Platform.OS === 'ios';
   return (
-    <DrawerContentScrollView {...props} style={{ backgroundColor: "#000024" }}>
-      <View style={{ flex: 1, gap:10, display:"flex", flexDirection:"column", minHeight:"95%" }}>
+<DrawerContentScrollView {...props} style={{ backgroundColor: "#000024", display:"flex", flex:1 }}>
+      <View
+        style={{
+          gap: 10,
+          flex:0,
+        }}
+      >
         {/* View contenedor */}
         <DrawerItemList {...props} />
-        <View style={{ paddingVertical:32, flex:1, justifyContent:"center"}}>
+      </View>
+        <View style={{ paddingVertical:64, flex:1, justifyContent:"flex-end", flexGrow: 1 }}>
           <Image
             source={require("@/assets/images/botella-azul.png")}
-            style={{
-              alignSelf:'flex-start',
-              marginTop: 20, // Margen superior de la imagen
-              position:"absolute",
-              left: 0,               // Posiciona la imagen en el borde izquierdo del contenedor
-              }}
+            style={isIOS ? {
+              marginVertical: 20, // Margen superior de la imagen
+              } : {resizeMode:"contain", marginTop:10}}
           />
         </View>
-      </View>
     </DrawerContentScrollView>
+
   );
 }
 export default function DrawerLayoutNav() {
@@ -85,7 +89,7 @@ export default function DrawerLayoutNav() {
       <Drawer.Screen
         name="ORDERS"
         component={Orders}
-        options={{ drawerLabel: "MIS ORDENES" }}
+        options={{ drawerLabel: "MIS PEDIDOS" }}
       />
       <Drawer.Screen
         name="ABOUT_US"

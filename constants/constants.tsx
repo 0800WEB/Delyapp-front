@@ -31,49 +31,49 @@ export const welcomeIntroSwipperData: welcomeSwipperDataType[] =[
 export const categorySliderData: categorySliderDataType[] = [
     {
         id: 1,
-        image: require("@/assets/images/ICONOS-56.png"),
+        image: require("@/assets/images/PROMOCIONESOFF.png"),
         image2: require("@/assets/images/PROMOCIONES.png"),
         title: "Promociones"
     },
     {
         id: 2,
-        image: require("@/assets/images/ICONOS-57.png"),
+        image: require("@/assets/images/CERVEZAOFF.png"),
         image2: require("@/assets/images/CERVEZA.png"),
         title: "Cerveza"
     },
     {
         id: 3,
-        image: require("@/assets/images/ICONOS-58.png"),
+        image: require("@/assets/images/VINOSYLICORESOFF.png"),
         image2: require("@/assets/images/VINOS-LICORES.png"),
         title: "Vinos y Licores"
     },
     {
         id: 4,
-        image: require("@/assets/images/ICONOS-59.png"),
+        image: require("@/assets/images/REFRESCOYAGUAOFF.png"),
         image2: require("@/assets/images/REFRESCO-AGUA.png"),
         title: "Refresco y Agua"
     },
     {
         id: 5,
-        image: require("@/assets/images/ICONOS-60.png"),
+        image: require("@/assets/images/PAQUETESOFF.png"),
         image2: require("@/assets/images/PAQUETES.png"),
         title: "Paquetes"
     },
     {
         id: 6,
-        image: require("@/assets/images/ICONOS-61.png"),
+        image: require("@/assets/images/SNACKSOFF.png"),
         image2: require("@/assets/images/SNACKS.png"),
         title: "Snacks"
     },
     {
         id: 7,
-        image: require("@/assets/images/ICONOS-62.png"),
+        image: require("@/assets/images/PALACRUDAOFF.png"),
         image2: require("@/assets/images/PA-LA-CRUDA.png"),
         title: "Pa' la Cruda"
     },
     {
         id: 8,
-        image: require("@/assets/images/ICONOS-63.png"),
+        image: require("@/assets/images/ENTRETENIMIENTOOFF.png"),
         image2: require("@/assets/images/ENTRETENIMIENTO.png"),
         title: "Entretenimiento"
     },
