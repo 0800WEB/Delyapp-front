@@ -146,9 +146,9 @@ const HomeScreen: React.FC = () => {
             <>
               <Highlights selectedProductId={handleProductSelected} />
               <Promos />
-              {categories?.categories?.map((category: Category) => {
-                const productsForCategory = products.products.filter(
-                  (product: Product) => product.category === category._id
+              {categories.categories ? categories?.categories?.map((category: Category) => {
+                const productsForCategory = products && products?.products?.filter(
+                  (product: Product) => product?.category === category?._id
                 );
                 return (
                   <AllCategoryProducts
@@ -159,7 +159,7 @@ const HomeScreen: React.FC = () => {
                     homeScreen={true}
                   />
                 );
-              })}
+              }) : ""}
             </>
           )}
         </ScrollView>
