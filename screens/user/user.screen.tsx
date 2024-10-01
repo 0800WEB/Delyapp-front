@@ -45,7 +45,7 @@ export default function UserScreen() {
   //TODO-logout
 
   const logout = async () => {
-    dispatch(sign_out());
+    dispatch(sign_out())
     router.push("select-sign");
   };
 

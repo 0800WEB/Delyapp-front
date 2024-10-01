@@ -96,7 +96,9 @@ const authReducer = createReducer(initialState, (builder) => {
       state.error = null;
     })
     .addCase(sign_out.rejected, (state, action) => {
+      state.userInfo = null;
       state.error = action.payload;
+      state.token = null;
     })
     .addDefaultCase((state) => state);
 });
