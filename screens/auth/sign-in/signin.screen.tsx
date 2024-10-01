@@ -85,7 +85,7 @@ export default function SignInScreen() {
   const handleSignIn = async () => {
     setButtonSpinner(true);
     const action = await dispatch(
-      sign_in({ email: userInfo.email.toLowerCase(), password: userInfo.password })
+      sign_in({ email: userInfo.email.toLowerCase().trim(), password: userInfo.password })
     );
     if (sign_in.fulfilled.match(action)) {
       setButtonSpinner(false);
@@ -125,7 +125,7 @@ export default function SignInScreen() {
                 style={[styles.input, {}]}
                 keyboardType="default"
                 value={userInfo.email}
-                placeholder="Nombre de Usuario"
+                placeholder="Email"
                 placeholderTextColor={"#999"}
                 onChangeText={(value) =>
                   setUserInfo({ ...userInfo, email: value })
