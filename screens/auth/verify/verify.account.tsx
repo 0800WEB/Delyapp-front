@@ -133,7 +133,7 @@ export default function VerifyAccountScreen() {
           Te hemos mandando un código de verificación a tu correo electrónico
         </Text>
         <View style={[styles.inputContainer, { marginLeft: 10 }]}>
-          {code.map((_, index) => (
+          {code && code?.map((_, index) => (
             <TextInput
               key={index}
               style={styles.inputBox}

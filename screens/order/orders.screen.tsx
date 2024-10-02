@@ -69,7 +69,7 @@ const OrdersScreen: React.FC = () => {
   };
 
   const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
+    switch (status?.toLowerCase()) {
       case "pendiente":
         return styles.pending;
       case "en preparación":
@@ -175,11 +175,11 @@ const OrdersScreen: React.FC = () => {
         }}
       >
         <View style={{ flexDirection: "row", gap: 10 }}>
-          {item.products[0] &&
-            item.products[0].product.images &&
-            item.products[0].product.images.length > 0 && (
+          {item?.products[0] &&
+            item?.products[0].product?.images &&
+            item?.products[0].product?.images?.length > 0 && (
               <Image
-                source={{ uri: item.products[0].product.images[0] }}
+                source={{ uri: item?.products[0].product?.images[0] }}
                 style={{
                   aspectRatio: 1,
                   width: "18%",
@@ -206,7 +206,7 @@ const OrdersScreen: React.FC = () => {
                 },
               ]}
             >
-              {item.products.length} ARTÍCULOS
+              {item?.products?.length} ARTÍCULOS
             </Text>
             <Text
               style={[
@@ -216,7 +216,7 @@ const OrdersScreen: React.FC = () => {
             >
               ID PEDIDO {item._id}
             </Text>
-            {item.products.map((product, index) => (
+            {item && item?.products?.map((product, index) => (
               <Text
                 style={[
                   styles.commonText,
@@ -225,7 +225,7 @@ const OrdersScreen: React.FC = () => {
                 key={index}
               >
                 {" "}
-                • {product.product.name} x {product.quantity}
+                • {product?.product?.name} x {product?.quantity}
               </Text>
             ))}
 
@@ -235,7 +235,7 @@ const OrdersScreen: React.FC = () => {
                 { fontFamily: "Aristotelica Pro Display Bold", fontSize: 15 },
               ]}
             >
-              ${item.totalPrice} MXN
+              ${item?.totalPrice} MXN
             </Text>
             <Text
               style={[
@@ -246,10 +246,10 @@ const OrdersScreen: React.FC = () => {
                 },
               ]}
             >
-              {item.updatedAt.substring(0, 10)}
+              {item?.updatedAt?.substring(0, 10)}
             </Text>
-            <Text style={[styles.commonText, getStatusColor(item.status)]}>
-              {item.status.toUpperCase()}
+            <Text style={[styles.commonText, getStatusColor(item?.status)]}>
+              {item?.status?.toUpperCase()}
             </Text>
             <TouchableOpacity
               style={{
@@ -259,7 +259,7 @@ const OrdersScreen: React.FC = () => {
                 borderRadius: 60,
               }}
               onPress={() => {
-                handleRepeatOrder(item._id); // Pasar el ID de la orden
+                handleRepeatOrder(item?._id); // Pasar el ID de la orden
               }}
             >
               <LinearGradient
@@ -315,7 +315,7 @@ const OrdersScreen: React.FC = () => {
             <FlatList
               data={[...orders] /* .reverse() */}
               renderItem={renderProductItem}
-              keyExtractor={(item) => item._id}
+              keyExtractor={(item) => item?._id}
             />
           </SafeAreaView>
         </ScrollView>

@@ -188,12 +188,12 @@ Si tienes alguna pregunta o inquietud sobre estos términos, puedes contactarnos
         <Text style={[styles.topText, { marginTop: 2 }]}>
           ACERCA DE NOSOTROS
         </Text>
-        <TouchableOpacity onPress={() => goToHome()}>
+        <TouchableOpacity onPress={() => goToHome()} >
           <AntDesign
             name="close"
             size={20}
             color="white"
-            style={{ height: 40, aspectRatio: 1 }}
+            style={{ height: 40,aspectRatio:1}}
           />
         </TouchableOpacity>
       </View>
@@ -208,11 +208,11 @@ Si tienes alguna pregunta o inquietud sobre estos términos, puedes contactarnos
           ]}
           source={require("@/assets/images/ABOUT_PNG.png")}
         />
-        {sections.map((section, index) => (
+        {sections && sections?.map((section, index) => (
           <AccordionSection
             key={index}
-            title={section.title}
-            content={section.content}
+            title={section?.title}
+            content={section?.content}
             expanded={expandedSection === index}
             toggleExpand={() => toggleExpand(index)}
           />

@@ -521,7 +521,7 @@ const MapScreen: React.FC = () => {
               >
                 <View>
                   <Text style={[styles.cartResume, { textAlign: "left" }]}>
-                    Sutotal:{" "}
+                    Subtotal:{" "}
                   </Text>
                   <Text style={[styles.cartResume, { textAlign: "left" }]}>
                     DESCUENTO:{" "}
