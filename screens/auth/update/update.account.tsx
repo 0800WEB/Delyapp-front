@@ -142,6 +142,7 @@ export default function UpdateAccountScreen() {
                 onChangeText={(value) =>
                   setUserInfo({ ...userInfo, name: value })
                 }
+                placeholderTextColor={"#999"}
               />
             </View>
             <View>
@@ -154,6 +155,7 @@ export default function UpdateAccountScreen() {
                   setUserInfo({ ...userInfo, email: value })
                 }
                 editable={false}
+                placeholderTextColor={"#999"}
               />
             </View>
             <View>
@@ -165,6 +167,7 @@ export default function UpdateAccountScreen() {
                 onChangeText={(value) =>
                   setUserInfo({ ...userInfo, phone: value })
                 }
+                placeholderTextColor={"#999"}
               />
             </View>
           </View>

@@ -159,7 +159,7 @@ export const styles = StyleSheet.create({
     minHeight: 300,
     maxHeight: 350,
     minWidth: 150,
-    maxWidth: 185,
+    width: 185,
     marginHorizontal: 8,
     borderColor: "#A1A1A1",
     borderWidth: 0.3,

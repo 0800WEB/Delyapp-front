@@ -175,6 +175,9 @@ export const sign_out = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const userToken = await _retrieveData({ key: "userToken" });
+      const userInfo = await _retrieveData({key: "userInfo"})
+      console.log(userToken)
+      console.log(userInfo)
       const response = await axios.post(`${SERVER_URI}/users/signout`, {}, {
         headers: { Authorization: `Bearer ${userToken}` }
       });
@@ -183,6 +186,12 @@ export const sign_out = createAsyncThunk(
       // console.log("Borrando: ",response);
       return response.data;
     } catch (error) {
+      const userInfo = await _retrieveData({key: "userInfo"})
+      const userToken = await _retrieveData({ key: "userToken" });
+      console.log(userToken)
+      console.log(userInfo)
+      await _removeData({ key: "userToken" });
+      await _removeData({ key: "userInfo" });
       return rejectWithValue(parseError({ error }));
     }
   }

@@ -57,7 +57,7 @@ export default function Popular({ onProductSelected }: Popular) {
         >
           <Image
             source={{ uri: item.images[0] }}
-            style={[styles.imageStyle, { alignSelf: "center" }]}
+            style={[styles.imageStyle, { flex:1, objectFit:"cover" }]}
           />
 
           <View style={styles.containerTitle}>
@@ -117,8 +117,8 @@ export default function Popular({ onProductSelected }: Popular) {
 
 export const styles = StyleSheet.create({
   imageStyle: {
-    height: 150,
-    aspectRatio: 1,
+    maxHeight: 150,   
+    minHeight: 150,   
     marginBottom: 3,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -127,8 +127,8 @@ export const styles = StyleSheet.create({
   topText: {
     display: "flex",
     paddingTop: 8,
-    paddingBottom: 8,
-    paddingLeft: 15,
+    /* paddingBottom: 8,
+    paddingLeft: 15, */
     fontFamily: "Aristotelica Pro Display Regular",
     borderBottomColor: "#A1A1A1",
     borderBottomWidth: 0.8,
@@ -162,7 +162,7 @@ export const styles = StyleSheet.create({
     minHeight: 300,
     maxHeight: 350,
     minWidth: 150,
-    maxWidth: 185,
+    width: 185,
     marginHorizontal: 8,
     borderColor: "#A1A1A1",
     borderWidth: 0.3,

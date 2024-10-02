@@ -56,12 +56,12 @@ export default function Promos() {
   return (
     <View style={{ height: 200 }}>
       <Swiper autoplay autoplayTimeout={3} dot={<View style={styles.dot} />} activeDot={<View style={styles.activeDot} />}>
-        {promoSliderData.map((item, index) => (
+        {promoSliderData && promoSliderData?.map((item, index) => (
           <TouchableOpacity
             key={index}
             style={{ width: "95%", marginHorizontal: "auto", marginTop: 15 }}
           >
-            <Image source={item.image} style={styles.imageStyle}  />
+            <Image source={item?.image} style={styles.imageStyle}  />
           </TouchableOpacity>
         ))}
       </Swiper>

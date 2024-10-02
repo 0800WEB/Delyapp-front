@@ -65,6 +65,7 @@ const MapScreen: React.FC = () => {
   const cartProducts = JSON.parse(JSON.stringify(products));
   const coupon = useSelector((state: RootState) => state.coupon.coupon);
   const [couponCode, setCouponCode] = useState("");
+  const [indication, setIndication] = useState("");
 
   const [origin, setOrigin] = useState({
     latitude: -12.074533,
@@ -233,6 +234,7 @@ const MapScreen: React.FC = () => {
           deliveryAddress: inputAddress,
           paymentMethod: "stripe",
           couponId: coupon?._id,
+          nota: indication,
         })
       );
 
@@ -405,6 +407,13 @@ const MapScreen: React.FC = () => {
                 setOrigin(direction.nativeEvent.coordinate);
               }}
             /> */}
+              {/* <TextInput
+                style={styles.inputs}
+                value={inputAddress}
+                onChangeText={handleInputAddressChange}
+                placeholder="Dirección del pedido"
+                placeholderTextColor={"#999"}
+              /> */}
               {currentLocation && (
                 <Marker
                   draggable={true}
@@ -429,12 +438,56 @@ const MapScreen: React.FC = () => {
                 strokeColor="#000"
               />
             </MapView>
+            <View
+              style={{
+                flexDirection: "row",
+                marginHorizontal: 16,
+                marginBottom: 15,
+                marginTop: 5,
+              }}
+            >
+              <TextInput
+                style={[styles.textArea, { color: "#A1A1A1" }]}
+                keyboardType="default"
+                value={indication}
+                placeholder="Escribe Indicaciones"
+                onChangeText={setIndication}
+                placeholderTextColor={"#999"}
+                multiline={true}
+                numberOfLines={4}
+              />
+              {/* <TouchableOpacity
+        style={{
+          width: "40%",
+          height: 40,
+          justifyContent: "center",
+          backgroundColor: "#000024", // Cambia el color si está deshabilitado
+          borderTopRightRadius: 25,
+          borderBottomRightRadius: 25,
+        }}
+        onPress={applyCoupon}
+        disabled={!couponCode} // Deshabilitar si el campo está vacío
+      >
+        <Text
+          style={{
+            textAlign: "center",
+            alignContent: "center",
+            color: "white",
+            fontFamily: "Aristotelica Pro Display Regular",
+            fontSize: 15,
+          }}
+        >
+          APLICAR CUPÓN
+        </Text>
+      </TouchableOpacity> */}
+            </View>
             <View style={{ marginHorizontal: "auto", width: "95%" }}>
               <TextInput
                 style={styles.inputs}
                 value={inputAddress}
                 onChangeText={handleInputAddressChange}
                 placeholder="Dirección del pedido"
+                placeholderTextColor={"#999"}
               />
             </View>
             {cartProducts && (
@@ -468,7 +521,7 @@ const MapScreen: React.FC = () => {
               >
                 <View>
                   <Text style={[styles.cartResume, { textAlign: "left" }]}>
-                    Sutotal:{" "}
+                    Subtotal:{" "}
                   </Text>
                   <Text style={[styles.cartResume, { textAlign: "left" }]}>
                     DESCUENTO:{" "}
@@ -528,6 +581,7 @@ const MapScreen: React.FC = () => {
                 value={couponCode}
                 placeholder="Escribe aquí tu cupón"
                 onChangeText={setCouponCode}
+                placeholderTextColor={"#999"}
               />
               <TouchableOpacity
                 style={{
@@ -667,6 +721,15 @@ const styles = StyleSheet.create({
     borderBottomColor: "#A1A1A1",
     borderBottomWidth: 0.5,
   },
+  textArea: {
+    height: 100,
+    justifyContent: "flex-start",
+    borderColor: "#A1A1A1",
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 10,
+    flex: 1,
+  },
   cardTexts: {
     justifyContent: "space-between",
     alignContent: "center",
@@ -725,6 +788,20 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
+    borderColor: "#A1A1A1",
+    borderWidth: 0.4,
+    paddingLeft: 25,
+    fontSize: 15,
+    fontFamily: "Geomanist Regular",
+    backgroundColor: "white",
+    color: "#000024",
+  },
+  inputIndication: {
+    width: "100%",
+    height: "150%",
+    borderRadius: 25,
+    borderTopRightRadius: 25,
+    borderBottomRightRadius: 25,
     borderColor: "#A1A1A1",
     borderWidth: 0.4,
     paddingLeft: 25,

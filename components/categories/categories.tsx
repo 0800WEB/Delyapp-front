@@ -86,10 +86,12 @@ export default function Categories({ onItemSelected, resetSelectedTitle }: Categ
 
 export const styles = StyleSheet.create({
   imageStyle: {
-    height: 145,
+    height: 93,
+    width: "auto",
     aspectRatio: 1,
     marginHorizontal: 5,
     marginVertical: 10,
+    resizeMode:"contain"
   },
   topText: {
     display: "flex",

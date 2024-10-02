@@ -72,7 +72,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
     (category: Category) => category._id === product?.category
   );
 
-  const productsForCategory = products.products.filter(
+  const productsForCategory = products.products?.filter(
     (product: Product) => product.category === selectedCategory?._id
   );
 

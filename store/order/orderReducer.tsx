@@ -47,10 +47,6 @@ const orderReducer = createReducer(initialState, (builder) => {
       state.status = "loading";
     })
     .addCase(fetchUserOrders.fulfilled, (state, action) => {
-      const existingOrderIds = state.orders.map((order) => order._id);
-      const newOrders = action.payload.filter(
-        (order) => !existingOrderIds.includes(order._id)
-      );
       state.orders = action.payload;
       state.error = null;
     })
