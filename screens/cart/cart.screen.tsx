@@ -145,7 +145,7 @@ const CartScreen: React.FC = () => {
             {item.product.description.substring(0, 30)}
           </Text>
           <Text style={styles.priceText}>
-            ${Number(item.product?.price?.toString()).toFixed(2)}
+            ${Number(item.product?.price?.toString()).toFixed(2)} MXN
           </Text>
         </View>
         <View style={styles.cartQuantityContainer}>
@@ -245,7 +245,7 @@ const CartScreen: React.FC = () => {
             >
               <Text style={styles.cartTotal}>TOTAL: </Text>
               {totalPrice && (
-                <Text style={styles.cartTotal}>${totalPrice.toFixed(2)}</Text>
+                <Text style={styles.cartTotal}>${totalPrice.toFixed(2)} MXN</Text>
               )}
             </View>
           </View>
