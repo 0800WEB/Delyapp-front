@@ -65,7 +65,7 @@ export default function SearchScreen() {
       <View style={styles.textContainer}>
         <Text style={styles.titleText}>{item.name}</Text>
         <Text style={[styles.titleText, styles.descriptionText]}>
-          {item.description}
+          {item.description.substring(0, 11)}
         </Text>
         <Text style={styles.priceText}>${item.price}</Text>
       </View>

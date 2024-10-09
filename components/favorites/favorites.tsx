@@ -63,7 +63,7 @@ export default function Favorites({ onProductSelected }: Favorites) {
             <Text style={[styles.titleText]}>{item.name.substring(0, 11)}</Text>
           </View>
           <View style={styles.containerTitle}>
-            <Text style={[styles.description]}>{item.description}</Text>
+            <Text style={[styles.description]}>{item.description.substring(0, 11)}</Text>
           </View>
           <View
             style={{
