@@ -16,10 +16,6 @@
       "bundleIdentifier": "com.mrain00.client"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
       "package": "com.mrain00.client",
       "permissions": [
         "ACCESS_FINE_LOCATION",
@@ -27,7 +23,7 @@
       ],
       "config": {
         "googleMaps": {
-          "apiKey": "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"
+          "apiKey": "AIzaSyBzs45Acy36EjdJBWfT86IdmGy3txSOP4s"
         }
       }
     },
