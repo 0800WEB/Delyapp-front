@@ -57,15 +57,14 @@ export default function Popular({ onProductSelected }: Popular) {
         >
           <Image
             source={{ uri: item.images[0] }}
-            style={[styles.imageStyle, { flex:1, objectFit:"cover" }]}
+            style={[styles.imageStyle, { alignSelf: "center" }]}
           />
-
           <View style={styles.containerTitle}>
-            <Text style={[styles.titleText]}>{item.name.substring(0, 20)}</Text>
+            <Text style={[styles.titleText]}>{item.name.substring(0, 30)}</Text>
           </View>
           <View style={styles.containerTitle}>
             <Text style={[styles.description]}>
-              {item.description.substring(0, 20)}
+              {item.description.substring(0, 42)}...
             </Text>
           </View>
           <View
@@ -88,7 +87,7 @@ export default function Popular({ onProductSelected }: Popular) {
                   },
                 ]}
               >
-                ${item.price} MXN
+                ${item.price.toFixed(2)} MXN
               </Text>
             </View>
           </View>
@@ -117,8 +116,8 @@ export default function Popular({ onProductSelected }: Popular) {
 
 export const styles = StyleSheet.create({
   imageStyle: {
-    maxHeight: 150,   
-    minHeight: 150,   
+    height: 150,
+    aspectRatio: 1,
     marginBottom: 3,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -127,8 +126,8 @@ export const styles = StyleSheet.create({
   topText: {
     display: "flex",
     paddingTop: 8,
-    /* paddingBottom: 8,
-    paddingLeft: 15, */
+    paddingBottom: 8,
+    paddingLeft: 15,
     fontFamily: "Aristotelica Pro Display Regular",
     borderBottomColor: "#A1A1A1",
     borderBottomWidth: 0.8,

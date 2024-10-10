@@ -7,9 +7,7 @@ import {
   TouchableOpacity,
   VirtualizedList,
 } from "react-native";
-import {
-  FontAwesome,
-} from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { router } from "expo-router";
 import React from "react";
@@ -41,8 +39,12 @@ export default function SearchScreen() {
   }
   const navigation = useNavigation<DrawerNavProp>();
   const dispatch = useDispatch<AppDispatch>();
-  const searchProducts = useSelector((state: RootState) => state.products.searchProducts);
-  const selectedProductId = useSelector((state: RootState) => state.products.selectedProductId);
+  const searchProducts = useSelector(
+    (state: RootState) => state.products.searchProducts
+  );
+  const selectedProductId = useSelector(
+    (state: RootState) => state.products.selectedProductId
+  );
   // console.log(selectedProductId)
 
   const handleProductSelected = (productId: string) => {
@@ -50,24 +52,24 @@ export default function SearchScreen() {
       dispatch(selectProduct(productId));
     }
     router.back();
-  }
+  };
 
   const getItem = (data: any[], index: number) => data[index];
   const getItemCount = (data: any[]) => (data ? data.length : 0);
   const keyExtractor = (item: any) => item._id.toString();
 
   const renderItem = ({ item }: { item: any }) => (
-    <TouchableOpacity style={styles.productCard} onPress={() => handleProductSelected(item._id)}>
-      <Image
-        source={{uri: item.images[0]}}
-        style={styles.imageStyle}
-      />
+    <TouchableOpacity
+      style={styles.productCard}
+      onPress={() => handleProductSelected(item._id)}
+    >
+      <Image source={{ uri: item.images[0] }} style={styles.imageStyle} />
       <View style={styles.textContainer}>
         <Text style={styles.titleText}>{item.name}</Text>
         <Text style={[styles.titleText, styles.descriptionText]}>
-          {item.description.substring(0, 11)}
+          {item.description.substring(0, 25)}...
         </Text>
-        <Text style={styles.priceText}>${item.price}</Text>
+        <Text style={styles.priceText}>${item.price.toFixed(2)} MXN</Text>
       </View>
     </TouchableOpacity>
   );

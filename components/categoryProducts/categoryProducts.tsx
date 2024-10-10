@@ -63,10 +63,10 @@ const CategoryProducts: React.FC<{
                   },
                 ]}
               >
-                {item.description.substring(0, 11)}
+                {item.description.substring(0, 22)}
               </Text>
               <Text style={[styles.titleText, { color: "#000024" }]}>
-                ${item.price}
+                ${item.price.toFixed(2)} MXN
               </Text>
             </View>
           </View>

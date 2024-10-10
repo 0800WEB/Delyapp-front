@@ -60,10 +60,10 @@ export default function Favorites({ onProductSelected }: Favorites) {
             style={[styles.imageStyle, { alignSelf: "center" }]}
           />
           <View style={styles.containerTitle}>
-            <Text style={[styles.titleText]}>{item.name.substring(0, 11)}</Text>
+            <Text style={[styles.titleText]}>{item.name.substring(0, 24)}</Text>
           </View>
           <View style={styles.containerTitle}>
-            <Text style={[styles.description]}>{item.description.substring(0, 11)}</Text>
+            <Text style={[styles.description]}>{item.description.substring(0, 44)}...</Text>
           </View>
           <View
             style={{
@@ -85,7 +85,7 @@ export default function Favorites({ onProductSelected }: Favorites) {
                   },
                 ]}
               >
-                ${item.price} MXN
+                ${item.price.toFixed(2)} MXN
               </Text>
             </View>
           </View>

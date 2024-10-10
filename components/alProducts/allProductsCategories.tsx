@@ -85,7 +85,7 @@ const AllCategoryProducts: React.FC<AllCategoryProductsProps> = ({
                   },
                 ]}
               >
-                ${item.price} MXN
+                ${item.price.toFixed(2)} MXN
               </Text>
             </View>
           </View>
