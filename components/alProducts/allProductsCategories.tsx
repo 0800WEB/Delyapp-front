@@ -24,7 +24,7 @@ const AllCategoryProducts: React.FC<AllCategoryProductsProps> = ({
   onProductSelected,
   homeScreen,
 }) => {
-  let [fontsLoaded, fontError] = useFonts({    
+  let [fontsLoaded, fontError] = useFonts({
     "Aristotelica Pro Cdn Extralight": require("../../assets/fonts/Aristotelica-pro-cdn-extralight.otf"),
     "Aristotelica Pro Display Extralight": require("../../assets/fonts/Aristotelica-pro-display-extralight.otf"),
     "Aristotelica Pro Text Extralight": require("../../assets/fonts/Aristotelica-pro-text-extralight.otf"),
@@ -54,16 +54,13 @@ const AllCategoryProducts: React.FC<AllCategoryProductsProps> = ({
         >
           <Image
             source={{ uri: item.images[0] }}
-            resizeMode={'cover'}
-            style={[styles.imageStyle, { flex:1 }]}
+            style={[styles.imageStyle, { alignSelf: "center" }]}
           />
           <View style={styles.containerTitle}>
-            <Text style={[styles.titleText]}>{item.name.substring(0, 35)}</Text>
+            <Text style={[styles.titleText]}>{item.name.substring(0, 24)}</Text>
           </View>
           <View style={styles.containerTitle}>
-            <Text style={[styles.description]}>
-              {item.description.substring(0, 20)}
-            </Text>
+            <Text style={[styles.description]}>{item.description.substring(0, 44)}...</Text>
           </View>
           <View
             style={{
@@ -85,7 +82,7 @@ const AllCategoryProducts: React.FC<AllCategoryProductsProps> = ({
                   },
                 ]}
               >
-                ${item.price} MXN
+                ${item.price.toFixed(2)} MXN
               </Text>
             </View>
           </View>
@@ -126,8 +123,8 @@ export default AllCategoryProducts;
 
 export const styles = StyleSheet.create({
   imageStyle: {
-    maxHeight: 150,   
-    minHeight: 150,   
+    height: 150,
+    aspectRatio: 1,
     marginBottom: 3,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
@@ -173,7 +170,6 @@ export const styles = StyleSheet.create({
   },
   titleText: {
     fontFamily: "Aristotelica Pro Display Bold",
-    // fontWeight: "bold",
     fontSize: 17,
     alignSelf: "center",
     textAlign: "center",

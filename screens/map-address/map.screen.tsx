@@ -68,8 +68,9 @@ const MapScreen: React.FC = () => {
   const [indication, setIndication] = useState("");
 
   const [origin, setOrigin] = useState({
-    latitude: -12.074533,
-    longitude: -77.083644,
+    
+    latitude: 19.419611414821798,
+    longitude: -99.17432974906131,
   });
   const [currentLocation, setCurrentLocation] = useState<LocationType>();
   const [destination, setDestination] = useState<LocationType>();
@@ -791,7 +792,7 @@ const styles = StyleSheet.create({
     borderColor: "#A1A1A1",
     borderWidth: 0.4,
     paddingLeft: 25,
-    fontSize: 15,
+    fontSize: 10,
     fontFamily: "Geomanist Regular",
     backgroundColor: "white",
     color: "#000024",

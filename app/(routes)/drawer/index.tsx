@@ -16,28 +16,41 @@ import { Image, View, Platform } from "react-native";
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props: DrawerContentComponentProps) {
-  const isIOS = Platform.OS === 'ios';
+  const isIOS = Platform.OS === "ios";
   return (
-<DrawerContentScrollView {...props} style={{ backgroundColor: "#000024", display:"flex", flex:1 }}>
+    <DrawerContentScrollView
+      {...props}
+      style={{ backgroundColor: "#000024", display: "flex", flex: 1 }}
+    >
       <View
         style={{
           gap: 10,
-          flex:0,
+          flex: 0,
         }}
       >
         {/* View contenedor */}
         <DrawerItemList {...props} />
       </View>
-        <View style={{ paddingVertical:64, flex:1, justifyContent:"flex-end", flexGrow: 1 }}>
-          <Image
-            source={require("@/assets/images/botella-azul.png")}
-            style={isIOS ? {
-              marginVertical: 20, // Margen superior de la imagen
-              } : {resizeMode:"contain", marginTop:10}}
-          />
-        </View>
+      <View
+        style={{
+          paddingVertical: 64,
+          flex: 1,
+          justifyContent: "flex-end",
+          flexGrow: 1,
+        }}
+      >
+        <Image
+          source={require("@/assets/images/botella-azul.png")}
+          style={
+            isIOS
+              ? {
+                  marginVertical: 20, // Margen superior de la imagen
+                }
+              : { resizeMode: "contain", marginTop: 10 }
+          }
+        />
+      </View>
     </DrawerContentScrollView>
-
   );
 }
 export default function DrawerLayoutNav() {
