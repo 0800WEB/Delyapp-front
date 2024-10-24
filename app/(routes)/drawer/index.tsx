@@ -9,6 +9,7 @@ import Cart from "../cart";
 import User from "../user";
 import About from "../about";
 import Orders from "../orders";
+import Notification from "../notification";
 import { useFonts } from "expo-font";
 import { FontAwesome } from "@expo/vector-icons";
 import { Image, View, Platform } from "react-native";
@@ -88,6 +89,11 @@ export default function DrawerLayoutNav() {
         name="HOME"
         component={Home}
         options={{ drawerLabel: "INICIO" }}
+      />
+      <Drawer.Screen
+        name="NOTIFICACIONES"
+        component={Notification}
+        options={{ drawerLabel: "NOTIFICACIONES" }}
       />
       <Drawer.Screen
         name="PERFIL"

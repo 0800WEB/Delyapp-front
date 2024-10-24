@@ -104,7 +104,6 @@ const OrdersScreen: React.FC = () => {
       if (response.data.success) {
         // Actualizar el carrito (si es necesario)
         await dispatch(getCart());
-
         // Navegar al carrito
         navigation.navigate("CARRITO");
 

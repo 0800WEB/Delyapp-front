@@ -52,16 +52,13 @@ export const addToCart = createAsyncThunk(
           },
         }
       );
-      console.log(response.data.success);
-      // return response.data.cart;
+
       if (response.data.success) {
-        const { cart } = getState() as RootState;
-        const newCart = {
-          ...cart,
-          products: [...cart.cart.products, response.data.product],
+        // Retornar el producto y la cantidad directamente desde la respuesta
+        return {
+          product: response.data.product,
+          quantity
         };
-        Toast.show("Producto añadido al carrito", {type: "success"});
-        return newCart;
       } else {
         Toast.show("Ha ocurrido un error, vuelve a intentar", { type: "danger" });
         return rejectWithValue("Error adding product to cart");
@@ -72,6 +69,8 @@ export const addToCart = createAsyncThunk(
     }
   }
 );
+
+
 
 export const removeFromCart = createAsyncThunk(
   "cart/removeFromCart",

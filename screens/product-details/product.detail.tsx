@@ -44,39 +44,32 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
     "Aristotelica Pro Display Lt": require("../../assets/fonts/AristotelicaProDisp-Lt.otf"),
     ...FontAwesome.font,
   });
-
+  let [isProcessing, setIsProcessing] = useState(false)
   const dispatch = useDispatch<AppDispatch>();
+
   if (!fontsLoaded && !fontError) {
     return null;
   }
 
   useEffect(() => {
-    dispatch(getFavorites());
-  }, [productId]);
+    if (productId) {
+      dispatch(getFavorites());
+    }
+  }, [productId, dispatch]);
 
-  const cartProducts = useSelector(
-    (state: RootState) => state.cart.cart.products
-  );
-  const products = useSelector((state: RootState) => state.products);
-  const { selectedProductId } = products;
-  const categories = useSelector((state: RootState) => state.categories);
-  const favoriteProducts = useSelector(
-    (state: RootState) => state.favorite.favorites.products
-  );
+  const cartProducts = useSelector((state: RootState) => state.cart?.cart?.products ?? []);
+  const products = useSelector((state: RootState) => state.products?.products ?? []);
+  const selectedProductId = useSelector((state: RootState) => state.products?.selectedProductId);
+  const categories = useSelector((state: RootState) => state.categories?.categories ?? []);
+  const favoriteProducts = useSelector((state: RootState) => state.favorite?.favorites?.products ?? []);
 
-  const product = (products.products as Product[]).find(
-    (product: Product) => product._id === productId
-  );
+  const product = products?.find((product: Product) => product?._id === productId);
 
-  const selectedCategory = (categories.categories as Category[]).find(
-    (category: Category) => category._id === product?.category
-  );
+  const selectedCategory = categories?.find((category: Category) => category?._id === product?.category);
 
-  const productsForCategory = products.products?.filter(
-    (product: Product) => product.category === selectedCategory?._id
-  );
+  const productsForCategory = products?.filter((product: Product) => product?.category === selectedCategory?._id);
 
-  const name = product?.name;
+  const name = product?.name ?? '';
   const words = name?.split(" ") ?? [];
   const chunks = [];
 
@@ -84,73 +77,74 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
     chunks.push(words?.slice(i, i + 3).join(" "));
   }
 
-  //Quantity management
-  let initialQuantity = 0;
-  if (cartProducts) {
-    const cartProduct = (cartProducts as CartProduct[]).find(
-      (product: CartProduct) => product.product._id === productId
-    );
-    initialQuantity = cartProduct ? cartProduct.quantity : 0;
-  }
+  // Manejo de cantidad en carrito
+  const initialQuantity = cartProducts?.find(
+    (cartProduct: CartProduct) => cartProduct?.product?._id === productId
+  )?.quantity ?? 0;
 
   const [quantity, setQuantity] = useState(initialQuantity);
 
   useEffect(() => {
-    let newQuantity = 0;
-    if (cartProducts) {
-      const cartProduct = (cartProducts as CartProduct[]).find(
-        (product: CartProduct) => product.product._id === productId
-      );
-      newQuantity = cartProduct ? cartProduct.quantity : 0;
-    }
-    setQuantity(newQuantity);
+    const cartProduct = cartProducts?.find(
+      (cartProduct: CartProduct) => cartProduct?.product?._id === productId
+    );
+    setQuantity(cartProduct?.quantity ?? 0);
   }, [cartProducts, productId]);
 
-  //Favorite management
-  let initialFavorite = false;
-  if (favoriteProducts) {
-    const favoriteProduct = (favoriteProducts as Product[]).find(
-      (product: Product) => product._id === productId
-    );
-    initialFavorite = favoriteProduct ? true : false;
-  }
+  // Manejo de favoritos
+  const initialFavorite = !!favoriteProducts?.find(
+    (favoriteProduct: Product) => favoriteProduct?._id === productId
+  );
 
   const [favoriteSelect, setFavoriteSelect] = useState(initialFavorite);
 
   useEffect(() => {
-    let newFavorite = false;
-    if (favoriteProducts) {
-      const favoriteProduct = (favoriteProducts as Product[]).find(
-        (product: Product) => product._id === productId
-      );
-      newFavorite = favoriteProduct ? true : false;
-    }
-    setFavoriteSelect(newFavorite);
+    const favoriteProduct = favoriteProducts?.find(
+      (favoriteProduct: Product) => favoriteProduct?._id === productId
+    );
+    setFavoriteSelect(!!favoriteProduct);
   }, [favoriteProducts, productId]);
 
-  const handleDiscount = async () => {
-    if (quantity > 0) {
-      setQuantity(quantity - 1);
-      await dispatch(removeFromCart({ productId, quantity: 1 }));
-      await dispatch(getCart());
+  const handleAdd = async () => {
+    if (isProcessing) return;
+    setIsProcessing(true);
+
+    try {
+      // Remove the optimistic update here
+      await dispatch(addToCart({ productId, quantity: 1 }));
+      await dispatch(getCart()); // This will update the quantity in the Redux store
+    } catch (error) {
+      console.error("Error al agregar producto:", error);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
-  const handleAdd = async () => {
-    setQuantity(quantity + 1);
-    await dispatch(addToCart({ productId, quantity: 1 }));
-    await dispatch(getCart());
+  const handleDiscount = async () => {
+    if (isProcessing) return;
+    setIsProcessing(true);
+
+    try {
+      if (quantity > 0) {
+        // Remove the optimistic update here
+        await dispatch(removeFromCart({ productId, quantity: 1 }));
+        await dispatch(getCart()); // This will update the quantity in the Redux store
+      }
+    } catch (error) {
+      console.error("Error al quitar producto:", error);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
+  
+  
   const handleProductSelected = (newProductId: string) => {
-    //   dispatch(selectProduct(newProductId));
-    //   router.push(`/(routes)/product-details`);
     setQuantity(0);
     setProductId(newProductId);
   };
 
   const handleClose = () => {
-    // router.push("/(routes)/home");
     if (selectedProductId) {
       dispatch(clearSelectedProduct());
     }
@@ -167,8 +161,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
     }
     setFavoriteSelect(!favoriteSelect);
   };
-  // console.log(productId);
-  // console.log(favoriteSelect);
+
 
   if (!product) {
     return (
@@ -247,7 +240,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
         </TouchableOpacity>
         <View>
           <Image
-            source={{ uri: product.images[0] }}
+            source={{ uri: product?.images[0] }}
             style={styles.imageContainer}
           />
         </View>
@@ -259,7 +252,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
                 { color: "#000024", fontFamily: "Aristotelica Pro Display Bold" },
               ]}
             >
-              ${Number(product.price).toFixed(2)} MXN
+              ${Number(product?.price).toFixed(2)} MXN
             </Text>
             <Text style={[styles.nameText]}>{product?.name}</Text>
           </View>
@@ -300,30 +293,27 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
                 paddingHorizontal: 4,
               }}
             >
-              <TouchableWithoutFeedback onPress={handleDiscount}>
-                <Entypo
-                  name="minus"
-                  size={30}
-                  color="#000024"
-                  style={{ alignSelf: "center" }}
-                />
-              </TouchableWithoutFeedback>
-              <Text
-                style={[
-                  styles.commonText,
-                  { fontSize: 33, paddingHorizontal: 5 },
-                ]}
-              >
-                {quantity}
-              </Text>
-              <TouchableWithoutFeedback onPress={handleAdd}>
-                <Entypo
-                  name="plus"
-                  size={30}
-                  color="#000024"
-                  style={{ alignSelf: "center" }}
-                />
-              </TouchableWithoutFeedback>
+  <TouchableWithoutFeedback disabled={isProcessing} onPress={handleDiscount}>
+    <Entypo
+      name="minus"
+      size={30}
+      color={isProcessing ? "#ccc" : "#000024"}
+      style={{ alignSelf: "center" }}
+    />
+  </TouchableWithoutFeedback>
+  
+  <Text style={[styles.commonText, { fontSize: 33, paddingHorizontal: 5 }]}>
+    {quantity}
+  </Text>
+
+  <TouchableWithoutFeedback disabled={isProcessing} onPress={handleAdd}>
+    <Entypo
+      name="plus"
+      size={30}
+      color={isProcessing ? "#ccc" : "#000024"}
+      style={{ alignSelf: "center" }}
+    />
+  </TouchableWithoutFeedback>
             </View>
           </View>
         </View>

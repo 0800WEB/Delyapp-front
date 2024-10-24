@@ -18,9 +18,20 @@ const cartReducer = createReducer(initialState, (builder) => {
       state.loading = true;
       state.error = null;
     })
-    .addCase(addToCart.fulfilled, (state, action) => {
+    .addCase(addToCart.fulfilled, (state:any, action:any) => {
       state.loading = false;
-      state.cart.products = action.payload.cart.products;
+      const existingProduct = state.cart.products.find(
+        (product:any) => product?._id === action?.payload?.product?._id
+      );
+      
+      
+      if (existingProduct) {
+        // Actualizar cantidad si ya existe en el carrito
+        existingProduct.quantity += action?.payload?.quantity;
+      } else {
+        // Agregar nuevo producto
+        state.cart.products.push(action?.payload?.product);
+      }
       state.error = null;
     })
     .addCase(addToCart.rejected, (state, action) => {

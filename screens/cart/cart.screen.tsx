@@ -7,10 +7,11 @@ import {
   TouchableOpacity,
   SafeAreaView,
   FlatList,
+  ActivityIndicator, // Import ActivityIndicator
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome5, AntDesign, FontAwesome } from "@expo/vector-icons";
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
@@ -44,6 +45,8 @@ const CartScreen: React.FC = () => {
     "Aristotelica Pro Display Lt": require("../../assets/fonts/AristotelicaProDisp-Lt.otf"),
     ...FontAwesome.font,
   });
+  const [isProcessing, setIsProcessing] = useState(false); // Add processing state
+
   const dispatch = useDispatch<AppDispatch>();
   const navigation = useNavigation<DrawerNavProp>();
 
@@ -55,22 +58,44 @@ const CartScreen: React.FC = () => {
     fetchCart();
   }, [fetchCart]);
 
+  // Verificamos si el carrito está cargando
   const cart = useSelector((state: RootState) => state.cart.cart);
-  const { products, totalPrice } = cart;
-  const cartProducts = JSON.parse(JSON.stringify(products));
+  const { products = [], totalPrice } = cart || {};  // Aseguramos que `products` sea un array vacío si no hay datos
+  const cartProducts = products && products.length ? products : [];  // Aseguramos que `cartProducts` siempre tenga un array
 
   const handleDiscount = async (productId: string) => {
-    await dispatch(removeFromCart({ productId, quantity: 1 }));
-    await dispatch(getCart());
+    if (isProcessing) return;
+    setIsProcessing(true);
+
+    try {
+      await dispatch(removeFromCart({ productId, quantity: 1 }));
+      await dispatch(getCart());
+    } catch (error) {
+      console.error("Error al aplicar descuento:", error);
+    } finally {
+      setIsProcessing(false);
+    }
   };
+
   const handleAdd = async (productId: string) => {
-    await dispatch(addToCart({ productId, quantity: 1 }));
-    await dispatch(getCart());
+    if (isProcessing) return;
+    setIsProcessing(true);
+
+    try {
+      await dispatch(addToCart({ productId, quantity: 1 }));
+      await dispatch(getCart());
+    } catch (error) {
+      console.error("Error al agregar producto:", error);
+    } finally {
+      setIsProcessing(false);
+    }
   };
+
 
   const goToMapScreen = async () => {
     await navigation.navigate("(routes)/map/index");
   };
+
   const goToHome = () => {
     if (dispatch) {
       dispatch(clearSelectedProduct());
@@ -78,94 +103,109 @@ const CartScreen: React.FC = () => {
     router.back();
   };
 
-  if (!cartProducts || cartProducts.length === 0) {
+  if (!cartProducts.length) {
     return (
       <View style={{ flex: 1, marginTop: 25 }}>
         <Header openDrawer={() => navigation.dispatch(DrawerActions.openDrawer())} />
         <SearchInput homeScreen={true} />
         <View style={styles.top}>
           <Text style={[styles.topText, { marginTop: 2 }]}>CARRITO DE COMPRAS</Text>
-          <TouchableOpacity onPress={() => goToHome()}>
+          <TouchableOpacity onPress={goToHome}>
             <AntDesign name="close" size={20} color="#000024" style={{ height: 40, aspectRatio: 1 }} />
           </TouchableOpacity>
         </View>
-        <Text style={{ marginVertical: "auto", marginHorizontal: 25, justifyContent: "center", alignContent: "center", alignSelf: "center", textAlign: "center", fontFamily: "Aristotelica Pro Display Bold", fontSize: 20, color: "#A1A1A1" }}>
+        <Text
+          style={{
+            marginVertical: "auto",
+            marginHorizontal: 25,
+            justifyContent: "center",
+            alignSelf: "center",
+            textAlign: "center",
+            fontFamily: "Aristotelica Pro Display Bold",
+            fontSize: 20,
+            color: "#A1A1A1",
+          }}>
           EL CARRITO ESTÁ VACÍO, POR FAVOR AGREGA PRODUCTOS
         </Text>
       </View>
     );
   }
 
-  if (cart) {
-    const renderProductItem = ({ item }: { item: CartProduct }) => (
+  const renderProductItem = ({ item }: { item: CartProduct }) => {
+    if (!item?.product) {
+      return null; // Verificación de producto inválido
+    }
+    return (
       <View style={styles.cardContainer}>
         <View style={styles.imageContainer1}>
-          {item.product.images && (
-            <Image source={{ uri: item.product.images[0] }} style={styles.imageContainer} />
-          )}
+          {item?.product?.images && <Image source={{ uri: item?.product?.images[0] }} style={styles.imageContainer} />}
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.nameText}>{item.product.name.substring(0, 35)}</Text>
-          <Text style={styles.descriptionText}>{item.product.description.substring(0, 30)}</Text>
-          <Text style={styles.priceText}>${Number(item.product?.price?.toString()).toFixed(2)} MXN</Text>
+          <Text style={styles.nameText}>{item.product.name?.substring(0, 35)}</Text>
+          <Text style={styles.descriptionText}>{item.product.description?.substring(0, 30)}</Text>
+          <Text style={styles.priceText}>${Number(item.product.price).toFixed(2)} MXN</Text>
         </View>
         <View style={styles.cartQuantityContainer}>
           <View style={styles.quantitySection}>
-            <TouchableOpacity onPress={() => handleDiscount(item.product._id)}>
-              <FontAwesome5 name={item.quantity == 1 ? "trash-alt" : "minus"} color="#000024" size={20} />
+            <TouchableOpacity onPress={() => handleDiscount(item?.product?._id)} disabled={isProcessing}>
+              <FontAwesome5
+                name={item?.quantity === 1 ? "trash-alt" : "minus"}
+                color={isProcessing ? "#ccc" : "#000024"} // Color del icono deshabilitado
+                size={20}
+              />
             </TouchableOpacity>
-            <Text style={{ textAlign: "left", fontFamily: "Geomanist Regular", fontSize: 32, color: "#000024", paddingHorizontal: 17 }}>
-              {item.quantity?.toString()}
-            </Text>
-            <TouchableOpacity onPress={() => handleAdd(item.product._id)}>
-              <FontAwesome5 name="plus" color="#000024" size={20} />
+            {isProcessing ? (
+              <Text style={{ fontSize: 32, color: "#000024", paddingHorizontal: 17 }}>{item?.quantity}</Text>
+            ) : (
+              <Text style={{ fontSize: 32, color: "#000024", paddingHorizontal: 17 }}>{item?.quantity}</Text>
+            )}
+            <TouchableOpacity onPress={() => handleAdd(item?.product?._id)} disabled={isProcessing}>
+              <FontAwesome5
+                name="plus"
+                color={isProcessing ? "#ccc" : "#000024"} // Color del icono deshabilitado
+                size={20}
+              />
             </TouchableOpacity>
-          </View>
-          <Text style={{ fontSize: 11, textAlign: "center", fontFamily: "Aristotelica Pro Display Demibold" }}>
-            CANTIDAD
-          </Text>
-        </View>
-      </View>
-    );
 
-    return (
-      <View style={{ flex: 1, marginTop: 25 }}>
-        <Header openDrawer={() => navigation.dispatch(DrawerActions.openDrawer())} />
-        <SearchInput homeScreen={true} />
-        <View style={styles.top}>
-          <Text style={[styles.topText, { marginTop: 2 }]}>CARRITO DE COMPRAS</Text>
-          <TouchableOpacity onPress={() => goToHome()}>
-            <AntDesign name="close" size={20} color="#000024" style={{ height: 40, aspectRatio: 1 }} />
-          </TouchableOpacity>
-        </View>
-        <ScrollView style={{ marginBottom: 10 }}>
-          <Text style={{ paddingTop: 10, paddingLeft: 10, color: "#A1A1A1", fontFamily: "Geomanist Regular" }}>
-            {cartProducts.length} productos agregado(s)
-          </Text>
-          <SafeAreaView style={{ borderTopRightRadius: 50, borderTopLeftRadius: 50 }}>
-            <FlatList data={cartProducts} renderItem={renderProductItem} keyExtractor={(item) => item._id} />
-          </SafeAreaView>
-          <View style={{ margin: 10, marginHorizontal: "auto", width: "93%", borderTopWidth: 0.4, borderBottomWidth: 0.4, borderColor: "#A1A1A1" }}>
-            <View style={{ flexDirection: "row", marginHorizontal: 20, marginVertical: 10, justifyContent: "space-between", alignItems: "center" }}>
-              <Text style={styles.cartTotal}>TOTAL: </Text>
-              {totalPrice && (
-                <Text style={styles.cartTotal}>${totalPrice.toFixed(2)} MXN</Text>
-              )}
-            </View>
           </View>
-          <TouchableOpacity onPress={goToMapScreen}>
-            <LinearGradient colors={["#016AF5", "#08E6E7"]} style={{ margin: "auto", borderRadius: 25 }} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
-              <Text style={[{ fontFamily: "Aristotelica Pro Display Regular", textAlign: "center", color: "white", fontSize: 17, paddingVertical: 20, paddingHorizontal: 20 }]}>
-                COMPLETAR PEDIDO
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </ScrollView>
+          <Text style={{ fontSize: 11, textAlign: "center", fontFamily: "Aristotelica Pro Display Demibold" }}>CANTIDAD</Text>
+        </View>
       </View>
     );
-  }
+  };
+
+  return (
+    <View style={{ flex: 1, marginTop: 25 }}>
+      <Header openDrawer={() => navigation.dispatch(DrawerActions.openDrawer())} />
+      <SearchInput homeScreen={true} />
+      <View style={styles.top}>
+        <Text style={[styles.topText, { marginTop: 2 }]}>CARRITO DE COMPRAS</Text>
+        <TouchableOpacity onPress={goToHome}>
+          <AntDesign name="close" size={20} color="#000024" style={{ height: 40, aspectRatio: 1 }} />
+        </TouchableOpacity>
+      </View>
+      <ScrollView style={styles.scrollView}>
+        <Text style={{ padding: 10, color: "#A1A1A1", fontFamily: "Geomanist Regular" }}>
+          {cartProducts.length} producto(s) agregado(s)
+        </Text>
+        <SafeAreaView>
+          <FlatList data={cartProducts} renderItem={renderProductItem} keyExtractor={(item) => item ? item?._id : ""} />
+        </SafeAreaView>
+        <View style={{ margin: 10, borderColor: "#A1A1A1", borderTopWidth: 0.4, borderBottomWidth: 0.4 }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", margin: 20 }}>
+            <Text style={styles.cartTotal}>TOTAL: </Text>
+            {totalPrice && <Text style={styles.cartTotal}>${totalPrice.toFixed(2)} MXN</Text>}
+          </View>
+        </View>
+        <TouchableOpacity onPress={goToMapScreen}>
+          <LinearGradient colors={["#016AF5", "#08E6E7"]} style={{ borderRadius: 25 }} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}>
+            <Text style={{ textAlign: "center", color: "white", fontSize: 17, padding: 20 }}>COMPLETAR PEDIDO</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
+  );
 };
-
 export default CartScreen;
 
 const styles = StyleSheet.create({
