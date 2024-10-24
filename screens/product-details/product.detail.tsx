@@ -303,7 +303,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
   </TouchableWithoutFeedback>
   
   <Text style={[styles.commonText, { fontSize: 33, paddingHorizontal: 5 }]}>
-    {quantity}
+    {quantity && quantity}
   </Text>
 
   <TouchableWithoutFeedback disabled={isProcessing} onPress={handleAdd}>
@@ -319,7 +319,7 @@ const ProductDetailsScreen: React.FC<ProductDetailsScreenProps> = ({
         </View>
         <View>
           <Text style={[styles.commonText, styles.description]}>
-            {product.description}
+            {product?.description}
           </Text>
           <View
             style={{
